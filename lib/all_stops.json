@@ -1,0 +1,8959 @@
+[
+  {
+    "stopId": "30346",
+    "stopName": "HAVALİMANI SERVİSLERİ KALKIŞ NOKTASI",
+    "lat": "39.914964",
+    "lng": "41.26929",
+    "routes": [
+      "A1"
+    ]
+  },
+  
+  {
+    "stopId": "30150",
+    "stopName": "DEMİREVLER YAKUTİYE 36 NOLU DURAĞI",
+    "lat": "39.913412",
+    "lng": "41.270115",
+    "routes": [
+      "A1",
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "D1",
+      "G1",
+      "G10",
+      "G11",
+      "G2",
+      "G3",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K1",
+      "K1/A",
+      "K11",
+      "K2",
+      "K4",
+      "K5",
+      "K6",
+      "K7",
+      "M11",
+      "M12",
+      "M14",
+      "M15",
+      "M16",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30152",
+    "stopName": "KUŞKAY YAKUTİYE 37 NOLU DURAĞI",
+    "lat": "39.912086",
+    "lng": "41.266279",
+    "routes": [
+      "A1",
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "D1",
+      "G1",
+      "G10",
+      "G11",
+      "G2",
+      "G3",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K1",
+      "K1/A",
+      "K11",
+      "K2",
+      "K4",
+      "K5",
+      "K6",
+      "K7",
+      "M11",
+      "M13",
+      "M14",
+      "M15",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30129",
+    "stopName": "NENE HATUN KIZ LİSESİ YAKUTİYE 38 NOLU DURAĞI",
+    "lat": "39.909434",
+    "lng": "41.265108",
+    "routes": [
+      "A1",
+      "B1",
+      "B2",
+      "B2/A",
+      "B3",
+      "B8",
+      "D1",
+      "G1",
+      "G10",
+      "G11",
+      "G2",
+      "G3",
+      "G5",
+      "G6",
+      "G7",
+      "G7/A",
+      "G8",
+      "K1",
+      "K10",
+      "K11",
+      "K2",
+      "K4",
+      "K5",
+      "K6",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30130",
+    "stopName": "ERZURUM LİSESİ 2 YAKUTİYE 39 NOLU DURAĞI",
+    "lat": "39.907129",
+    "lng": "41.265455",
+    "routes": [
+      "A1",
+      "B1",
+      "B2",
+      "B2/A",
+      "B3",
+      "D1",
+      "G1",
+      "G10",
+      "G11",
+      "G2",
+      "G3",
+      "G5",
+      "G6",
+      "G7",
+      "G7/A",
+      "G8",
+      "K1",
+      "K1/A",
+      "K10",
+      "K11",
+      "K2",
+      "K4",
+      "K5",
+      "K6",
+      "M15",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30060",
+    "stopName": "HAMİDİYE KIZ LİSESİ YAKUTİYE 64 NOLU DURAĞI",
+    "lat": "39.905586",
+    "lng": "41.264115",
+    "routes": [
+      "A1",
+      "B1",
+      "B2",
+      "B2/A",
+      "B3",
+      "B8",
+      "G1",
+      "G1-A",
+      "G3",
+      "K10",
+      "K3",
+      "K4",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30063",
+    "stopName": "ERZURUM BÜYÜKŞEHİR BELEDİYESİ 2 YAKUTİYE 65 NOLU DURAĞI",
+    "lat": "39.905322",
+    "lng": "41.260757",
+    "routes": [
+      "A1",
+      "B1",
+      "B2",
+      "B2/A",
+      "B3",
+      "B8",
+      "G1",
+      "G1-A",
+      "G3",
+      "K10",
+      "K3",
+      "K4",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30065",
+    "stopName": "METEOROLOJİ KARŞISI YAKUTİYE 134 NOLU DURAĞI",
+    "lat": "39.905975",
+    "lng": "41.256332",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "K10",
+      "K4",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30067",
+    "stopName": "YAKUTİYE 304 NOLU DURAĞI",
+    "lat": "39.909287",
+    "lng": "41.254618",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "K10",
+      "K4",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30068",
+    "stopName": "YAKUTİYE 135 NOLU DURAĞI",
+    "lat": "39.911208",
+    "lng": "41.253755",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "K10",
+      "K4",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30070",
+    "stopName": "YAKUTİYE 136 NOLU DURAĞI",
+    "lat": "39.912583",
+    "lng": "41.2515041",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30072",
+    "stopName": "YAKUTİYE 137 NOLU DURAĞI",
+    "lat": "39.9133131",
+    "lng": "41.2481111",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30074",
+    "stopName": "YAKUTİYE 138 NOLU DURAĞI",
+    "lat": "39.913898",
+    "lng": "41.245588",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30347",
+    "stopName": "HAVALİMANI",
+    "lat": "39.961723",
+    "lng": "41.179898",
+    "routes": [
+      "A1"
+    ]
+  },
+  {
+    "stopId": "30075",
+    "stopName": "YAKUTİYE 157 NOLU DURAĞI",
+    "lat": "39.9141477",
+    "lng": "41.2427087",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30073",
+    "stopName": "YAKUTİYE 158 NOLU DURAĞI",
+    "lat": "39.9130656",
+    "lng": "41.2479068",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30071",
+    "stopName": "MNG AVM YAKUTİYE 159 NOLU DURAĞI",
+    "lat": "39.9122991",
+    "lng": "41.2516298",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30069",
+    "stopName": "YAKUTİYE 160 NOLU DURAĞI",
+    "lat": "39.9115226",
+    "lng": "41.253214",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4",
+      "K5",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30066",
+    "stopName": "YAKUTİYE 161 NOLU DURAĞI",
+    "lat": "39.9087135",
+    "lng": "41.2545715",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "K10",
+      "K4",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30098",
+    "stopName": "METEOROLOJİ YAKUTİYE 162 NOLU DURAĞI",
+    "lat": "39.9060819",
+    "lng": "41.2558244",
+    "routes": [
+      "A1",
+      "B2/A",
+      "G4",
+      "K10",
+      "K4",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30064",
+    "stopName": "ERZURUM BÜYÜKŞEHİR BELEDİYESİ YAKUTİYE 69 NOLU DURAĞI",
+    "lat": "39.9050009",
+    "lng": "41.2607957",
+    "routes": [
+      "A1",
+      "B2",
+      "B2/A",
+      "B3",
+      "B8",
+      "G1",
+      "G1-A",
+      "G3",
+      "K10",
+      "K2",
+      "K4",
+      "K5",
+      "K7",
+      "M11",
+      "M15",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30061",
+    "stopName": "İL TURİZM YAKUTİYE 70 NOLU DURAĞI",
+    "lat": "39.9052286",
+    "lng": "41.2633791",
+    "routes": [
+      "A1",
+      "B2",
+      "B2/A",
+      "B3",
+      "B8",
+      "G1",
+      "G1-A",
+      "G3",
+      "G5",
+      "G6",
+      "G7",
+      "K10",
+      "K2",
+      "K4",
+      "K5",
+      "K7",
+      "M11",
+      "M15",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30127",
+    "stopName": "ERZURUM LİSESİ KARŞISI YAKUTİYE 42 NOLU DURAĞI",
+    "lat": "39.907108",
+    "lng": "41.265837",
+    "routes": [
+      "A1",
+      "B2",
+      "B3",
+      "D1",
+      "G10",
+      "G2",
+      "G5",
+      "G6",
+      "G7",
+      "G7/A",
+      "G8",
+      "K10",
+      "K11",
+      "K2",
+      "K4",
+      "K6",
+      "K7/A",
+      "M11",
+      "M15",
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30128",
+    "stopName": "AĞIZ VE DİŞ SAĞLIĞI YAKUTİYE 43 NOLU DURAĞI",
+    "lat": "39.909519",
+    "lng": "41.265499",
+    "routes": [
+      "A1",
+      "B2",
+      "B3",
+      "D1",
+      "G10",
+      "G2",
+      "G6",
+      "G7",
+      "G7/A",
+      "G8",
+      "K10",
+      "K11",
+      "K2",
+      "K4",
+      "K6",
+      "K7/A",
+      "M11",
+      "M15",
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30161",
+    "stopName": "GEZ MAHALLESİ KARŞISI YAKUTİYE 44 NOLU DURAĞI",
+    "lat": "39.9117262",
+    "lng": "41.2657996",
+    "routes": [
+      "A1",
+      "B2",
+      "B3",
+      "D1",
+      "G10",
+      "G2",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K11",
+      "K2",
+      "K4",
+      "K6",
+      "K7",
+      "K7/A",
+      "M11",
+      "M15",
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30348",
+    "stopName": "HAVALİMANI SON DURAK",
+    "lat": "39.914913",
+    "lng": "41.269421",
+    "routes": [
+      "A1"
+    ]
+  },
+  {
+    "stopId": "10000",
+    "stopName": "ILICA SEVK İDARE",
+    "lat": "39.9153278",
+    "lng": "41.1093178",
+    "routes": [
+      "B1",
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "10001",
+    "stopName": "AZİZİYE 01 NOLU DURAĞI",
+    "lat": "39.936636",
+    "lng": "41.108625",
+    "routes": [
+      "B1",
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "10002",
+    "stopName": "AZİZİYE 02 NOLU DURAĞI",
+    "lat": "39.938025",
+    "lng": "41.107857",
+    "routes": [
+      "B1",
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "10003",
+    "stopName": "AZİZİYE 03 NOLU DURAĞI",
+    "lat": "39.93953",
+    "lng": "41.107117",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M1"
+    ]
+  },
+  {
+    "stopId": "10007",
+    "stopName": "AZİZİYE 05 NOLU DURAĞI",
+    "lat": "39.9469069",
+    "lng": "41.102451",
+    "routes": [
+      "B1",
+      "B7"
+    ]
+  },
+  {
+    "stopId": "10005",
+    "stopName": "AZİZİYE 06 NOLU DURAĞI",
+    "lat": "39.948931",
+    "lng": "41.104357",
+    "routes": [
+      "B1"
+    ]
+  },
+  {
+    "stopId": "10009",
+    "stopName": "AZİZİYE 08 NOLU DURAĞI",
+    "lat": "39.9457371",
+    "lng": "41.1043769",
+    "routes": [
+      "B1",
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "10011",
+    "stopName": "ILICA ÇARŞI AZİZİYE 11 NOLU DURAĞI",
+    "lat": "39.944627",
+    "lng": "41.110212",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M1"
+    ]
+  },
+  {
+    "stopId": "10014",
+    "stopName": "AZİZİYE 13 NOLU DURAĞI",
+    "lat": "39.94377",
+    "lng": "41.111604",
+    "routes": [
+      "B1",
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "10015",
+    "stopName": "KÖPRÜ AZİZİYE 15 NOLU DURAĞI",
+    "lat": "39.9422685",
+    "lng": "41.1153159",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10017",
+    "stopName": "KÖPRÜ AZİZİYE 17 NOLU DURAĞI",
+    "lat": "39.941523",
+    "lng": "41.1180631",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10018",
+    "stopName": "AZİZİYE 18 NOLU DURAĞI",
+    "lat": "39.9400233",
+    "lng": "41.1237448",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10019",
+    "stopName": "HİZMETİÇİ AZİZİYE 19 NOLU DURAĞI",
+    "lat": "39.9389738",
+    "lng": "41.1277604",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10021",
+    "stopName": "AZİZİYE 21 NOLU DURAĞI",
+    "lat": "39.9380278",
+    "lng": "41.1313733",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10023",
+    "stopName": "AZİZİYE 23 NOLU DURAĞI",
+    "lat": "39.9373224",
+    "lng": "41.1337219",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10025",
+    "stopName": "AZİZİYE 25 NOLU DURAĞI",
+    "lat": "39.9346413",
+    "lng": "41.1440681",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10027",
+    "stopName": "AZİZİYE 27 NOLU DURAĞI",
+    "lat": "39.933696",
+    "lng": "41.1476888",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10030",
+    "stopName": "AZİZİYE 30 NOLU DURAĞI",
+    "lat": "39.9304083",
+    "lng": "41.1599753",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10035",
+    "stopName": "AZİZİYE 33 NOLU DURAĞI",
+    "lat": "39.9238454",
+    "lng": "41.1650823",
+    "routes": [
+      "B1",
+      "B7"
+    ]
+  },
+  {
+    "stopId": "10033",
+    "stopName": "AZİZİYE 35 NOLU DURAĞI",
+    "lat": "39.9289215",
+    "lng": "41.1654789",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10036",
+    "stopName": "AZİZİYE 36 NOLU DURAĞI",
+    "lat": "39.9269351",
+    "lng": "41.1729053",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10038",
+    "stopName": "AZİZİYE 38 NOLU DURAĞI",
+    "lat": "39.9256999",
+    "lng": "41.177698",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10041",
+    "stopName": "AZİZİYE 41 NOLU DURAĞI",
+    "lat": "39.9243611",
+    "lng": "41.1828295",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10070",
+    "stopName": "AZİZİYE BELEDİYESİ AZİZİYE 77 NOLU DURAĞI",
+    "lat": "39.9225566",
+    "lng": "41.1892848",
+    "routes": [
+      "B1",
+      "B3",
+      "G4",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10071",
+    "stopName": "AZİZİYE 137 NOLU DURAĞI",
+    "lat": "39.9205644",
+    "lng": "41.1970173",
+    "routes": [
+      "B1",
+      "B3",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10072",
+    "stopName": "AZİZİYE 138 NOLU DURAĞI",
+    "lat": "39.9192671",
+    "lng": "41.2017273",
+    "routes": [
+      "B1",
+      "B3",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10073",
+    "stopName": "İSTASYON AZİZİYE 139 NOLU DURAĞI",
+    "lat": "39.9186389",
+    "lng": "41.2040709",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10074",
+    "stopName": "AZİZİYE 140 NOLU DURAĞI",
+    "lat": "39.9134391",
+    "lng": "41.2237312",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10075",
+    "stopName": "AZİZİYE 141 NOLU DURAĞI",
+    "lat": "39.9116522",
+    "lng": "41.230432",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10076",
+    "stopName": "AZİZİYE 156 NOLU DURAĞI",
+    "lat": "39.9107458",
+    "lng": "41.2340295",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10077",
+    "stopName": "STAD KARŞISI AZİZİYE 142 NOLU DURAĞI",
+    "lat": "39.909128",
+    "lng": "41.239285",
+    "routes": [
+      "B1",
+      "B3",
+      "M15",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30201",
+    "stopName": "YAKUTİYE 103 NOLU DURAĞI",
+    "lat": "39.908074",
+    "lng": "41.239613",
+    "routes": [
+      "B1",
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K3",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30203",
+    "stopName": "ANFİLER YAKUTİYE 105 NOLU DURAĞI",
+    "lat": "39.9012115",
+    "lng": "41.2397211",
+    "routes": [
+      "B1",
+      "G1",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K3",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30207",
+    "stopName": "ÜNİVERSİTE HASTANESİ YAKUTİYE 106 NOLU DURAĞI",
+    "lat": "39.8984549",
+    "lng": "41.2385118",
+    "routes": [
+      "B1",
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "K3",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30210",
+    "stopName": "GÜZEL SANATLAR YAKUTİYE 109 NOLU DURAĞI",
+    "lat": "39.896496",
+    "lng": "41.237724",
+    "routes": [
+      "B1",
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "K3",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30193",
+    "stopName": "GÜZEL SANATLAR YAKUTİYE 124 NOLU DURAĞI",
+    "lat": "39.895909",
+    "lng": "41.238374",
+    "routes": [
+      "B1",
+      "B8",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K7",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30194",
+    "stopName": "ESKİ YURTLAR YAKUTİYE 119 NOLU DURAĞI",
+    "lat": "39.897595",
+    "lng": "41.247903",
+    "routes": [
+      "B1",
+      "B8",
+      "G1",
+      "G1-A",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K3",
+      "K7",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30195",
+    "stopName": "YAKUTİYE 120 NOLU DURAĞI",
+    "lat": "39.9005635",
+    "lng": "41.2491588",
+    "routes": [
+      "B1",
+      "B8",
+      "G1",
+      "G1-A",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K3",
+      "K7",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30196",
+    "stopName": "YAKUTİYE 121 NOLU DURAĞI",
+    "lat": "39.9038853",
+    "lng": "41.2537256",
+    "routes": [
+      "B1",
+      "B8",
+      "G1",
+      "G1-A",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K3",
+      "K7",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30197",
+    "stopName": "ÜNİVERSİTE KARTAL YAKUTİYE 122 NOLU DURAĞI",
+    "lat": "39.9043101",
+    "lng": "41.2550576",
+    "routes": [
+      "B1",
+      "B8",
+      "G1",
+      "G1-A",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K3",
+      "K7",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30099",
+    "stopName": "YAKUTİYE 89 NOLU DURAĞI",
+    "lat": "39.9020427",
+    "lng": "41.2620502",
+    "routes": [
+      "B1",
+      "K3",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30100",
+    "stopName": "TRT YAKUTİYE 90 NOLU DURAĞI",
+    "lat": "39.8997893",
+    "lng": "41.2668876",
+    "routes": [
+      "B1",
+      "G11",
+      "G14",
+      "G5",
+      "G6",
+      "G7",
+      "K1",
+      "K1/A",
+      "K11",
+      "K3",
+      "M2",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30101",
+    "stopName": "KÖŞK YAKUTİYE 91 NOLU DURAĞI",
+    "lat": "39.8983846",
+    "lng": "41.2699104",
+    "routes": [
+      "B1",
+      "G11",
+      "G14",
+      "G2",
+      "G5",
+      "G6",
+      "G7",
+      "K1",
+      "K1/A",
+      "K11",
+      "K3",
+      "M2",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30102",
+    "stopName": "YAKUTİYE 92 NOLU DURAĞI",
+    "lat": "39.8971197",
+    "lng": "41.2729593",
+    "routes": [
+      "B1",
+      "G11",
+      "G14",
+      "G2",
+      "G7/A",
+      "G9",
+      "K1",
+      "K1/A",
+      "K3",
+      "K7/A",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "38125",
+    "stopName": "EĞİTİM FAKÜLTESİ YAKUTİYE 51 NOLU DURAĞI",
+    "lat": "39.898671",
+    "lng": "41.275536",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "D2",
+      "G1",
+      "G1-A",
+      "G11",
+      "G2",
+      "G7/A",
+      "G9",
+      "K1",
+      "K1/A",
+      "K3",
+      "K4",
+      "K7/A",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30270",
+    "stopName": "YONCALIK YAKUTİYE 52 NOLU DURAĞI",
+    "lat": "39.902265",
+    "lng": "41.274811",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "D2",
+      "G1",
+      "G1-A",
+      "G11",
+      "G2",
+      "G5",
+      "G7/A",
+      "G9",
+      "K1",
+      "K1/A",
+      "K3",
+      "K4",
+      "K7/A",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30052",
+    "stopName": "DGM YAKUTİYE 271 NOLU DURAĞI",
+    "lat": "39.905078",
+    "lng": "41.27432",
+    "routes": [
+      "B1",
+      "G11",
+      "K3",
+      "K7/A",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30054",
+    "stopName": "TEMA 2 YAKUTİYE 54 NOLU DURAĞI",
+    "lat": "39.9074883",
+    "lng": "41.2735957",
+    "routes": [
+      "B1",
+      "B3",
+      "B8",
+      "K1",
+      "K4",
+      "K7",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30149",
+    "stopName": "GÜRCÜKAPI ILICA DADAŞKENT YAKUTİYE 35 NOLU DURAĞI",
+    "lat": "39.912284",
+    "lng": "41.272312",
+    "routes": [
+      "B1",
+      "B8",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30198",
+    "stopName": "Ü.KAVŞAĞI YAKUTİYE 66 NOLU DURAĞI",
+    "lat": "39.905496",
+    "lng": "41.255155",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K3",
+      "K7",
+      "M15",
+      "M2",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30200",
+    "stopName": "Ü.KAVŞAĞI YAKUTİYE 67 NOLU DURAĞI",
+    "lat": "39.905616",
+    "lng": "41.254583",
+    "routes": [
+      "B1",
+      "G3",
+      "G4/B",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10078",
+    "stopName": "STADYUM AZİZİYE 143 NOLU DURAĞI",
+    "lat": "39.909808",
+    "lng": "41.238893",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10079",
+    "stopName": "AZİZİYE 144 NOLU DURAĞI",
+    "lat": "39.9110818",
+    "lng": "41.2339027",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10080",
+    "stopName": "AZİZİYE 145 NOLU DURAĞI",
+    "lat": "39.9120387",
+    "lng": "41.2302301",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10081",
+    "stopName": "AZİZİYE 146 NOLU DURAĞI",
+    "lat": "39.9138181",
+    "lng": "41.2235397",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10082",
+    "stopName": "AZİZİYE 147 NOLU DURAĞI",
+    "lat": "39.9190076",
+    "lng": "41.2042331",
+    "routes": [
+      "B1",
+      "B2",
+      "B3",
+      "B8",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10083",
+    "stopName": "AZİZİYE 148 NOLU DURAĞI",
+    "lat": "39.9195495",
+    "lng": "41.2022382",
+    "routes": [
+      "B1",
+      "B3",
+      "B8",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10084",
+    "stopName": "AZİZİYE 149 NOLU DURAĞI",
+    "lat": "39.9217174",
+    "lng": "41.1938594",
+    "routes": [
+      "B1",
+      "B3",
+      "B8",
+      "G4",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10085",
+    "stopName": "KIŞLA AZİZİYE 150 NOLU DURAĞI",
+    "lat": "39.9228999",
+    "lng": "41.189532",
+    "routes": [
+      "B1",
+      "B3",
+      "B8",
+      "G4",
+      "M15",
+      "M2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10039",
+    "stopName": "AZİZİYE 39 NOLU DURAĞI",
+    "lat": "39.925904",
+    "lng": "41.178405",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10037",
+    "stopName": "AZİZİYE 37 NOLU DURAĞI",
+    "lat": "39.9273992",
+    "lng": "41.172744",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10032",
+    "stopName": "AZİZİYE 34 NOLU DURAĞI",
+    "lat": "39.9297653",
+    "lng": "41.1638491",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10031",
+    "stopName": "AZİZİYE 31 NOLU DURAĞI",
+    "lat": "39.9305332",
+    "lng": "41.160783",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10029",
+    "stopName": "AZİZİYE 29 NOLU DURAĞI",
+    "lat": "39.9326479",
+    "lng": "41.1529165",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10028",
+    "stopName": "AZİZİYE 28 NOLU DURAĞI",
+    "lat": "39.9342405",
+    "lng": "41.1467866",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10026",
+    "stopName": "AZİZİYE 26 NOLU DURAĞI",
+    "lat": "39.935228",
+    "lng": "41.143059",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10024",
+    "stopName": "AZİZİYE 24 NOLU DURAĞI",
+    "lat": "39.937783",
+    "lng": "41.134003",
+    "routes": [
+      "B1",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10022",
+    "stopName": "AZİZİYE 22 NOLU DURAĞI",
+    "lat": "39.938571",
+    "lng": "41.130939",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10020",
+    "stopName": "HİZMET İÇİ KARŞISI AZİZİYE 20 NOLU DURAĞI",
+    "lat": "39.9393622",
+    "lng": "41.127592",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10013",
+    "stopName": "AZİZİYE 14 NOLU DURAĞI",
+    "lat": "39.943873",
+    "lng": "41.111809",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10012",
+    "stopName": "ILICA ÇARŞI AZİZİYE 12 NOLU DURAĞI",
+    "lat": "39.944736",
+    "lng": "41.110475",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10010",
+    "stopName": "AZİZİYE 10 NOLU DURAĞI",
+    "lat": "39.945999",
+    "lng": "41.108276",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10169",
+    "stopName": "AZİZİYE 10-1",
+    "lat": "39.945999",
+    "lng": "41.107133",
+    "routes": [
+      "B1",
+      "B7"
+    ]
+  },
+  {
+    "stopId": "10008",
+    "stopName": "AZİZİYE 09 NOLU DURAĞI",
+    "lat": "39.946015",
+    "lng": "41.105947",
+    "routes": [
+      "B1",
+      "B7",
+      "B8",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10170",
+    "stopName": "AZİZİYE 09-1",
+    "lat": "39.945972",
+    "lng": "41.105323",
+    "routes": [
+      "B1"
+    ]
+  },
+  {
+    "stopId": "10004",
+    "stopName": "ŞEKER FABRİKASI AZİZİYE 04 NOLU DURAĞI",
+    "lat": "39.947377",
+    "lng": "41.095208",
+    "routes": [
+      "B1",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10172",
+    "stopName": "ILICA SEVK İDARE -1",
+    "lat": "39.935837",
+    "lng": "41.108243",
+    "routes": [
+      "B1",
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "10055",
+    "stopName": "DADAŞKENT SEVK İDARE",
+    "lat": "39.8927462",
+    "lng": "41.2008754",
+    "routes": [
+      "B2",
+      "B2/A",
+      "B3"
+    ]
+  },
+  {
+    "stopId": "10057",
+    "stopName": "AZİZİYE 64 NOLU DURAĞI",
+    "lat": "39.8985267",
+    "lng": "41.1998618",
+    "routes": [
+      "B2",
+      "B3",
+      "B7",
+      "G4",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10058",
+    "stopName": "AZİZİYE 65 NOLU DURAĞI",
+    "lat": "39.9006245",
+    "lng": "41.1986669",
+    "routes": [
+      "B2",
+      "B3",
+      "B7",
+      "G4",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10131",
+    "stopName": "AZİZİYE 82 NOLU DURAĞI",
+    "lat": "39.9006801",
+    "lng": "41.1932619",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10132",
+    "stopName": "AZİZİYE 84 NOLU DURAĞI",
+    "lat": "39.9028735",
+    "lng": "41.1926678",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10133",
+    "stopName": "AZİZİYE 86 NOLU DURAĞI",
+    "lat": "39.9041261",
+    "lng": "41.1923758",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10134",
+    "stopName": "AZİZİYE 97 NOLU DURAĞI",
+    "lat": "39.9064029",
+    "lng": "41.1912663",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10135",
+    "stopName": "HATUNİYE AZİZİYE 99 NOLU DURAĞI",
+    "lat": "39.9080953",
+    "lng": "41.1900111",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10136",
+    "stopName": "AZİZİYE 101 NOLU DURAĞI",
+    "lat": "39.909205",
+    "lng": "41.1888584",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10137",
+    "stopName": "AZİZİYE 103 NOLU DURAĞI",
+    "lat": "39.9105889",
+    "lng": "41.1876431",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10138",
+    "stopName": "AZİZİYE 104 NOLU DURAĞI",
+    "lat": "39.9118253",
+    "lng": "41.1866556",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10139",
+    "stopName": "AZİZİYE 107 NOLU DURAĞI",
+    "lat": "39.9133162",
+    "lng": "41.1853176",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10140",
+    "stopName": "AZİZİYE 117 NOLU DURAĞI",
+    "lat": "39.9152114",
+    "lng": "41.1846511",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10141",
+    "stopName": "SPOR LİSESİ AZİZİYE 119 NOLU DURAĞI",
+    "lat": "39.9164925",
+    "lng": "41.1861007",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10142",
+    "stopName": "AZİZİYE 120 NOLU DURAĞI",
+    "lat": "39.9166594",
+    "lng": "41.1865125",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10109",
+    "stopName": "AZİZİYE 123 NOLU DURAĞI",
+    "lat": "39.9189235",
+    "lng": "41.1920562",
+    "routes": [
+      "B2",
+      "B2/A",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10143",
+    "stopName": "AZİZİYE 124 NOLU DURAĞI",
+    "lat": "39.9196269",
+    "lng": "41.1947331",
+    "routes": [
+      "B2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10144",
+    "stopName": "AZİZİYE 126 NOLU DURAĞI",
+    "lat": "39.9174864",
+    "lng": "41.1961369",
+    "routes": [
+      "B2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10145",
+    "stopName": "AZİZİYE 127 NOLU DURAĞI",
+    "lat": "39.9159158",
+    "lng": "41.1971646",
+    "routes": [
+      "B2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10146",
+    "stopName": "AZİZİYE 129 NOLU DURAĞI",
+    "lat": "39.914074",
+    "lng": "41.2010715",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10147",
+    "stopName": "AZİZİYE 132 NOLU DURAĞI",
+    "lat": "39.9155089",
+    "lng": "41.2016261",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10148",
+    "stopName": "AZİZİYE 134 NOLU DURAĞI",
+    "lat": "39.9171784",
+    "lng": "41.2007648",
+    "routes": [
+      "B2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10149",
+    "stopName": "BÖLGE İDARE MAH. AZİZİYE 135 NOLU DURAĞI",
+    "lat": "39.918028",
+    "lng": "41.2022862",
+    "routes": [
+      "B2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30199",
+    "stopName": "YAKUTİYE 68 NOLU DURAĞI",
+    "lat": "39.9051316",
+    "lng": "41.255022",
+    "routes": [
+      "B2",
+      "B3",
+      "G3",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30163",
+    "stopName": "GÜRCÜKAPI ZİRAAT YAKUTİYE 46 NOLU DURAĞI",
+    "lat": "39.9114485",
+    "lng": "41.272678",
+    "routes": [
+      "B2",
+      "B3",
+      "D1",
+      "D2",
+      "G10",
+      "G11",
+      "G2",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K11",
+      "K2",
+      "K4",
+      "K6",
+      "K7",
+      "K7/A",
+      "M10",
+      "M11",
+      "M11",
+      "M13",
+      "M14",
+      "M2",
+      "M3",
+      "M5",
+      "M6",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30169",
+    "stopName": "YAKUTİYE 244 NOLU DURAĞI",
+    "lat": "39.9050458",
+    "lng": "41.2854363",
+    "routes": [
+      "B2",
+      "B3",
+      "D2",
+      "G3",
+      "G7"
+    ]
+  },
+  {
+    "stopId": "30173",
+    "stopName": "YAKUTİYE 81 NOLU DURAĞI",
+    "lat": "39.9049169",
+    "lng": "41.2867794",
+    "routes": [
+      "B2",
+      "G10",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30174",
+    "stopName": "YAKUTİYE 82 NOLU DURAĞI",
+    "lat": "39.9034367",
+    "lng": "41.2879056",
+    "routes": [
+      "B2",
+      "G10",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30120",
+    "stopName": "YAKUTİYE 83 NOLU DURAĞI",
+    "lat": "39.9013969",
+    "lng": "41.2875335",
+    "routes": [
+      "B2",
+      "B3",
+      "D2",
+      "G10",
+      "G14",
+      "K11",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30121",
+    "stopName": "YAKUTİYE 267 NOLU DURAĞI",
+    "lat": "39.900274",
+    "lng": "41.2859591",
+    "routes": [
+      "B2",
+      "B3",
+      "D2",
+      "G10",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30122",
+    "stopName": "MUHTARLAR DERNEĞİ YAKUTİYE 268 NOLU DURAĞI",
+    "lat": "39.8991409",
+    "lng": "41.2844061",
+    "routes": [
+      "B2",
+      "B3",
+      "D2",
+      "G10",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30104",
+    "stopName": "YAKUTİYE 84 NOLU DURAĞI",
+    "lat": "39.8974092",
+    "lng": "41.2807642",
+    "routes": [
+      "B2",
+      "B3",
+      "D2",
+      "G1",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30123",
+    "stopName": "YAKUTİYE 85 NOLU DURAĞI",
+    "lat": "39.8969821",
+    "lng": "41.2787124",
+    "routes": [
+      "B2",
+      "B3",
+      "D2",
+      "G1",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30141",
+    "stopName": "YAKUTİYE 240 NOLU DURAĞI",
+    "lat": "39.9043804",
+    "lng": "41.2763702",
+    "routes": [
+      "B2",
+      "D2",
+      "G1",
+      "G1-A",
+      "G5",
+      "G7/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30142",
+    "stopName": "NARMANLI CAMİ YAKUTİYE 241 NOLU DURAĞI",
+    "lat": "39.9059729",
+    "lng": "41.2791864",
+    "routes": [
+      "B2",
+      "D2",
+      "G1",
+      "G1-A",
+      "G5",
+      "G7/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30143",
+    "stopName": "TEBRİZKAPI YAKUTİYE 242 NOLU DURAĞI",
+    "lat": "39.9076249",
+    "lng": "41.2787703",
+    "routes": [
+      "B2",
+      "G5",
+      "G7",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30148",
+    "stopName": "GÜRCÜKAPI 1 YAKUTİYE 34 NOLU DURAĞI",
+    "lat": "39.91188",
+    "lng": "41.272755",
+    "routes": [
+      "B2",
+      "B3",
+      "D1",
+      "G1",
+      "G10",
+      "G11",
+      "G3",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K1",
+      "K1/A",
+      "K11",
+      "K2",
+      "K4",
+      "K6",
+      "K7",
+      "M10",
+      "M11",
+      "M2",
+      "M5",
+      "M6",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "10111",
+    "stopName": "AZİZİYE 136 NOLU DURAĞI",
+    "lat": "39.9180984",
+    "lng": "41.2021591",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10112",
+    "stopName": "AZİZİYE 133 NOLU DURAĞI",
+    "lat": "39.9170592",
+    "lng": "41.2005984",
+    "routes": [
+      "B2",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10113",
+    "stopName": "AZİZİYE 131 NOLU DURAĞI",
+    "lat": "39.9154143",
+    "lng": "41.2014477",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10114",
+    "stopName": "AZİZİYE 130 NOLU DURAĞI",
+    "lat": "39.9145011",
+    "lng": "41.2004969",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10115",
+    "stopName": "AZİZİYE 128 NOLU DURAĞI",
+    "lat": "39.9155719",
+    "lng": "41.1977379",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10116",
+    "stopName": "AZİZİYE 125 NOLU DURAĞI",
+    "lat": "39.9194744",
+    "lng": "41.1950993",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10117",
+    "stopName": "AZİZİYE 122 NOLU DURAĞI",
+    "lat": "39.9188405",
+    "lng": "41.191136",
+    "routes": [
+      "B2",
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10118",
+    "stopName": "AZİZİYE 121 NOLU DURAĞI",
+    "lat": "39.9180459",
+    "lng": "41.1888594",
+    "routes": [
+      "B2",
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10119",
+    "stopName": "AZİZİYE 118 NOLU DURAĞI",
+    "lat": "39.9167219",
+    "lng": "41.1860773",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10120",
+    "stopName": "SPOR LİSESİ AZİZİYE 116 NOLU DURAĞI",
+    "lat": "39.9150406",
+    "lng": "41.1843147",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10121",
+    "stopName": "AZİZİYE 106 NOLU DURAĞI",
+    "lat": "39.913222",
+    "lng": "41.1850929",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10122",
+    "stopName": "AZİZİYE 105 NOLU DURAĞI",
+    "lat": "39.9121259",
+    "lng": "41.1861286",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10123",
+    "stopName": "AZİZİYE 102 NOLU DURAĞI",
+    "lat": "39.9105925",
+    "lng": "41.1873363",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10124",
+    "stopName": "AZİZİYE 100 NOLU DURAĞI",
+    "lat": "39.9089846",
+    "lng": "41.1887632",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10125",
+    "stopName": "HATUNİYE AZİZİYE 98 NOLU DURAĞI",
+    "lat": "39.9078846",
+    "lng": "41.1898769",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10126",
+    "stopName": "AZİZİYE 96 NOLU DURAĞI",
+    "lat": "39.9063063",
+    "lng": "41.1910179",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10127",
+    "stopName": "AZİZİYE 91 NOLU DURAĞI",
+    "lat": "39.9050042",
+    "lng": "41.1918011",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10128",
+    "stopName": "AZİZİYE 87 NOLU DURAĞI",
+    "lat": "39.9041574",
+    "lng": "41.192072",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10129",
+    "stopName": "AZİZİYE 85 NOLU DURAĞI",
+    "lat": "39.9030836",
+    "lng": "41.1923617",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10130",
+    "stopName": "AZİZİYE 83 NOLU DURAĞI",
+    "lat": "39.901035",
+    "lng": "41.1929018",
+    "routes": [
+      "B2"
+    ]
+  },
+  {
+    "stopId": "10054",
+    "stopName": "EMEL ÇATAL LİSESİ AZİZİYE 52 NOLU DURAĞI",
+    "lat": "39.8987635",
+    "lng": "41.1992962",
+    "routes": [
+      "B2",
+      "B7",
+      "B8",
+      "G4",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10097",
+    "stopName": "AZİZİYE 78 NOLU DURAĞI",
+    "lat": "39.8961497",
+    "lng": "41.1991806",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10098",
+    "stopName": "AZİZİYE 79 NOLU DURAĞI",
+    "lat": "39.8969607",
+    "lng": "41.1930624",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10099",
+    "stopName": "AZİZİYE 81 NOLU DURAĞI",
+    "lat": "39.8991484",
+    "lng": "41.190503",
+    "routes": [
+      "B2/A",
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10100",
+    "stopName": "AZİZİYE 89 NOLU DURAĞI",
+    "lat": "39.9023354",
+    "lng": "41.1876476",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10101",
+    "stopName": "AZİZİYE 90 NOLU DURAĞI",
+    "lat": "39.9034031",
+    "lng": "41.1898622",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10102",
+    "stopName": "AZİZİYE 93 NOLU DURAĞI",
+    "lat": "39.9059724",
+    "lng": "41.1884048",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10103",
+    "stopName": "AZİZİYE 95 NOLU DURAĞI",
+    "lat": "39.9074235",
+    "lng": "41.1872732",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10105",
+    "stopName": "AZİZİYE 111 NOLU DURAĞI",
+    "lat": "39.9092237",
+    "lng": "41.1803279",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10106",
+    "stopName": "AZİZİYE 112 NOLU DURAĞI",
+    "lat": "39.9112485",
+    "lng": "41.1817211",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10107",
+    "stopName": "AZİZİYE 114 NOLU DURAĞI",
+    "lat": "39.9123532",
+    "lng": "41.1830695",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10108",
+    "stopName": "AZİZİYE 153 NOLU DURAĞI",
+    "lat": "39.9146134",
+    "lng": "41.1873436",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10110",
+    "stopName": "İ.HAKKI YURTLARI AZİZİYE 151 NOLU DURAĞI",
+    "lat": "39.922733",
+    "lng": "41.2010343",
+    "routes": [
+      "B2/A",
+      "G4"
+    ]
+  },
+  {
+    "stopId": "30087",
+    "stopName": "YAKUTİYE 145 NOLU DURAĞI",
+    "lat": "39.918984",
+    "lng": "41.224538",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30085",
+    "stopName": "YAKUTİYE 146 NOLU DURAĞI",
+    "lat": "39.9189602",
+    "lng": "41.224631",
+    "routes": [
+      "B2/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30088",
+    "stopName": "YAKUTİYE 147 NOLU DURAĞI",
+    "lat": "39.9166453",
+    "lng": "41.2354336",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30093",
+    "stopName": "ETÜ EDEBİYAT YAKUTİYE 145 NOLU DURAĞI",
+    "lat": "39.925389",
+    "lng": "41.240771",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30091",
+    "stopName": "YAKUTİYE 140 NOLU DURAĞI",
+    "lat": "39.9186078",
+    "lng": "41.2394475",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30092",
+    "stopName": "YAKUTİYE 141 NOLU DURAĞI",
+    "lat": "39.9185762",
+    "lng": "41.2393694",
+    "routes": [
+      "B2/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30090",
+    "stopName": "YAKUTİYE 142 NOLU DURAĞI",
+    "lat": "39.9168972",
+    "lng": "41.2376163",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30089",
+    "stopName": "YAKUTİYE 143 NOLU DURAĞI",
+    "lat": "39.9168407",
+    "lng": "41.2354131",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30086",
+    "stopName": "A.GAZİ YURTLARI YAKUTİYE 144 NOLU DURAĞI",
+    "lat": "39.9192074",
+    "lng": "41.2244271",
+    "routes": [
+      "B2/A",
+      "G4",
+      "G7/A",
+      "K10",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30083",
+    "stopName": "YAKUTİYE 153 NOLU DURAĞI",
+    "lat": "39.9190125",
+    "lng": "41.2218147",
+    "routes": [
+      "B2/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30084",
+    "stopName": "YAKUTİYE 154 NOLU DURAĞI",
+    "lat": "39.9199127",
+    "lng": "41.2174406",
+    "routes": [
+      "B2/A",
+      "G4",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "10150",
+    "stopName": "AZİZİYE 152 NOLU DURAĞI",
+    "lat": "39.9228986",
+    "lng": "41.201159",
+    "routes": [
+      "B2/A",
+      "G4"
+    ]
+  },
+  {
+    "stopId": "10151",
+    "stopName": "AZİZİYE 115 NOLU DURAĞI",
+    "lat": "39.9142053",
+    "lng": "41.1839195",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10152",
+    "stopName": "AZİZİYE 113 NOLU DURAĞI",
+    "lat": "39.9121404",
+    "lng": "41.1826505",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10155",
+    "stopName": "AZİZİYE 94 NOLU DURAĞI",
+    "lat": "39.907416",
+    "lng": "41.1871032",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10156",
+    "stopName": "AZİZİYE 92 NOLU DURAĞI",
+    "lat": "39.9059334",
+    "lng": "41.1882884",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10157",
+    "stopName": "AZİZİYE 88 NOLU DURAĞI",
+    "lat": "39.9022716",
+    "lng": "41.1874898",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10158",
+    "stopName": "AZİZİYE 80 NOLU DURAĞI",
+    "lat": "39.8969414",
+    "lng": "41.1929119",
+    "routes": [
+      "B2/A"
+    ]
+  },
+  {
+    "stopId": "10173",
+    "stopName": "DADAŞKENT SEVK İDARE -1",
+    "lat": "39.893573",
+    "lng": "41.201116",
+    "routes": [
+      "B2/A",
+      "G4"
+    ]
+  },
+  {
+    "stopId": "10059",
+    "stopName": "AZİZİYE 66 NOLU DURAĞI",
+    "lat": "39.9025095",
+    "lng": "41.1981318",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10060",
+    "stopName": "AZİZİYE 67 NOLU DURAĞI",
+    "lat": "39.9048573",
+    "lng": "41.197535",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10061",
+    "stopName": "AZİZİYE 68 NOLU DURAĞI",
+    "lat": "39.9066949",
+    "lng": "41.1967257",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10062",
+    "stopName": "AZİZİYE 69 NOLU DURAĞI",
+    "lat": "39.9094151",
+    "lng": "41.1950053",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10063",
+    "stopName": "AZİZİYE 70 NOLU DURAĞI",
+    "lat": "39.9118695",
+    "lng": "41.1936236",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10064",
+    "stopName": "AZİZİYE 71 NOLU DURAĞI",
+    "lat": "39.9131921",
+    "lng": "41.1926731",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10065",
+    "stopName": "AZİZİYE 72 NOLU DURAĞI",
+    "lat": "39.9147078",
+    "lng": "41.1914078",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10066",
+    "stopName": "KÜLTÜR EVLER AZİZİYE 73 NOLU DURAĞI",
+    "lat": "39.9160422",
+    "lng": "41.1902414",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10067",
+    "stopName": "TARIKTAR AZİZİYE 74 NOLU DURAĞI",
+    "lat": "39.91768",
+    "lng": "41.188787",
+    "routes": [
+      "B3",
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10069",
+    "stopName": "AZİZİYE 76 NOLU DURAĞI",
+    "lat": "39.9215911",
+    "lng": "41.1879575",
+    "routes": [
+      "B3",
+      "G4"
+    ]
+  },
+  {
+    "stopId": "30162",
+    "stopName": "YAKUTİYE 45 NOLU DURAĞI",
+    "lat": "39.91311",
+    "lng": "41.2709922",
+    "routes": [
+      "B3",
+      "D1",
+      "G10",
+      "G11",
+      "G2",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K2",
+      "K4",
+      "K6",
+      "K7",
+      "K7/A",
+      "M10",
+      "M11",
+      "M13",
+      "M14",
+      "M2",
+      "M3",
+      "M5",
+      "M6",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30055",
+    "stopName": "LALAPAŞA YAKUTİYE 47 NOLU DURAĞI",
+    "lat": "39.9068743",
+    "lng": "41.2734512",
+    "routes": [
+      "B3",
+      "G5",
+      "G9",
+      "K3",
+      "K4",
+      "K7",
+      "K7/A",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30140",
+    "stopName": "ESKİ İL HALK YAKUTİYE 49 NOLU DURAĞI",
+    "lat": "39.9022003",
+    "lng": "41.2745693",
+    "routes": [
+      "B3",
+      "D2",
+      "G1",
+      "G1-A",
+      "G5",
+      "G7/A",
+      "G9",
+      "K4",
+      "K7/A",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30165",
+    "stopName": "YAKUTİYE 78 NOLU DURAĞI",
+    "lat": "39.9008496",
+    "lng": "41.2756235",
+    "routes": [
+      "B3",
+      "G3"
+    ]
+  },
+  {
+    "stopId": "30166",
+    "stopName": "YAKUTİYE 285 NOLU DURAĞI",
+    "lat": "39.9008319",
+    "lng": "41.278347",
+    "routes": [
+      "B3",
+      "G3"
+    ]
+  },
+  {
+    "stopId": "30167",
+    "stopName": "YAKUTİYE 79 NOLU DURAĞI",
+    "lat": "39.9008559",
+    "lng": "41.281117",
+    "routes": [
+      "B3",
+      "G3"
+    ]
+  },
+  {
+    "stopId": "30168",
+    "stopName": "YAKUTİYE 80 NOLU DURAĞI",
+    "lat": "39.9032544",
+    "lng": "41.2834293",
+    "routes": [
+      "B3",
+      "G3"
+    ]
+  },
+  {
+    "stopId": "38126",
+    "stopName": "MGS KENT DURAĞI",
+    "lat": "39.90592",
+    "lng": "41.288536",
+    "routes": [
+      "B3"
+    ]
+  },
+  {
+    "stopId": "30171",
+    "stopName": "YAKUTİYE 102 NOLU DURAĞI",
+    "lat": "39.9053339",
+    "lng": "41.2904531",
+    "routes": [
+      "B3",
+      "D1",
+      "G14",
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "30119",
+    "stopName": "YAKUTİYE 98 NOLU DURAĞI",
+    "lat": "39.9027498",
+    "lng": "41.2893507",
+    "routes": [
+      "B3",
+      "D2",
+      "G14",
+      "G2",
+      "G4/A",
+      "K11",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30269",
+    "stopName": "YAKUTİYE BELEDİYESİ YAKUTİYE 48 NOLU DURAĞI",
+    "lat": "39.905258",
+    "lng": "41.273859",
+    "routes": [
+      "B3",
+      "G1-A",
+      "G7/A",
+      "G9",
+      "K1",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30053",
+    "stopName": "TEMA 1 YAKUTİYE 53 NOLU DURAĞI",
+    "lat": "39.9069442",
+    "lng": "41.2737781",
+    "routes": [
+      "B3",
+      "G1",
+      "G11",
+      "G9",
+      "K1",
+      "K1/A",
+      "K3",
+      "K4",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "10042",
+    "stopName": "AZİZİYE 42 NOLU DURAĞI",
+    "lat": "39.9219068",
+    "lng": "41.187862",
+    "routes": [
+      "B3",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10043",
+    "stopName": "AZİZİYE 43 NOLU DURAĞI",
+    "lat": "39.919632",
+    "lng": "41.1867622",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10044",
+    "stopName": "AZİZİYE 44 NOLU DURAĞI",
+    "lat": "39.9158025",
+    "lng": "41.1901438",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10047",
+    "stopName": "AZİZİYE 46 NOLU DURAĞI",
+    "lat": "39.9147577",
+    "lng": "41.1909371",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10048",
+    "stopName": "POSTANE AZİZİYE 47 NOLU DURAĞI",
+    "lat": "39.912773",
+    "lng": "41.1925749",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10049",
+    "stopName": "AZİZİYE 48 NOLU DURAĞI",
+    "lat": "39.911286",
+    "lng": "41.1935979",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10050",
+    "stopName": "AZİZİYE 49 NOLU DURAĞI",
+    "lat": "39.9085773",
+    "lng": "41.1951344",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10051",
+    "stopName": "AZİZİYE 50 NOLU DURAĞI",
+    "lat": "39.9069256",
+    "lng": "41.1961831",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10052",
+    "stopName": "AZİZİYE 51 NOLU DURAĞI",
+    "lat": "39.9050911",
+    "lng": "41.1971022",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10053",
+    "stopName": "AZİZİYE 155 NOLU DURAĞI",
+    "lat": "39.9024169",
+    "lng": "41.1977747",
+    "routes": [
+      "B3",
+      "B7",
+      "B8",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10006",
+    "stopName": "FERAH MAH. AZİZİYE 07 NOLU DURAĞI",
+    "lat": "39.9525661",
+    "lng": "41.1023776",
+    "routes": [
+      "B7"
+    ]
+  },
+  {
+    "stopId": "10034",
+    "stopName": "SEBZE HALİ AZİZİYE 32 NOLU DURAĞI",
+    "lat": "39.922947",
+    "lng": "41.165364",
+    "routes": [
+      "B7"
+    ]
+  },
+  {
+    "stopId": "10045",
+    "stopName": "TARIKTAR AZİZİYE 45 NOLU DURAĞI",
+    "lat": "39.9172346",
+    "lng": "41.188782",
+    "routes": [
+      "B7",
+      "G4",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10086",
+    "stopName": "AZİZİYE 53 NOLU DURAĞI",
+    "lat": "39.8949953",
+    "lng": "41.2022614",
+    "routes": [
+      "B7",
+      "B8",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10087",
+    "stopName": "AZİZİYE 54 NOLU DURAĞI",
+    "lat": "39.8902227",
+    "lng": "41.2093539",
+    "routes": [
+      "B7",
+      "B8",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10088",
+    "stopName": "AZİZİYE 55 NOLU DURAĞI",
+    "lat": "39.888489",
+    "lng": "41.216415",
+    "routes": [
+      "B7",
+      "B8",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10089",
+    "stopName": "AZİZİYE 56 NOLU DURAĞI",
+    "lat": "39.8854788",
+    "lng": "41.2224772",
+    "routes": [
+      "B7",
+      "B8",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10091",
+    "stopName": "AZİZİYE 57 NOLU DURAĞI",
+    "lat": "39.8827654",
+    "lng": "41.2279865",
+    "routes": [
+      "B7",
+      "K6",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10092",
+    "stopName": "AZİZİYE 58 NOLU DURAĞI",
+    "lat": "39.881826",
+    "lng": "41.2297889",
+    "routes": [
+      "B7",
+      "K6",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20044",
+    "stopName": "PALANDÖKEN 61 NOLU DURAĞI",
+    "lat": "39.8818636",
+    "lng": "41.2321406",
+    "routes": [
+      "B7",
+      "G6",
+      "G8",
+      "K5",
+      "K7",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20045",
+    "stopName": "PALANDÖKEN 63 NOLU DURAĞI",
+    "lat": "39.8832923",
+    "lng": "41.2342012",
+    "routes": [
+      "B7",
+      "G6",
+      "G8",
+      "K5",
+      "K7",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20046",
+    "stopName": "PALANDÖKEN 64 NOLU DURAĞI",
+    "lat": "39.8846574",
+    "lng": "41.2362983",
+    "routes": [
+      "B7",
+      "G6",
+      "G8",
+      "K5",
+      "K7",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20019",
+    "stopName": "ŞEHİR HASTANESİ PALANDÖKEN 66 NOLU DURAĞI",
+    "lat": "39.8860018",
+    "lng": "41.2369406",
+    "routes": [
+      "B7",
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K2",
+      "K5",
+      "K6",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20020",
+    "stopName": "PALANDÖKEN 67 NOLU DURAĞI",
+    "lat": "39.8856288",
+    "lng": "41.2336713",
+    "routes": [
+      "B7",
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K2",
+      "K5",
+      "K6",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20021",
+    "stopName": "PALANDÖKEN 68 NOLU DURAĞI",
+    "lat": "39.8875804",
+    "lng": "41.2343724",
+    "routes": [
+      "B7",
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "G4/A",
+      "G9",
+      "K1",
+      "K5",
+      "K6",
+      "K7/A",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20023",
+    "stopName": "PALANDÖKEN 70 NOLU DURAĞI",
+    "lat": "39.8894251",
+    "lng": "41.2363556",
+    "routes": [
+      "B7",
+      "B7",
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K1",
+      "K1/A",
+      "K5",
+      "K6",
+      "K7",
+      "K7/A",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20071",
+    "stopName": "PALANDÖKEN 13 NOLU DURAĞI",
+    "lat": "39.8856165",
+    "lng": "41.2397935",
+    "routes": [
+      "B7",
+      "G8",
+      "G9",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20073",
+    "stopName": "PALANDÖKEN 14 NOLU DURAĞI",
+    "lat": "39.8835753",
+    "lng": "41.2416253",
+    "routes": [
+      "B7",
+      "D1",
+      "G4/B",
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20074",
+    "stopName": "KERVANSARAY PALANDÖKEN 15 NOLU DURAĞI",
+    "lat": "39.8807416",
+    "lng": "41.2434112",
+    "routes": [
+      "B7",
+      "D1",
+      "G4/B",
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20076",
+    "stopName": "PALANDÖKEN 16 NOLU DURAĞI",
+    "lat": "39.8778577",
+    "lng": "41.2452173",
+    "routes": [
+      "B7",
+      "D1",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20103",
+    "stopName": "10 KATLAR PALANDÖKEN 243 NOLU DURAĞI",
+    "lat": "39.8769716",
+    "lng": "41.2473543",
+    "routes": [
+      "B7",
+      "G4/A",
+      "G7",
+      "G9"
+    ]
+  },
+  {
+    "stopId": "20104",
+    "stopName": "PALANDÖKEN 228 NOLU DURAĞI",
+    "lat": "39.8778741",
+    "lng": "41.2495765",
+    "routes": [
+      "B7",
+      "G4/A",
+      "G7",
+      "G9"
+    ]
+  },
+  {
+    "stopId": "20105",
+    "stopName": "PALANDÖKEN 242 NOLU DURAĞI",
+    "lat": "39.8790568",
+    "lng": "41.2494423",
+    "routes": [
+      "B7",
+      "G4/A",
+      "G7",
+      "G9"
+    ]
+  },
+  {
+    "stopId": "20106",
+    "stopName": "PALANDÖKEN 241 NOLU DURAĞI",
+    "lat": "39.8799646",
+    "lng": "41.2512784",
+    "routes": [
+      "B7",
+      "G4/A",
+      "G7",
+      "G9"
+    ]
+  },
+  {
+    "stopId": "20109",
+    "stopName": "YENİŞEHİR TEMA PALANDÖKEN 97 NOLU DURAĞI",
+    "lat": "39.8815269",
+    "lng": "41.2527931",
+    "routes": [
+      "B7",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G8",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20110",
+    "stopName": "PALANDÖKEN 99 NOLU DURAĞI",
+    "lat": "39.8824211",
+    "lng": "41.2547549",
+    "routes": [
+      "B7",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20111",
+    "stopName": "PALANDÖKEN 100 NOLU DURAĞI",
+    "lat": "39.8833035",
+    "lng": "41.2564314",
+    "routes": [
+      "B7",
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20112",
+    "stopName": "PALANDÖKEN 227 NOLU DURAĞI",
+    "lat": "39.884836",
+    "lng": "41.25903",
+    "routes": [
+      "B7",
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20113",
+    "stopName": "HÜNEREVLER PALANDÖKEN 102 NOLU DURAĞI",
+    "lat": "39.8863511",
+    "lng": "41.2613348",
+    "routes": [
+      "B7",
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20114",
+    "stopName": "GÜNEŞ CAMİ PALANDÖKEN 104 NOLU DURAĞI",
+    "lat": "39.8883718",
+    "lng": "41.2638453",
+    "routes": [
+      "B7",
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20115",
+    "stopName": "FORUM AVM PALANDÖKEN 106 NOLU DURAĞI",
+    "lat": "39.8902693",
+    "lng": "41.265792",
+    "routes": [
+      "B7",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20116",
+    "stopName": "PALANDÖKEN 108 NOLU DURAĞI",
+    "lat": "39.8929318",
+    "lng": "41.2678185",
+    "routes": [
+      "B7",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20117",
+    "stopName": "GAZİNO PALANDÖKEN 109 NOLU DURAĞI",
+    "lat": "39.893718",
+    "lng": "41.2695928",
+    "routes": [
+      "B7",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20093",
+    "stopName": "BUHARA HAST. PALANDÖKEN 111 NOLU DURAĞI",
+    "lat": "39.8952307",
+    "lng": "41.2722312",
+    "routes": [
+      "B7",
+      "G11",
+      "G5",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30138",
+    "stopName": "YAKUTİYE 86 NOLU DURAĞI",
+    "lat": "39.8987481",
+    "lng": "41.2701136",
+    "routes": [
+      "B7",
+      "G14",
+      "G5",
+      "G6",
+      "G7",
+      "K11",
+      "M12",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30137",
+    "stopName": "SGK İL MÜDÜRLÜĞÜ YAKUTİYE 87 NOLU DURAĞI",
+    "lat": "39.9000743",
+    "lng": "41.2672747",
+    "routes": [
+      "B7",
+      "G14",
+      "G5",
+      "G6",
+      "G7",
+      "K11",
+      "M16",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30177",
+    "stopName": "YAKUTİYE 291 NOLU DURAĞI",
+    "lat": "39.895911",
+    "lng": "41.2565962",
+    "routes": [
+      "B7",
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G8",
+      "K1",
+      "K1/A",
+      "K6",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20022",
+    "stopName": "PALANDÖKEN 69 NOLU DURAĞI",
+    "lat": "39.8876184",
+    "lng": "41.234419",
+    "routes": [
+      "B7",
+      "D1",
+      "G14",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K1",
+      "K1/A",
+      "K6",
+      "K7",
+      "K7/A",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20024",
+    "stopName": "PALANDÖKEN 65 NOLU DURAĞI",
+    "lat": "39.8865138",
+    "lng": "41.2381458",
+    "routes": [
+      "B7",
+      "G8",
+      "K5",
+      "K7",
+      "K7/A",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20025",
+    "stopName": "112 ACİL PALANDÖKEN 62 NOLU DURAĞI",
+    "lat": "39.8826552",
+    "lng": "41.2326984",
+    "routes": [
+      "B7",
+      "G8",
+      "K5",
+      "K7",
+      "K7/A",
+      "M12",
+      "M16",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10093",
+    "stopName": "AZİZİYE 59 NOLU DURAĞI",
+    "lat": "39.8823938",
+    "lng": "41.2292934",
+    "routes": [
+      "B7",
+      "K6",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10094",
+    "stopName": "BİLKENT AZİZİYE 60 NOLU DURAĞI",
+    "lat": "39.885709",
+    "lng": "41.2226434",
+    "routes": [
+      "B7",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10095",
+    "stopName": "AZİZİYE 61 NOLU DURAĞI",
+    "lat": "39.8886398",
+    "lng": "41.2165707",
+    "routes": [
+      "B7",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10096",
+    "stopName": "AZİZİYE 62 NOLU DURAĞI",
+    "lat": "39.8904486",
+    "lng": "41.2093421",
+    "routes": [
+      "B7",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10056",
+    "stopName": "AZİZİYE 63 NOLU DURAĞI",
+    "lat": "39.8948739",
+    "lng": "41.2027767",
+    "routes": [
+      "B7",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10068",
+    "stopName": "MARKETLER AZİZİYE 75 NOLU DURAĞI",
+    "lat": "39.9199241",
+    "lng": "41.1869198",
+    "routes": [
+      "B7",
+      "G4"
+    ]
+  },
+  {
+    "stopId": "10016",
+    "stopName": "AZİZİYE 16 NOLU DURAĞI",
+    "lat": "39.9426238",
+    "lng": "41.1152743",
+    "routes": [
+      "B7",
+      "B8",
+      "M15",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10171",
+    "stopName": "AZİZİYE 04-1",
+    "lat": "39.94707",
+    "lng": "41.09484",
+    "routes": [
+      "B7",
+      "B8"
+    ]
+  },
+  {
+    "stopId": "30180",
+    "stopName": "YAKUTİYE 128 NOLU DURAĞI",
+    "lat": "39.8926536",
+    "lng": "41.2332745",
+    "routes": [
+      "B8",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30183",
+    "stopName": "KIZ YURTLARI 2 YAKUTİYE 129 NOLU DURAĞI",
+    "lat": "39.8923779",
+    "lng": "41.2296226",
+    "routes": [
+      "B8",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30184",
+    "stopName": "EDEBİYAT FAK. 2 YAKUTİYE 130 NOLU DURAĞI",
+    "lat": "39.8939288",
+    "lng": "41.2282058",
+    "routes": [
+      "B8",
+      "G3",
+      "G4/A",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30185",
+    "stopName": "EDEBİYAT FAK. 2 YAKUTİYE 131 NOLU DURAĞI",
+    "lat": "39.8942081",
+    "lng": "41.2281354",
+    "routes": [
+      "B8",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30189",
+    "stopName": "YAKUTİYE 132 NOLU DURAĞI",
+    "lat": "39.8947234",
+    "lng": "41.2332879",
+    "routes": [
+      "B8",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30191",
+    "stopName": "YAKUTİYE 133 NOLU DURAĞI",
+    "lat": "39.8954683",
+    "lng": "41.2360757",
+    "routes": [
+      "B8",
+      "G3",
+      "G4",
+      "G4/B",
+      "K2",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30059",
+    "stopName": "POSTANE YAKUTİYE 59 NOLU DURAĞI",
+    "lat": "39.9055548",
+    "lng": "41.2675504",
+    "routes": [
+      "B8",
+      "G1",
+      "G1-A",
+      "G3",
+      "G7/A",
+      "K5",
+      "K7",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "30057",
+    "stopName": "DADAŞ SİNEMASI YAKUTİYE 60 NOLU DURAĞI",
+    "lat": "39.9057579",
+    "lng": "41.2712866",
+    "routes": [
+      "B8",
+      "G1",
+      "G1-A",
+      "G7/A",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "20000",
+    "stopName": "YILDIZKENT SEVK İDARE",
+    "lat": "39.8623179",
+    "lng": "41.244346",
+    "routes": [
+      "D1",
+      "G7",
+      "G7/A",
+      "K5",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "20001",
+    "stopName": "PALANDÖKEN 01 NOLU DURAĞI",
+    "lat": "39.864523",
+    "lng": "41.2464706",
+    "routes": [
+      "D1",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20002",
+    "stopName": "PALANDÖKEN 02 NOLU DURAĞI",
+    "lat": "39.8661504",
+    "lng": "41.24723",
+    "routes": [
+      "D1",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20003",
+    "stopName": "PALANDÖKEN 03 NOLU DURAĞI",
+    "lat": "39.8677922",
+    "lng": "41.2479931",
+    "routes": [
+      "D1",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20004",
+    "stopName": "PALANDÖKEN 04 NOLU DURAĞI",
+    "lat": "39.8695551",
+    "lng": "41.2489791",
+    "routes": [
+      "D1",
+      "G4/A",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20005",
+    "stopName": "PALANDÖKEN 05 NOLU DURAĞI",
+    "lat": "39.8718246",
+    "lng": "41.2492312",
+    "routes": [
+      "D1",
+      "G4/A",
+      "G4/B",
+      "G7",
+      "G7/A",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20006",
+    "stopName": "PALANDÖKEN 06 NOLU DURAĞI",
+    "lat": "39.8735156",
+    "lng": "41.2481478",
+    "routes": [
+      "D1",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20007",
+    "stopName": "PALANDÖKEN 07 NOLU DURAĞI",
+    "lat": "39.8749318",
+    "lng": "41.2472748",
+    "routes": [
+      "D1",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20008",
+    "stopName": "PALANDÖKEN 08 NOLU DURAĞI",
+    "lat": "39.8763284",
+    "lng": "41.2464491",
+    "routes": [
+      "D1",
+      "G4/A",
+      "G4/B",
+      "G9",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20009",
+    "stopName": "PALANDÖKEN 09 NOLU DURAĞI",
+    "lat": "39.8778666",
+    "lng": "41.2453873",
+    "routes": [
+      "D1",
+      "G4/B",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20010",
+    "stopName": "KERVANSARAY PALANDÖKEN 10 NOLU DURAĞI",
+    "lat": "39.8809358",
+    "lng": "41.2435876",
+    "routes": [
+      "D1",
+      "G4/A",
+      "G4/B",
+      "G8",
+      "G9",
+      "K2",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20011",
+    "stopName": "PALANDÖKEN 11 NOLU DURAĞI",
+    "lat": "39.8837872",
+    "lng": "41.241779",
+    "routes": [
+      "D1",
+      "G4/B",
+      "G8",
+      "G9",
+      "K2",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20012",
+    "stopName": "PALANDÖKEN 92 NOLU DURAĞI",
+    "lat": "39.8841782",
+    "lng": "41.2434289",
+    "routes": [
+      "D1",
+      "G4/B",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20013",
+    "stopName": "PALANDÖKEN 91 NOLU DURAĞI",
+    "lat": "39.8843081",
+    "lng": "41.2452478",
+    "routes": [
+      "D1",
+      "G4/B",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20014",
+    "stopName": "PALANDÖKEN 90 NOLU DURAĞI",
+    "lat": "39.8850946",
+    "lng": "41.2454178",
+    "routes": [
+      "D1",
+      "G3",
+      "G4/B",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20015",
+    "stopName": "RABİA HATUN YURTLARI PALANDÖKEN 89 NOLU DURAĞI",
+    "lat": "39.8869832",
+    "lng": "41.2438443",
+    "routes": [
+      "D1",
+      "G3",
+      "G4/B",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20016",
+    "stopName": "PALANDÖKEN 88 NOLU DURAĞI",
+    "lat": "39.8874237",
+    "lng": "41.2418806",
+    "routes": [
+      "D1",
+      "G3",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20017",
+    "stopName": "PALANDÖKEN 87 NOLU DURAĞI",
+    "lat": "39.8865378",
+    "lng": "41.2405076",
+    "routes": [
+      "D1",
+      "G3",
+      "G4/B",
+      "K1",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "20127",
+    "stopName": "PALANDÖKEN 71 NOLU DURAĞI",
+    "lat": "39.8879791",
+    "lng": "41.2403886",
+    "routes": [
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "G4/B",
+      "K1",
+      "K1/A",
+      "K6",
+      "M12",
+      "M16",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20128",
+    "stopName": "PALANDÖKEN 72 NOLU DURAĞI",
+    "lat": "39.890959",
+    "lng": "41.2426085",
+    "routes": [
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "K1",
+      "K1/A",
+      "K6",
+      "M12",
+      "M16",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20129",
+    "stopName": "PALANDÖKEN 73 NOLU DURAĞI",
+    "lat": "39.8922326",
+    "lng": "41.2464069",
+    "routes": [
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G3",
+      "K1",
+      "K1/A",
+      "K6",
+      "M12",
+      "M16",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20130",
+    "stopName": "PALANDÖKEN 74 NOLU DURAĞI",
+    "lat": "39.8973411",
+    "lng": "41.2610534",
+    "routes": [
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G8",
+      "K1",
+      "K1/A",
+      "K6",
+      "M12",
+      "M16",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "20131",
+    "stopName": "PALANDÖKEN 75 NOLU DURAĞI",
+    "lat": "39.8986816",
+    "lng": "41.2632457",
+    "routes": [
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G8",
+      "K1",
+      "K6",
+      "M12",
+      "M16",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30126",
+    "stopName": "MÜZE YAKUTİYE 75 NOLU DURAĞI",
+    "lat": "39.9012891",
+    "lng": "41.266515",
+    "routes": [
+      "D1",
+      "G10",
+      "G8",
+      "K11",
+      "K6",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30164",
+    "stopName": "YAKUTİYE 55 NOLU DURAĞI",
+    "lat": "39.9091521",
+    "lng": "41.2737396",
+    "routes": [
+      "D1",
+      "G7",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30306",
+    "stopName": "YAKUTİYE 249 NOLU DURAĞI",
+    "lat": "39.9103441",
+    "lng": "41.2789312",
+    "routes": [
+      "D1",
+      "D2",
+      "G10",
+      "G2",
+      "G3",
+      "K6",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30303",
+    "stopName": "MAHALLEBAŞI YAKUTİYE 247 NOLU DURAĞI",
+    "lat": "39.909198",
+    "lng": "41.2837036",
+    "routes": [
+      "D1",
+      "D2",
+      "G10",
+      "G2",
+      "G3",
+      "K6",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30116",
+    "stopName": "YAKUTİYE 97 NOLU DURAĞI",
+    "lat": "39.9043118",
+    "lng": "41.2920296",
+    "routes": [
+      "D1",
+      "D2"
+    ]
+  },
+  {
+    "stopId": "20132",
+    "stopName": "MAKSUT EFENDİ PALANDÖKEN 234 NOLU DURAĞI",
+    "lat": "39.90072",
+    "lng": "41.3147965",
+    "routes": [
+      "D1"
+    ]
+  },
+  {
+    "stopId": "20133",
+    "stopName": "PALANDÖKEN 235 NOLU DURAĞI",
+    "lat": "39.901337",
+    "lng": "41.3179071",
+    "routes": [
+      "D1"
+    ]
+  },
+  {
+    "stopId": "20134",
+    "stopName": "PALANDÖKEN 236 NOLU DURAĞI",
+    "lat": "39.9025912",
+    "lng": "41.3189732",
+    "routes": [
+      "D1"
+    ]
+  },
+  {
+    "stopId": "20135",
+    "stopName": "PALANDÖKEN 237 NOLU DURAĞI",
+    "lat": "39.9045074",
+    "lng": "41.3190588",
+    "routes": [
+      "D1"
+    ]
+  },
+  {
+    "stopId": "20136",
+    "stopName": "PALANDÖKEN 238 NOLU DURAĞI",
+    "lat": "39.9047967",
+    "lng": "41.3162402",
+    "routes": [
+      "D1"
+    ]
+  },
+  {
+    "stopId": "30170",
+    "stopName": "YAKUTİYE 101 NOLU DURAĞI",
+    "lat": "39.9056566",
+    "lng": "41.2906331",
+    "routes": [
+      "D1",
+      "G14",
+      "G2",
+      "G4/A",
+      "K11",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30301",
+    "stopName": "YAKUTİYE 272 NOLU DURAĞI",
+    "lat": "39.9072613",
+    "lng": "41.2899197",
+    "routes": [
+      "D1",
+      "G14",
+      "G2",
+      "K11",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30304",
+    "stopName": "YAKUTİYE 246 NOLU DURAĞI",
+    "lat": "39.9094095",
+    "lng": "41.2845707",
+    "routes": [
+      "D1",
+      "D2",
+      "G10",
+      "G2",
+      "G3",
+      "G4/A",
+      "K6",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30305",
+    "stopName": "YAKUTİYE 248 NOLU DURAĞI",
+    "lat": "39.9099662",
+    "lng": "41.2814392",
+    "routes": [
+      "D1",
+      "D2",
+      "G10",
+      "G2",
+      "G3",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30144",
+    "stopName": "YAKUTİYE 250 NOLU DURAĞI",
+    "lat": "39.9112948",
+    "lng": "41.2764345",
+    "routes": [
+      "D1",
+      "G3",
+      "G5",
+      "G7",
+      "K5",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30134",
+    "stopName": "KOLORDU YAKUTİYE 71 NOLU DURAĞI",
+    "lat": "39.9045367",
+    "lng": "41.2658455",
+    "routes": [
+      "D1",
+      "G10",
+      "G11",
+      "G2",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "K1",
+      "K1/A",
+      "K11",
+      "K2",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30136",
+    "stopName": "MÜZE 2 KARŞISI YAKUTİYE 73 NOLU DURAĞI",
+    "lat": "39.9014624",
+    "lng": "41.2662824",
+    "routes": [
+      "D1",
+      "G10",
+      "G11",
+      "G2",
+      "G6",
+      "G7",
+      "G8",
+      "K1",
+      "K1/A",
+      "K11",
+      "K2",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30135",
+    "stopName": "YAKUTİYE 74 NOLU DURAĞI",
+    "lat": "39.9013652",
+    "lng": "41.266273",
+    "routes": [
+      "D1",
+      "G11",
+      "G5",
+      "G6",
+      "G8",
+      "K1",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30175",
+    "stopName": "VALİLİK YAKUTİYE 301 NOLU DURAĞI",
+    "lat": "39.898798",
+    "lng": "41.2629561",
+    "routes": [
+      "D1",
+      "G10",
+      "G14",
+      "G2",
+      "G8",
+      "K1",
+      "K1/A",
+      "K2",
+      "K6",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "20077",
+    "stopName": "PALANDÖKEN 17 NOLU DURAĞI",
+    "lat": "39.8759886",
+    "lng": "41.2463707",
+    "routes": [
+      "D1",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20078",
+    "stopName": "PALANDÖKEN 18 NOLU DURAĞI",
+    "lat": "39.8750526",
+    "lng": "41.2469963",
+    "routes": [
+      "D1",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20079",
+    "stopName": "PALANDÖKEN 19 NOLU DURAĞI",
+    "lat": "39.8736077",
+    "lng": "41.2477881",
+    "routes": [
+      "D1",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20080",
+    "stopName": "PALANDÖKEN 20 NOLU DURAĞI",
+    "lat": "39.8714927",
+    "lng": "41.2490904",
+    "routes": [
+      "D1",
+      "G4/B",
+      "G7",
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20058",
+    "stopName": "PALANDÖKEN 21 NOLU DURAĞI",
+    "lat": "39.8680316",
+    "lng": "41.2478837",
+    "routes": [
+      "D1",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20059",
+    "stopName": "PALANDÖKEN 22 NOLU DURAĞI",
+    "lat": "39.8665805",
+    "lng": "41.2471629",
+    "routes": [
+      "D1",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "20060",
+    "stopName": "PALANDÖKEN 23 NOLU DURAĞI",
+    "lat": "39.8655311",
+    "lng": "41.2466328",
+    "routes": [
+      "D1",
+      "G6",
+      "G7/A",
+      "K2",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30151",
+    "stopName": "İSTASYON SEVK İDARE MERKEZİ",
+    "lat": "39.9156084",
+    "lng": "41.2706315",
+    "routes": [
+      "D2",
+      "D2",
+      "G11",
+      "G11",
+      "G4/A",
+      "G8",
+      "K11",
+      "M10",
+      "M10",
+      "M12",
+      "M13",
+      "M14",
+      "M15",
+      "M16",
+      "M17",
+      "M2",
+      "M2",
+      "M5",
+      "M5",
+      "M6",
+      "M6",
+      "M8",
+      "M8",
+      "M9",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30145",
+    "stopName": "YAKUTİYE 56 NOLU DURAĞI",
+    "lat": "39.911194",
+    "lng": "41.2745533",
+    "routes": [
+      "D2",
+      "G10",
+      "G2",
+      "G9",
+      "K2",
+      "K3",
+      "K6",
+      "M10",
+      "M2",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30307",
+    "stopName": "YAKUTİYE 57 NOLU DURAĞI",
+    "lat": "39.9138541",
+    "lng": "41.2766377",
+    "routes": [
+      "D2",
+      "G10",
+      "G2",
+      "G9",
+      "K2",
+      "K3",
+      "K6",
+      "M10",
+      "M2",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30309",
+    "stopName": "YAKUTİYE 251 NOLU DURAĞI",
+    "lat": "39.9132773",
+    "lng": "41.2785971",
+    "routes": [
+      "D2",
+      "G10",
+      "G2",
+      "K6",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30302",
+    "stopName": "YAKUTİYE 245 NOLU DURAĞI",
+    "lat": "39.9082285",
+    "lng": "41.2857263",
+    "routes": [
+      "D2",
+      "G10",
+      "G3",
+      "G4/A",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30241",
+    "stopName": "YAKUTİYE 243 NOLU DURAĞI",
+    "lat": "39.9051488",
+    "lng": "41.284636",
+    "routes": [
+      "D2",
+      "G7"
+    ]
+  },
+  {
+    "stopId": "30124",
+    "stopName": "EĞİTİM FAKÜLTESİ KARŞISI YAKUTİYE 50 NOLU DURAĞI",
+    "lat": "39.8977497",
+    "lng": "41.2753919",
+    "routes": [
+      "D2",
+      "G1",
+      "G1-A",
+      "G7/A",
+      "G9",
+      "K1",
+      "K4",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30103",
+    "stopName": "YAKUTİYE 93 NOLU DURAĞI",
+    "lat": "39.8966008",
+    "lng": "41.2765934",
+    "routes": [
+      "D2",
+      "G1",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30105",
+    "stopName": "YAKUTİYE 94 NOLU DURAĞI",
+    "lat": "39.8978924",
+    "lng": "41.2828896",
+    "routes": [
+      "D2",
+      "G10",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30106",
+    "stopName": "YAKUTİYE 95 NOLU DURAĞI",
+    "lat": "39.8992587",
+    "lng": "41.2851038",
+    "routes": [
+      "D2",
+      "G10",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30107",
+    "stopName": "YAKUTİYE 96 NOLU DURAĞI",
+    "lat": "39.9005314",
+    "lng": "41.2868637",
+    "routes": [
+      "D2",
+      "G10",
+      "G14",
+      "K11",
+      "K4",
+      "M2"
+    ]
+  },
+  {
+    "stopId": "30118",
+    "stopName": "CANLI HAYVAN PAZARI YAKUTİYE 262 NOLU DURAĞI",
+    "lat": "39.9199248",
+    "lng": "41.3412941",
+    "routes": [
+      "D2"
+    ]
+  },
+  {
+    "stopId": "30308",
+    "stopName": "YAKUTİYE 32 NOLU DURAĞI",
+    "lat": "39.9139572",
+    "lng": "41.2764654",
+    "routes": [
+      "D2",
+      "G10",
+      "G2",
+      "G9",
+      "K2",
+      "K3",
+      "K6",
+      "M10",
+      "M2",
+      "M5",
+      "M6",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30147",
+    "stopName": "GÜRCÜKAPI 1 YAKUTİYE 33 NOLU DURAĞI",
+    "lat": "39.911814",
+    "lng": "41.272776",
+    "routes": [
+      "D2",
+      "G11",
+      "G2",
+      "K5",
+      "M10",
+      "M11",
+      "M14",
+      "M3",
+      "M5",
+      "M6",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "20167",
+    "stopName": "PALANDÖKEN 138 NOLU DURAĞI",
+    "lat": "39.8803624",
+    "lng": "41.2772016",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20168",
+    "stopName": "PALANDÖKEN 139 NOLU DURAĞI",
+    "lat": "39.8804904",
+    "lng": "41.2747874",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20174",
+    "stopName": "PALANDÖKEN 145 NOLU DURAĞI",
+    "lat": "39.8835307",
+    "lng": "41.2762683",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20175",
+    "stopName": "PALANDÖKEN 147 NOLU DURAĞI",
+    "lat": "39.8848177",
+    "lng": "41.2780129",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20176",
+    "stopName": "PALANDÖKEN 150 NOLU DURAĞI",
+    "lat": "39.8870284",
+    "lng": "41.2811535",
+    "routes": [
+      "G1",
+      "G1-A"
+    ]
+  },
+  {
+    "stopId": "20198",
+    "stopName": "PALANDÖKEN 167 NOLU DURAĞI",
+    "lat": "39.8894851",
+    "lng": "41.2785058",
+    "routes": [
+      "G1",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20199",
+    "stopName": "PALANDÖKEN 171 NOLU DURAĞI",
+    "lat": "39.8903177",
+    "lng": "41.2787156",
+    "routes": [
+      "G1"
+    ]
+  },
+  {
+    "stopId": "20200",
+    "stopName": "PALANDÖKEN 173 NOLU DURAĞI",
+    "lat": "39.8904109",
+    "lng": "41.2805128",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20201",
+    "stopName": "PALANDÖKEN 174 NOLU DURAĞI",
+    "lat": "39.8916089",
+    "lng": "41.2827259",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20202",
+    "stopName": "YUNUSEMRE SAĞLIK OCAĞI PALANDÖKEN 176 NOLU DURAĞI",
+    "lat": "39.892767",
+    "lng": "41.2848999",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20203",
+    "stopName": "PALANDÖKEN 178 NOLU DURAĞI",
+    "lat": "39.8916871",
+    "lng": "41.2864042",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20204",
+    "stopName": "PALANDÖKEN 180 NOLU DURAĞI",
+    "lat": "39.8908177",
+    "lng": "41.2883985",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20205",
+    "stopName": "PALANDÖKEN 183 NOLU DURAĞI",
+    "lat": "39.8924265",
+    "lng": "41.2908299",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G2",
+      "G4/A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20206",
+    "stopName": "PALANDÖKEN 184 NOLU DURAĞI",
+    "lat": "39.893718",
+    "lng": "41.2902522",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G2",
+      "G4/A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20207",
+    "stopName": "PALANDÖKEN 185 NOLU DURAĞI",
+    "lat": "39.8949795",
+    "lng": "41.2894441",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20208",
+    "stopName": "PALANDÖKEN 189 NOLU DURAĞI",
+    "lat": "39.8968096",
+    "lng": "41.2881004",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G2",
+      "G4/A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20215",
+    "stopName": "PALANDÖKEN 191 NOLU DURAĞI",
+    "lat": "39.896555",
+    "lng": "41.2861106",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20216",
+    "stopName": "PALANDÖKEN 193 NOLU DURAĞI",
+    "lat": "39.896407",
+    "lng": "41.2839356",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20217",
+    "stopName": "PALANDÖKEN 194 NOLU DURAĞI",
+    "lat": "39.8967155",
+    "lng": "41.2829978",
+    "routes": [
+      "G1",
+      "G10"
+    ]
+  },
+  {
+    "stopId": "30300",
+    "stopName": "YAKUTİYE 61 NOLU DURAĞI",
+    "lat": "39.9062881",
+    "lng": "41.276853",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G7/A",
+      "K4",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30202",
+    "stopName": "ANFİLER YAKUTİYE 104 NOLU DURAĞI",
+    "lat": "39.9012793",
+    "lng": "41.2397237",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "K3",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30206",
+    "stopName": "YAKUTİYE 107 NOLU DURAĞI",
+    "lat": "39.8984256",
+    "lng": "41.238493",
+    "routes": [
+      "G1",
+      "G3",
+      "G4",
+      "K3",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30208",
+    "stopName": "YAKUTİYE 108 NOLU DURAĞI",
+    "lat": "39.8983864",
+    "lng": "41.2384661",
+    "routes": [
+      "G1",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "K2",
+      "K3",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30209",
+    "stopName": "GÜZEL SANATLAR YAKUTİYE 110 NOLU DURAĞI",
+    "lat": "39.8964852",
+    "lng": "41.2376973",
+    "routes": [
+      "G1",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "K1",
+      "K1/A",
+      "K3",
+      "K5",
+      "K7",
+      "M3",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30192",
+    "stopName": "YAKUTİYE 111 NOLU DURAĞI",
+    "lat": "39.8955411",
+    "lng": "41.236016",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K1",
+      "K1/A",
+      "K5",
+      "K7",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30190",
+    "stopName": "YAKUTİYE 112 NOLU DURAĞI",
+    "lat": "39.8947974",
+    "lng": "41.2332275",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K1",
+      "K1/A",
+      "K3",
+      "K5",
+      "K7",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30188",
+    "stopName": "EDEBİYAT FAK. YAKUTİYE 113 NOLU DURAĞI",
+    "lat": "39.8938019",
+    "lng": "41.2278592",
+    "routes": [
+      "G1",
+      "G3",
+      "G4/A",
+      "G4/B",
+      "K1",
+      "K3",
+      "K5",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30187",
+    "stopName": "EDEBİYAT FAK. YAKUTİYE 114 NOLU DURAĞI",
+    "lat": "39.8938573",
+    "lng": "41.2278525",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G4",
+      "G4/A",
+      "K1",
+      "K3",
+      "K7",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30186",
+    "stopName": "YAKUTİYE 115 NOLU DURAĞI",
+    "lat": "39.8939144",
+    "lng": "41.2278277",
+    "routes": [
+      "G1",
+      "G3",
+      "G4/A",
+      "K1",
+      "K1/A",
+      "K3",
+      "K5",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30182",
+    "stopName": "KIZ YURTLARI YAKUTİYE 116 NOLU DURAĞI",
+    "lat": "39.8919804",
+    "lng": "41.2298874",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K1",
+      "K1/A",
+      "K3",
+      "K5",
+      "K7",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30181",
+    "stopName": "DARÜL FÜNÜN CAMİ YAKUTİYE 117 NOLU DURAĞI",
+    "lat": "39.8923933",
+    "lng": "41.2333264",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G3",
+      "G4",
+      "G4/A",
+      "G4/B",
+      "K1",
+      "K1/A",
+      "K3",
+      "K5",
+      "K7",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30179",
+    "stopName": "CİNETEKNO YAKUTİYE 118 NOLU DURAĞI",
+    "lat": "39.893821",
+    "lng": "41.2393155",
+    "routes": [
+      "G1",
+      "G1-A",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "20223",
+    "stopName": "PALANDÖKEN 226 NOLU DURAĞI",
+    "lat": "39.8962424",
+    "lng": "41.2838125",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20224",
+    "stopName": "PALANDÖKEN 192 NOLU DURAĞI",
+    "lat": "39.8965309",
+    "lng": "41.2862471",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20225",
+    "stopName": "PALANDÖKEN 190 NOLU DURAĞI",
+    "lat": "39.8968508",
+    "lng": "41.2879531",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20226",
+    "stopName": "PALANDÖKEN 186 NOLU DURAĞI",
+    "lat": "39.8945993",
+    "lng": "41.2894992",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G2",
+      "G4/A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20227",
+    "stopName": "PALANDÖKEN 182 NOLU DURAĞI",
+    "lat": "39.8915736",
+    "lng": "41.2891962",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20228",
+    "stopName": "PALANDÖKEN 181 NOLU DURAĞI",
+    "lat": "39.8908125",
+    "lng": "41.2877745",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20229",
+    "stopName": "PALANDÖKEN 177 NOLU DURAĞI",
+    "lat": "39.8928146",
+    "lng": "41.2846903",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20230",
+    "stopName": "PALANDÖKEN 175 NOLU DURAĞI",
+    "lat": "39.8916813",
+    "lng": "41.28262",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20231",
+    "stopName": "PALANDÖKEN 172 NOLU DURAĞI",
+    "lat": "39.8905351",
+    "lng": "41.2800078",
+    "routes": [
+      "G1",
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20221",
+    "stopName": "KAYAKYOLU POSTANE PALANDÖKEN 168 NOLU DURAĞI",
+    "lat": "39.8892387",
+    "lng": "41.2783456",
+    "routes": [
+      "G1",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20192",
+    "stopName": "PALANDÖKEN 151 NOLU DURAĞI",
+    "lat": "39.8869377",
+    "lng": "41.2808121",
+    "routes": [
+      "G1",
+      "G1-A"
+    ]
+  },
+  {
+    "stopId": "20193",
+    "stopName": "PALANDÖKEN 149 NOLU DURAĞI",
+    "lat": "39.8860344",
+    "lng": "41.2795341",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20194",
+    "stopName": "PALANDÖKEN 148 NOLU DURAĞI",
+    "lat": "39.8847522",
+    "lng": "41.277723",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20195",
+    "stopName": "PALANDÖKEN 146 NOLU DURAĞI",
+    "lat": "39.8835282",
+    "lng": "41.2760174",
+    "routes": [
+      "G1",
+      "G1-A",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20196",
+    "stopName": "PALANDÖKEN 144 NOLU DURAĞI",
+    "lat": "39.8834124",
+    "lng": "41.2749881",
+    "routes": [
+      "G1",
+      "G1-A"
+    ]
+  },
+  {
+    "stopId": "20173",
+    "stopName": "Palandöken",
+    "lat": "39.8822387",
+    "lng": "41.2740175",
+    "routes": [
+      "G1",
+      "G1-A"
+    ]
+  },
+  {
+    "stopId": "20248",
+    "stopName": "KAYAKYOLU SEVK İDARE -1",
+    "lat": "39.880279",
+    "lng": "41.276925",
+    "routes": [
+      "G1",
+      "G1-A"
+    ]
+  },
+  {
+    "stopId": "20189",
+    "stopName": "ÖZYUNUSLAR PALANDÖKEN 157 NOLU DURAĞI",
+    "lat": "39.8887828",
+    "lng": "41.2810502",
+    "routes": [
+      "G1-A",
+      "G10",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20190",
+    "stopName": "PALANDÖKEN 154 NOLU DURAĞI",
+    "lat": "39.888851",
+    "lng": "41.2827518",
+    "routes": [
+      "G1-A",
+      "G10",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20218",
+    "stopName": "PALANDÖKEN 195 NOLU DURAĞI",
+    "lat": "39.8959861",
+    "lng": "41.2830779",
+    "routes": [
+      "G1-A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20219",
+    "stopName": "PALANDÖKEN 196 NOLU DURAĞI",
+    "lat": "39.8933178",
+    "lng": "41.2812957",
+    "routes": [
+      "G1-A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20220",
+    "stopName": "PALANDÖKEN 197 NOLU DURAĞI",
+    "lat": "39.892494",
+    "lng": "41.2778108",
+    "routes": [
+      "G1-A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "30056",
+    "stopName": "DADAŞ SİNEMASI KARŞISI YAKUTİYE 62 NOLU DURAĞI",
+    "lat": "39.9060206",
+    "lng": "41.2717899",
+    "routes": [
+      "G1-A",
+      "G2",
+      "G7/A",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30058",
+    "stopName": "KUDAKA YAKUTİYE 63 NOLU DURAĞI",
+    "lat": "39.9056896",
+    "lng": "41.2674113",
+    "routes": [
+      "G1-A",
+      "G2",
+      "G7/A",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20161",
+    "stopName": "PALANDÖKEN 179 NOLU DURAĞI",
+    "lat": "39.8900808",
+    "lng": "41.2859564",
+    "routes": [
+      "G1-A"
+    ]
+  },
+  {
+    "stopId": "20162",
+    "stopName": "PALANDÖKEN 230 NOLU DURAĞI",
+    "lat": "39.8894136",
+    "lng": "41.2841355",
+    "routes": [
+      "G1-A",
+      "G10"
+    ]
+  },
+  {
+    "stopId": "20178",
+    "stopName": "PALANDÖKEN 155 NOLU DURAĞI",
+    "lat": "39.8890024",
+    "lng": "41.2826461",
+    "routes": [
+      "G1-A",
+      "G10",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20179",
+    "stopName": "ÖZYUNUSLAR 2 PALANDÖKEN 156 NOLU DURAĞI",
+    "lat": "39.8888897",
+    "lng": "41.281024",
+    "routes": [
+      "G1-A",
+      "G10",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20155",
+    "stopName": "PALANDÖKEN 212 NOLU DURAĞI",
+    "lat": "39.8797263",
+    "lng": "41.2814264",
+    "routes": [
+      "G10",
+      "G2"
+    ]
+  },
+  {
+    "stopId": "20158",
+    "stopName": "PALANDÖKEN 213 NOLU DURAĞI",
+    "lat": "39.8815507",
+    "lng": "41.2820541",
+    "routes": [
+      "G10",
+      "G2"
+    ]
+  },
+  {
+    "stopId": "20163",
+    "stopName": "PALANDÖKEN 217 NOLU DURAĞI",
+    "lat": "39.8867093",
+    "lng": "41.2858518",
+    "routes": [
+      "G10",
+      "G2"
+    ]
+  },
+  {
+    "stopId": "20164",
+    "stopName": "PALANDÖKEN 218 NOLU DURAĞI",
+    "lat": "39.8882047",
+    "lng": "41.2862749",
+    "routes": [
+      "G10"
+    ]
+  },
+  {
+    "stopId": "20222",
+    "stopName": "PALANDÖKEN 170 NOLU DURAĞI",
+    "lat": "39.889396",
+    "lng": "41.2799425",
+    "routes": [
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "30172",
+    "stopName": "YAKUTİYE 99 NOLU DURAĞI",
+    "lat": "39.9027531",
+    "lng": "41.2887901",
+    "routes": [
+      "G10"
+    ]
+  },
+  {
+    "stopId": "20144",
+    "stopName": "PALANDÖKEN 77 NOLU DURAĞI",
+    "lat": "39.8889788",
+    "lng": "41.2476732",
+    "routes": [
+      "G10",
+      "G3",
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20145",
+    "stopName": "SAİME HATUN PALANDÖKEN 79 NOLU DURAĞI",
+    "lat": "39.887165",
+    "lng": "41.2489422",
+    "routes": [
+      "G10",
+      "G3",
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20146",
+    "stopName": "PALANDÖKEN 80 NOLU DURAĞI",
+    "lat": "39.8858738",
+    "lng": "41.2498819",
+    "routes": [
+      "G10",
+      "G3",
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20147",
+    "stopName": "PALANDÖKEN 81 NOLU DURAĞI",
+    "lat": "39.8852171",
+    "lng": "41.2523101",
+    "routes": [
+      "G10"
+    ]
+  },
+  {
+    "stopId": "20141",
+    "stopName": "PALANDÖKEN 85 NOLU DURAĞI",
+    "lat": "39.8861459",
+    "lng": "41.2532031",
+    "routes": [
+      "G10",
+      "G3"
+    ]
+  },
+  {
+    "stopId": "20142",
+    "stopName": "PALANDÖKEN 83 NOLU DURAĞI",
+    "lat": "39.8880249",
+    "lng": "41.2518051",
+    "routes": [
+      "G10",
+      "G3"
+    ]
+  },
+  {
+    "stopId": "20143",
+    "stopName": "PALANDÖKEN 76 NOLU DURAĞI",
+    "lat": "39.8914391",
+    "lng": "41.2496419",
+    "routes": [
+      "G10",
+      "G3",
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20241",
+    "stopName": "PALANDÖKEN 187 NOLU DURAĞI",
+    "lat": "39.8949683",
+    "lng": "41.2891875",
+    "routes": [
+      "G10",
+      "G2"
+    ]
+  },
+  {
+    "stopId": "20232",
+    "stopName": "PALANDÖKEN 169 NOLU DURAĞI",
+    "lat": "39.8889993",
+    "lng": "41.2798046",
+    "routes": [
+      "G10",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20159",
+    "stopName": "PALANDÖKEN 216 NOLU DURAĞI",
+    "lat": "39.883619",
+    "lng": "41.2827",
+    "routes": [
+      "G10"
+    ]
+  },
+  {
+    "stopId": "30133",
+    "stopName": "KOLORDU YAKUTİYE 72 NOLU DURAĞI",
+    "lat": "39.9044213",
+    "lng": "41.2658499",
+    "routes": [
+      "G11",
+      "G5",
+      "G6",
+      "G8",
+      "K1",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "20094",
+    "stopName": "PALANDÖKEN 112 NOLU DURAĞI",
+    "lat": "39.8966417",
+    "lng": "41.2716333",
+    "routes": [
+      "G11",
+      "G5",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20148",
+    "stopName": "PALANDÖKEN 113 NOLU DURAĞI",
+    "lat": "39.8926736",
+    "lng": "41.2708943",
+    "routes": [
+      "G11",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20149",
+    "stopName": "PALANDÖKEN 114 NOLU DURAĞI",
+    "lat": "39.8913503",
+    "lng": "41.2714147",
+    "routes": [
+      "G11",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20150",
+    "stopName": "PALANDÖKEN 115 NOLU DURAĞI",
+    "lat": "39.8895054",
+    "lng": "41.2716132",
+    "routes": [
+      "G11",
+      "G3",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20095",
+    "stopName": "PALANDÖKEN 121 NOLU DURAĞI",
+    "lat": "39.8882122",
+    "lng": "41.2711916",
+    "routes": [
+      "G11",
+      "G3",
+      "G4/A",
+      "G5",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20243",
+    "stopName": "PALANDÖKEN 225 NOLU DURAĞI",
+    "lat": "39.8599044",
+    "lng": "41.2750289",
+    "routes": [
+      "G11",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20170",
+    "stopName": "PALANDÖKEN 141 NOLU DURAĞI",
+    "lat": "39.8818518",
+    "lng": "41.2700421",
+    "routes": [
+      "G11",
+      "G3",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20091",
+    "stopName": "PALANDÖKEN 122 NOLU DURAĞI",
+    "lat": "39.8877304",
+    "lng": "41.271205",
+    "routes": [
+      "G11",
+      "G3",
+      "G4/A",
+      "G5",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20092",
+    "stopName": "POLİS OKULU PALANDÖKEN 116 NOLU DURAĞI",
+    "lat": "39.8912727",
+    "lng": "41.2717736",
+    "routes": [
+      "G11",
+      "G3",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "30023",
+    "stopName": "HİLALKENT SEVK İDARE",
+    "lat": "39.9530661",
+    "lng": "41.3132501",
+    "routes": [
+      "G14"
+    ]
+  },
+  {
+    "stopId": "30022",
+    "stopName": "YAKUTİYE 02 NOLU DURAĞI",
+    "lat": "39.9513439",
+    "lng": "41.3097013",
+    "routes": [
+      "G14",
+      "G9",
+      "K10",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30021",
+    "stopName": "YAKUTİYE 03 NOLU DURAĞI",
+    "lat": "39.9504351",
+    "lng": "41.3079843",
+    "routes": [
+      "G14",
+      "G9",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30030",
+    "stopName": "YAKUTİYE 04 NOLU DURAĞI",
+    "lat": "39.9487484",
+    "lng": "41.3049206",
+    "routes": [
+      "G14",
+      "G9",
+      "K11",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30029",
+    "stopName": "YAKUTİYE 269 NOLU DURAĞI",
+    "lat": "39.9493873",
+    "lng": "41.3025532",
+    "routes": [
+      "G14",
+      "G9",
+      "K11",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30027",
+    "stopName": "YAKUTİYE 05 NOLU DURAĞI",
+    "lat": "39.9497598",
+    "lng": "41.3016918",
+    "routes": [
+      "G14",
+      "K10",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30028",
+    "stopName": "YAKUTİYE 06 NOLU DURAĞI",
+    "lat": "39.9501961",
+    "lng": "41.3000819",
+    "routes": [
+      "G14",
+      "G9",
+      "K11",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30017",
+    "stopName": "YAKUTİYE 07 NOLU DURAĞI",
+    "lat": "39.9488832",
+    "lng": "41.2983934",
+    "routes": [
+      "G14",
+      "G9",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30018",
+    "stopName": "YAKUTİYE 16 NOLU DURAĞI",
+    "lat": "39.9470282",
+    "lng": "41.3023188",
+    "routes": [
+      "G14",
+      "G9",
+      "K11",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30019",
+    "stopName": "YAKUTİYE 17 NOLU DURAĞI",
+    "lat": "39.9465647",
+    "lng": "41.3039241",
+    "routes": [
+      "G14",
+      "G9",
+      "K11",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30040",
+    "stopName": "YAKUTİYE 10 NOLU DURAĞI",
+    "lat": "39.9435209",
+    "lng": "41.2958292",
+    "routes": [
+      "G14",
+      "G9",
+      "K10",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30672",
+    "stopName": "YAKUTİYE 284",
+    "lat": "39.9442672",
+    "lng": "41.2938523",
+    "routes": [
+      "G14",
+      "G9",
+      "K10",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30312",
+    "stopName": "YAKUTİYE 31 NOLU DURAĞI",
+    "lat": "39.9174033",
+    "lng": "41.2796829",
+    "routes": [
+      "G14",
+      "G4/A",
+      "G9",
+      "K11",
+      "K2",
+      "K3",
+      "K6",
+      "M10",
+      "M5",
+      "M6",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30176",
+    "stopName": "YAKUTİYE 290 NOLU DURAĞI",
+    "lat": "39.8987381",
+    "lng": "41.2633467",
+    "routes": [
+      "G14",
+      "K1",
+      "K1/A",
+      "K6",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30310",
+    "stopName": "KAVAK MAH. YAKUTİYE 252 NOLU DURAĞI",
+    "lat": "39.9148275",
+    "lng": "41.2801726",
+    "routes": [
+      "G14",
+      "G4/A",
+      "G9",
+      "K11",
+      "K2",
+      "K3",
+      "K6",
+      "M10",
+      "M17",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30311",
+    "stopName": "YAKUTİYE 259 NOLU DURAĞI",
+    "lat": "39.9171135",
+    "lng": "41.2800072",
+    "routes": [
+      "G14",
+      "G9",
+      "K11",
+      "K2",
+      "K3",
+      "K6",
+      "M10",
+      "M17",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30009",
+    "stopName": "YAKUTİYE 11 NOLU DURAĞI",
+    "lat": "39.9439314",
+    "lng": "41.2940396",
+    "routes": [
+      "G14",
+      "G9",
+      "K10",
+      "K11",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30010",
+    "stopName": "YAKUTİYE 12 NOLU DURAĞI",
+    "lat": "39.9431774",
+    "lng": "41.2962453",
+    "routes": [
+      "G14",
+      "G9",
+      "K10",
+      "K11",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30011",
+    "stopName": "YAKUTİYE 266 NOLU DURAĞI",
+    "lat": "39.9416624",
+    "lng": "41.2991928",
+    "routes": [
+      "G14",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30012",
+    "stopName": "YAKUTİYE 287 NOLU DURAĞI",
+    "lat": "39.9426446",
+    "lng": "41.3002522",
+    "routes": [
+      "G14",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20165",
+    "stopName": "PALANDÖKEN 219 NOLU DURAĞI",
+    "lat": "39.8871409",
+    "lng": "41.2908742",
+    "routes": [
+      "G2"
+    ]
+  },
+  {
+    "stopId": "20166",
+    "stopName": "PALANDÖKEN 220 NOLU DURAĞI",
+    "lat": "39.8851276",
+    "lng": "41.2959426",
+    "routes": [
+      "G2"
+    ]
+  },
+  {
+    "stopId": "20209",
+    "stopName": "PALANDÖKEN 198 NOLU DURAĞI",
+    "lat": "39.8979587",
+    "lng": "41.2873944",
+    "routes": [
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20210",
+    "stopName": "PALANDÖKEN 223 NOLU DURAĞI",
+    "lat": "39.8997296",
+    "lng": "41.288595",
+    "routes": [
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20211",
+    "stopName": "PALANDÖKEN 201 NOLU DURAĞI",
+    "lat": "39.901564",
+    "lng": "41.2893292",
+    "routes": [
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20212",
+    "stopName": "PALANDÖKEN 200 NOLU DURAĞI",
+    "lat": "39.9010707",
+    "lng": "41.2896494",
+    "routes": [
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20213",
+    "stopName": "PALANDÖKEN 222 NOLU DURAĞI",
+    "lat": "39.8998673",
+    "lng": "41.2885775",
+    "routes": [
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20214",
+    "stopName": "PALANDÖKEN 199 NOLU DURAĞI",
+    "lat": "39.898039",
+    "lng": "41.2873796",
+    "routes": [
+      "G2",
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20169",
+    "stopName": "PALANDÖKEN 140 NOLU DURAĞI",
+    "lat": "39.8806088",
+    "lng": "41.2725916",
+    "routes": [
+      "G3",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20118",
+    "stopName": "PALANDÖKEN BELEDİYESİ PALANDÖKEN 110 NOLU DURAĞI",
+    "lat": "39.8939807",
+    "lng": "41.2696022",
+    "routes": [
+      "G3",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20119",
+    "stopName": "FORUM 2 PALANDÖKEN 107 NOLU DURAĞI",
+    "lat": "39.891372",
+    "lng": "41.2662243",
+    "routes": [
+      "G3",
+      "G6",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20120",
+    "stopName": "PALANDÖKEN 105 NOLU DURAĞI",
+    "lat": "39.8882076",
+    "lng": "41.2630893",
+    "routes": [
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20121",
+    "stopName": "PALANDÖKEN 103 NOLU DURAĞI",
+    "lat": "39.8864575",
+    "lng": "41.2610301",
+    "routes": [
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20122",
+    "stopName": "HACI AHMET BABA CAMİ PALANDÖKEN 101 NOLU DURAĞI",
+    "lat": "39.8847071",
+    "lng": "41.2583123",
+    "routes": [
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20123",
+    "stopName": "PALANDÖKEN 240 NOLU DURAĞI",
+    "lat": "39.8834096",
+    "lng": "41.2560696",
+    "routes": [
+      "G3",
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20140",
+    "stopName": "PALANDÖKEN 86 NOLU DURAĞI",
+    "lat": "39.8847505",
+    "lng": "41.2543669",
+    "routes": [
+      "G3"
+    ]
+  },
+  {
+    "stopId": "30271",
+    "stopName": "YAKUTİYE 76 NOLU DURAĞI",
+    "lat": "39.9025186",
+    "lng": "41.2698424",
+    "routes": [
+      "G3",
+      "M12",
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30139",
+    "stopName": "YAKUTİYE 77 NOLU DURAĞI",
+    "lat": "39.9007986",
+    "lng": "41.2723606",
+    "routes": [
+      "G3"
+    ]
+  },
+  {
+    "stopId": "30204",
+    "stopName": "ZİRAAT FAK. YAKUTİYE 127 NOLU DURAĞI",
+    "lat": "39.8990928",
+    "lng": "41.2392022",
+    "routes": [
+      "G3",
+      "G4/A",
+      "K5"
+    ]
+  },
+  {
+    "stopId": "30211",
+    "stopName": "KALP MERKEZİ YAKUTİYE 125 NOLU DURAĞI",
+    "lat": "39.8970363",
+    "lng": "41.2384712",
+    "routes": [
+      "G3",
+      "G4",
+      "G4/A",
+      "K2",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "20137",
+    "stopName": "PALANDÖKEN 75 NOLU DURAĞI",
+    "lat": "39.8911352",
+    "lng": "41.2494086",
+    "routes": [
+      "G3"
+    ]
+  },
+  {
+    "stopId": "20138",
+    "stopName": "PALANDÖKEN 82 NOLU DURAĞI",
+    "lat": "39.8877292",
+    "lng": "41.2517286",
+    "routes": [
+      "G3"
+    ]
+  },
+  {
+    "stopId": "20139",
+    "stopName": "PALANDÖKEN 84 NOLU DURAĞI",
+    "lat": "39.886042",
+    "lng": "41.2530537",
+    "routes": [
+      "G3"
+    ]
+  },
+  {
+    "stopId": "20153",
+    "stopName": "MEVLANA CAD. PALANDÖKEN 120 NOLU DURAĞI",
+    "lat": "39.8885847",
+    "lng": "41.2674212",
+    "routes": [
+      "G3",
+      "G4/A",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20154",
+    "stopName": "PALANDÖKEN 118 NOLU DURAĞI",
+    "lat": "39.8885556",
+    "lng": "41.2696146",
+    "routes": [
+      "G3",
+      "G4/A",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "30094",
+    "stopName": "YAKUTİYE 139 NOLU DURAĞI",
+    "lat": "39.9226033",
+    "lng": "41.241916",
+    "routes": [
+      "G4",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30205",
+    "stopName": "ZİRAAT FAK. YAKUTİYE 126 NOLU DURAĞI",
+    "lat": "39.8990452",
+    "lng": "41.2391588",
+    "routes": [
+      "G4",
+      "G4/A",
+      "K5",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30108",
+    "stopName": "PALANDÖKEN 211 NOLU DURAĞI",
+    "lat": "39.9033317",
+    "lng": "41.292456",
+    "routes": [
+      "G4/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30109",
+    "stopName": "EMNİYET TOKİLER PALANDÖKEN 209 NOLU DURAĞI",
+    "lat": "39.8990226",
+    "lng": "41.2967734",
+    "routes": [
+      "G4/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30111",
+    "stopName": "EMNİYET TOKİLER PALANDÖKEN 206 NOLU DURAĞI",
+    "lat": "39.8971866",
+    "lng": "41.2986221",
+    "routes": [
+      "G4/A",
+      "G7",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30114",
+    "stopName": "PALANDÖKEN 208 NOLU DURAĞI",
+    "lat": "39.8997302",
+    "lng": "41.2965504",
+    "routes": [
+      "G4/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30115",
+    "stopName": "PALANDÖKEN 210 NOLU DURAĞI",
+    "lat": "39.9032207",
+    "lng": "41.2928916",
+    "routes": [
+      "G4/A",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "20180",
+    "stopName": "PALANDÖKEN 159 NOLU DURAĞI",
+    "lat": "39.8876888",
+    "lng": "41.2786409",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20181",
+    "stopName": "ABUŞ EFENDİ CAMİ PALANDÖKEN 160 NOLU DURAĞI",
+    "lat": "39.8870807",
+    "lng": "41.2772585",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20182",
+    "stopName": "VATAN PARKI PALANDÖKEN 162 NOLU DURAĞI",
+    "lat": "39.8864204",
+    "lng": "41.2752743",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20183",
+    "stopName": "PALANDÖKEN 163 NOLU DURAĞI",
+    "lat": "39.8858286",
+    "lng": "41.2733378",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20184",
+    "stopName": "KAYAKYOLU ÇIKIŞ PALANDÖKEN 165 NOLU DURAĞI",
+    "lat": "39.8852853",
+    "lng": "41.2714915",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20151",
+    "stopName": "PALANDÖKEN 117 NOLU DURAĞI",
+    "lat": "39.8888363",
+    "lng": "41.2703633",
+    "routes": [
+      "G4/A",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20152",
+    "stopName": "ÇEÇENİSTAN PARKI PALANDÖKEN 119 NOLU DURAĞI",
+    "lat": "39.8888034",
+    "lng": "41.2673281",
+    "routes": [
+      "G4/A",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20124",
+    "stopName": "EBU İSAK CAMİ PALANDÖKEN 98 NOLU DURAĞI",
+    "lat": "39.8817342",
+    "lng": "41.2525986",
+    "routes": [
+      "G4/A",
+      "G7",
+      "G7/A",
+      "G8",
+      "G9",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20125",
+    "stopName": "KUĞULU PARK PALANDÖKEN 96 NOLU DURAĞI",
+    "lat": "39.8807928",
+    "lng": "41.2480607",
+    "routes": [
+      "G4/A",
+      "G7/A",
+      "G8",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20126",
+    "stopName": "PALANDÖKEN 94 NOLU DURAĞI",
+    "lat": "39.8803171",
+    "lng": "41.2454605",
+    "routes": [
+      "G4/A",
+      "G7/A",
+      "G8",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20018",
+    "stopName": "PALANDÖKEN 12 NOLU DURAĞI",
+    "lat": "39.8858292",
+    "lng": "41.2399174",
+    "routes": [
+      "G4/A",
+      "G8",
+      "G9",
+      "K2",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20047",
+    "stopName": "LUKOİL PALANDÖKEN 36 NOLU DURAĞI",
+    "lat": "39.8852624",
+    "lng": "41.2386639",
+    "routes": [
+      "G4/A",
+      "G6",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20048",
+    "stopName": "PALANDÖKEN 38 NOLU DURAĞI",
+    "lat": "39.8832294",
+    "lng": "41.2383716",
+    "routes": [
+      "G4/A",
+      "G6",
+      "G9",
+      "K2",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20049",
+    "stopName": "OSMANGAZİ SAĞLIK OCAĞI PALANDÖKEN 39 NOLU DURAĞI",
+    "lat": "39.8799278",
+    "lng": "41.2393459",
+    "routes": [
+      "G4/A",
+      "G6",
+      "G9",
+      "K2",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20051",
+    "stopName": "PALANDÖKEN 41 NOLU DURAĞI",
+    "lat": "39.8752004",
+    "lng": "41.2409612",
+    "routes": [
+      "G4/A",
+      "G6",
+      "G7",
+      "G7/A",
+      "K2",
+      "T6"
+    ]
+  },
+  {
+    "stopId": "20052",
+    "stopName": "PALANDÖKEN 41 NOLU DURAĞI",
+    "lat": "39.8736938",
+    "lng": "41.2414457",
+    "routes": [
+      "G4/A",
+      "G6",
+      "G7",
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20053",
+    "stopName": "PALANDÖKEN 30 NOLU DURAĞI",
+    "lat": "39.8722414",
+    "lng": "41.241946",
+    "routes": [
+      "G4/A",
+      "G6",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20054",
+    "stopName": "PALANDÖKEN 42 NOLU DURAĞI",
+    "lat": "39.8707312",
+    "lng": "41.2419682",
+    "routes": [
+      "G4/A",
+      "G6",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20055",
+    "stopName": "PALANDÖKEN 27 NOLU DURAĞI",
+    "lat": "39.8697475",
+    "lng": "41.2435463",
+    "routes": [
+      "G4/A",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20056",
+    "stopName": "PALANDÖKEN 28 NOLU DURAĞI",
+    "lat": "39.8689855",
+    "lng": "41.2459844",
+    "routes": [
+      "G4/A",
+      "G6",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20057",
+    "stopName": "PALANDÖKEN 29 NOLU DURAĞI",
+    "lat": "39.8684603",
+    "lng": "41.2478402",
+    "routes": [
+      "G4/A",
+      "G6",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20185",
+    "stopName": "KAYAKYOLU ALT GİRİŞ PALANDÖKEN 166 NOLU DURAĞI",
+    "lat": "39.8851915",
+    "lng": "41.2714573",
+    "routes": [
+      "G4/A",
+      "G4/B"
+    ]
+  },
+  {
+    "stopId": "20186",
+    "stopName": "PALANDÖKEN 164 NOLU DURAĞI",
+    "lat": "39.8856169",
+    "lng": "41.2730946",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20187",
+    "stopName": "PALANDÖKEN 161 NOLU DURAĞI",
+    "lat": "39.8869892",
+    "lng": "41.2772151",
+    "routes": [
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "20188",
+    "stopName": "PALANDÖKEN 158 NOLU DURAĞI",
+    "lat": "39.8877624",
+    "lng": "41.2789989",
+    "routes": [
+      "G4/A",
+      "G4/B",
+      "G5"
+    ]
+  },
+  {
+    "stopId": "30240",
+    "stopName": "YAKUTİYE 100 NOLU DURAĞI",
+    "lat": "39.9060484",
+    "lng": "41.2889836",
+    "routes": [
+      "G4/A"
+    ]
+  },
+  {
+    "stopId": "30110",
+    "stopName": "MEZARLIK SEVK İDARE",
+    "lat": "39.8869168",
+    "lng": "41.3020693",
+    "routes": [
+      "G4/B",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "20096",
+    "stopName": "PALANDÖKEN 123 NOLU DURAĞI",
+    "lat": "39.8861159",
+    "lng": "41.2693787",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20097",
+    "stopName": "PALANDÖKEN 125 NOLU DURAĞI",
+    "lat": "39.8832899",
+    "lng": "41.2656016",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20098",
+    "stopName": "PALANDÖKEN 128 NOLU DURAĞI",
+    "lat": "39.881628",
+    "lng": "41.2629409",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20099",
+    "stopName": "PALANDÖKEN 130 NOLU DURAĞI",
+    "lat": "39.8798027",
+    "lng": "41.2599698",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20100",
+    "stopName": "PALANDÖKEN 132 NOLU DURAĞI",
+    "lat": "39.8774985",
+    "lng": "41.2560017",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20101",
+    "stopName": "PALANDÖKEN 135 NOLU DURAĞI",
+    "lat": "39.8748593",
+    "lng": "41.2516372",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20102",
+    "stopName": "PALANDÖKEN 137 NOLU DURAĞI",
+    "lat": "39.8727071",
+    "lng": "41.2502185",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20083",
+    "stopName": "PALANDÖKEN 136 NOLU DURAĞI",
+    "lat": "39.8727159",
+    "lng": "41.2504304",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20084",
+    "stopName": "PALANDÖKEN 134 NOLU DURAĞI",
+    "lat": "39.8751953",
+    "lng": "41.2525913",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20085",
+    "stopName": "PALANDÖKEN 133 NOLU DURAĞI",
+    "lat": "39.876649",
+    "lng": "41.2550491",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20086",
+    "stopName": "PALANDÖKEN 131 NOLU DURAĞI",
+    "lat": "39.8778094",
+    "lng": "41.257035",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20087",
+    "stopName": "PALANDÖKEN 129 NOLU DURAĞI",
+    "lat": "39.8796636",
+    "lng": "41.2601594",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20088",
+    "stopName": "MAREŞAL ÇAKMAK DEVLET HAST. PALANDÖKEN 127 NOLU DURAĞI",
+    "lat": "39.88174",
+    "lng": "41.2636278",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20089",
+    "stopName": "PALANDÖKEN 126 NOLU DURAĞI",
+    "lat": "39.8830401",
+    "lng": "41.2656767",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20090",
+    "stopName": "PALANDÖKEN 124 NOLU DURAĞI",
+    "lat": "39.8857919",
+    "lng": "41.2694042",
+    "routes": [
+      "G4/B",
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20171",
+    "stopName": "PALANDÖKEN 142 NOLU DURAĞI",
+    "lat": "39.8834558",
+    "lng": "41.2711063",
+    "routes": [
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20172",
+    "stopName": "KAYAKYOLU GİRİŞ PALANDÖKEN 143 NOLU DURAĞI",
+    "lat": "39.8833673",
+    "lng": "41.2729496",
+    "routes": [
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20177",
+    "stopName": "PALANDÖKEN 152 NOLU DURAĞI",
+    "lat": "39.88795",
+    "lng": "41.2824946",
+    "routes": [
+      "G5"
+    ]
+  },
+  {
+    "stopId": "30062",
+    "stopName": "MALİYE - ADLİYE YAKUTİYE 88 NOLU DURAĞI",
+    "lat": "39.9037024",
+    "lng": "41.262777",
+    "routes": [
+      "G5",
+      "G6",
+      "G7"
+    ]
+  },
+  {
+    "stopId": "30146",
+    "stopName": "YAKUTİYE 58 NOLU DURAĞI",
+    "lat": "39.9110013",
+    "lng": "41.2738743",
+    "routes": [
+      "G5",
+      "G9",
+      "K3",
+      "K6",
+      "M13"
+    ]
+  },
+  {
+    "stopId": "20191",
+    "stopName": "PALANDÖKEN 153 NOLU DURAĞI",
+    "lat": "39.8879522",
+    "lng": "41.2823736",
+    "routes": [
+      "G5"
+    ]
+  },
+  {
+    "stopId": "20062",
+    "stopName": "PALANDÖKEN 25 NOLU DURAĞI",
+    "lat": "39.8691737",
+    "lng": "41.2466563",
+    "routes": [
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20063",
+    "stopName": "PALANDÖKEN 26 NOLU DURAĞI",
+    "lat": "39.8704759",
+    "lng": "41.2423534",
+    "routes": [
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20038",
+    "stopName": "ÇAT YOLU TOKİLER PALANDÖKEN 45 NOLU DURAĞI",
+    "lat": "39.876422",
+    "lng": "41.2345955",
+    "routes": [
+      "G6",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20039",
+    "stopName": "PALANDÖKEN 47 NOLU DURAĞI",
+    "lat": "39.8756112",
+    "lng": "41.2324074",
+    "routes": [
+      "G6"
+    ]
+  },
+  {
+    "stopId": "20040",
+    "stopName": "PALANDÖKEN 48 NOLU DURAĞI",
+    "lat": "39.8751012",
+    "lng": "41.2317188",
+    "routes": [
+      "G6",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20041",
+    "stopName": "PALANDÖKEN 49 NOLU DURAĞI",
+    "lat": "39.8766942",
+    "lng": "41.2298238",
+    "routes": [
+      "G6",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20042",
+    "stopName": "PALANDÖKEN 50 NOLU DURAĞI",
+    "lat": "39.8779349",
+    "lng": "41.2284411",
+    "routes": [
+      "G6",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20043",
+    "stopName": "PALANDÖKEN 58 NOLU DURAĞI",
+    "lat": "39.8805659",
+    "lng": "41.2302501",
+    "routes": [
+      "G6",
+      "G8",
+      "K5",
+      "K6",
+      "K7",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "20050",
+    "stopName": "PALANDÖKEN 40 NOLU DURAĞI",
+    "lat": "39.876919",
+    "lng": "41.2403082",
+    "routes": [
+      "G6",
+      "G7/A",
+      "G9",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "20061",
+    "stopName": "PALANDÖKEN 24 NOLU DURAĞI",
+    "lat": "39.8642876",
+    "lng": "41.2459784",
+    "routes": [
+      "G6",
+      "K2",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "20064",
+    "stopName": "PALANDÖKEN 241 NOLU DURAĞI",
+    "lat": "39.8733952",
+    "lng": "41.2454192",
+    "routes": [
+      "G7",
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20065",
+    "stopName": "PALANDÖKEN 245 NOLU DURAĞI",
+    "lat": "39.8732727",
+    "lng": "41.2423319",
+    "routes": [
+      "G7",
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20066",
+    "stopName": "PALANDÖKEN 31 NOLU DURAĞI",
+    "lat": "39.8752877",
+    "lng": "41.2411594",
+    "routes": [
+      "G7",
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "30112",
+    "stopName": "PALANDÖKEN 207 NOLU DURAĞI",
+    "lat": "39.8972227",
+    "lng": "41.2985883",
+    "routes": [
+      "G7",
+      "K4"
+    ]
+  },
+  {
+    "stopId": "20081",
+    "stopName": "SELİMİYE CAMİ PALANDÖKEN 229 NOLU DURAĞI",
+    "lat": "39.8732444",
+    "lng": "41.2432304",
+    "routes": [
+      "G7",
+      "G7/A",
+      "G9"
+    ]
+  },
+  {
+    "stopId": "20082",
+    "stopName": "PALANDÖKEN 244 NOLU DURAĞI",
+    "lat": "39.8723404",
+    "lng": "41.24638",
+    "routes": [
+      "G7",
+      "G7/A",
+      "G9"
+    ]
+  },
+  {
+    "stopId": "20067",
+    "stopName": "PALANDÖKEN 32 NOLU DURAĞI",
+    "lat": "39.8775564",
+    "lng": "41.2403672",
+    "routes": [
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20068",
+    "stopName": "PALANDÖKEN 33 NOLU DURAĞI",
+    "lat": "39.8789257",
+    "lng": "41.2399307",
+    "routes": [
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20069",
+    "stopName": "PALANDÖKEN 231 NOLU DURAĞI",
+    "lat": "39.8791049",
+    "lng": "41.2403044",
+    "routes": [
+      "G7/A",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20070",
+    "stopName": "PALANDÖKEN 34 NOLU DURAĞI",
+    "lat": "39.879531",
+    "lng": "41.242233",
+    "routes": [
+      "G7/A",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20107",
+    "stopName": "PALANDÖKEN 93 NOLU DURAĞI",
+    "lat": "39.8801034",
+    "lng": "41.245377",
+    "routes": [
+      "G7/A",
+      "G8",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20108",
+    "stopName": "PALANDÖKEN 95 NOLU DURAĞI",
+    "lat": "39.8805558",
+    "lng": "41.2480169",
+    "routes": [
+      "G7/A",
+      "G8",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30153",
+    "stopName": "YAKUTİYE 170 NOLU DURAĞI",
+    "lat": "39.9118986",
+    "lng": "41.2619626",
+    "routes": [
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "30154",
+    "stopName": "YAKUTİYE 169 NOLU DURAĞI",
+    "lat": "39.9136499",
+    "lng": "41.2604509",
+    "routes": [
+      "G7/A",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30155",
+    "stopName": "YAKUTİYE 168 NOLU DURAĞI",
+    "lat": "39.9125503",
+    "lng": "41.2581778",
+    "routes": [
+      "G7/A",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30156",
+    "stopName": "YAKUTİYE 167 NOLU DURAĞI",
+    "lat": "39.9120589",
+    "lng": "41.2541015",
+    "routes": [
+      "G7/A",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30158",
+    "stopName": "YAKUTİYE 164 NOLU DURAĞI",
+    "lat": "39.9099389",
+    "lng": "41.2572876",
+    "routes": [
+      "G7/A",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30159",
+    "stopName": "YAKUTİYE 165 NOLU DURAĞI",
+    "lat": "39.9104453",
+    "lng": "41.2592737",
+    "routes": [
+      "G7/A",
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30160",
+    "stopName": "YAKUTİYE 166 NOLU DURAĞI",
+    "lat": "39.9111685",
+    "lng": "41.2613467",
+    "routes": [
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20075",
+    "stopName": "PALANDÖKEN 35 NOLU DURAĞI",
+    "lat": "39.8796199",
+    "lng": "41.241836",
+    "routes": [
+      "G7/A"
+    ]
+  },
+  {
+    "stopId": "20026",
+    "stopName": "PALANDÖKEN 59 NOLU DURAĞI",
+    "lat": "39.881073",
+    "lng": "41.2304098",
+    "routes": [
+      "G8",
+      "K5",
+      "K6",
+      "K7/A",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "20027",
+    "stopName": "PALANDÖKEN 57 NOLU DURAĞI",
+    "lat": "39.8791214",
+    "lng": "41.2276411",
+    "routes": [
+      "G8",
+      "K5",
+      "K6",
+      "K7/A",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "20028",
+    "stopName": "PALANDÖKEN 56 NOLU DURAĞI",
+    "lat": "39.8773824",
+    "lng": "41.2251209",
+    "routes": [
+      "G8",
+      "K5",
+      "K6",
+      "K7/A",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "20029",
+    "stopName": "PALANDÖKEN 54 NOLU DURAĞI",
+    "lat": "39.872867",
+    "lng": "41.2196538",
+    "routes": [
+      "G8",
+      "K7/A",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "20030",
+    "stopName": "PALANDÖKEN 52 NOLU DURAĞI",
+    "lat": "39.8716559",
+    "lng": "41.2183955",
+    "routes": [
+      "G8",
+      "K7/A",
+      "M12"
+    ]
+  },
+  {
+    "stopId": "20244",
+    "stopName": "TEPEKÖY PALANDÖKEN 224 NOLU DURAĞI",
+    "lat": "39.8519514",
+    "lng": "41.1931111",
+    "routes": [
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20031",
+    "stopName": "DUTÇU PALANDÖKEN 51 NOLU DURAĞI",
+    "lat": "39.8586309",
+    "lng": "41.2172901",
+    "routes": [
+      "G8"
+    ]
+  },
+  {
+    "stopId": "20032",
+    "stopName": "AFAD PALANDÖKEN 53 NOLU DURAĞI",
+    "lat": "39.8730096",
+    "lng": "41.2203063",
+    "routes": [
+      "G8",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20033",
+    "stopName": "PALANDÖKEN 55 NOLU DURAĞI",
+    "lat": "39.8744128",
+    "lng": "41.2218381",
+    "routes": [
+      "G8",
+      "K5",
+      "K6",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30031",
+    "stopName": "YAKUTİYE 288 NOLU DURAĞI",
+    "lat": "39.946822",
+    "lng": "41.3017938",
+    "routes": [
+      "G9",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30032",
+    "stopName": "YAKUTİYE 270 NOLU DURAĞI",
+    "lat": "39.9452446",
+    "lng": "41.3002891",
+    "routes": [
+      "G9",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30034",
+    "stopName": "YAKUTİYE 275 NOLU DURAĞI",
+    "lat": "39.9438327",
+    "lng": "41.2989486",
+    "routes": [
+      "G9",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30008",
+    "stopName": "YAKUTİYE 24 NOLU DURAĞI",
+    "lat": "39.9432142",
+    "lng": "41.2905104",
+    "routes": [
+      "G9",
+      "K11",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30007",
+    "stopName": "YAKUTİYE 25 NOLU DURAĞI",
+    "lat": "39.940986",
+    "lng": "41.2897229",
+    "routes": [
+      "G9",
+      "K11",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30006",
+    "stopName": "YAKUTİYE 26 NOLU DURAĞI",
+    "lat": "39.9386784",
+    "lng": "41.2888726",
+    "routes": [
+      "G9",
+      "K11",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30005",
+    "stopName": "YAKUTİYE 27 NOLU DURAĞI",
+    "lat": "39.9372986",
+    "lng": "41.2883046",
+    "routes": [
+      "G9",
+      "K11",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30004",
+    "stopName": "YAKUTİYE 28 NOLU DURAĞI",
+    "lat": "39.9357001",
+    "lng": "41.2876967",
+    "routes": [
+      "G9",
+      "K11",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30003",
+    "stopName": "YAKUTİYE 29 NOLU DURAĞI",
+    "lat": "39.9325157",
+    "lng": "41.2863755",
+    "routes": [
+      "G9",
+      "K11",
+      "K3",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30001",
+    "stopName": "SANAYİ GEÇİT YAKUTİYE 222 NOLU DURAĞI",
+    "lat": "39.9218247",
+    "lng": "41.2788826",
+    "routes": [
+      "G9",
+      "K2",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "20072",
+    "stopName": "PALANDÖKEN 37 NOLU DURAĞI",
+    "lat": "39.8841419",
+    "lng": "41.2408919",
+    "routes": [
+      "G9"
+    ]
+  },
+  {
+    "stopId": "30000",
+    "stopName": "YAKUTİYE 223 NOLU DURAĞI",
+    "lat": "39.9214588",
+    "lng": "41.2791924",
+    "routes": [
+      "G9",
+      "K2",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30002",
+    "stopName": "YAKUTİYE 30 NOLU DURAĞI",
+    "lat": "39.9275303",
+    "lng": "41.2844162",
+    "routes": [
+      "G9",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30035",
+    "stopName": "YAKUTİYE 13 NOLU DURAĞI",
+    "lat": "39.9430343",
+    "lng": "41.2985397",
+    "routes": [
+      "G9",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30033",
+    "stopName": "YAKUTİYE 15 NOLU DURAĞI",
+    "lat": "39.9458883",
+    "lng": "41.3012665",
+    "routes": [
+      "G9",
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30015",
+    "stopName": "YAKUTİYE 18 NOLU DURAĞI",
+    "lat": "39.9461412",
+    "lng": "41.3055677",
+    "routes": [
+      "G9",
+      "K11",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30326",
+    "stopName": "DADAŞKÖY YAKUTİYE 264 NOLU DURAĞI",
+    "lat": "39.9436992",
+    "lng": "41.2550564",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K1/A"
+    ]
+  },
+  {
+    "stopId": "30327",
+    "stopName": "YAKUTİYE 263 NOLU DURAĞI",
+    "lat": "39.9328248",
+    "lng": "41.2615667",
+    "routes": [
+      "K1"
+    ]
+  },
+  {
+    "stopId": "30328",
+    "stopName": "YAKUTİYE 195 NOLU DURAĞI",
+    "lat": "39.9273771",
+    "lng": "41.2660376",
+    "routes": [
+      "K1",
+      "K10"
+    ]
+  },
+  {
+    "stopId": "30329",
+    "stopName": "YAKUTİYE 196 NOLU DURAĞI",
+    "lat": "39.9262306",
+    "lng": "41.2666908",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30330",
+    "stopName": "YAKUTİYE 197 NOLU DURAĞI",
+    "lat": "39.9243456",
+    "lng": "41.2678034",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30331",
+    "stopName": "YAKUTİYE 198 NOLU DURAĞI",
+    "lat": "39.9226929",
+    "lng": "41.2687165",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30332",
+    "stopName": "YAKUTİYE 199 NOLU DURAĞI",
+    "lat": "39.9216012",
+    "lng": "41.269327",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30321",
+    "stopName": "YAKUTİYE 181 NOLU DURAĞI",
+    "lat": "39.91972",
+    "lng": "41.2696204",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30319",
+    "stopName": "YAKUTİYE 182 NOLU DURAĞI",
+    "lat": "39.9186919",
+    "lng": "41.2678683",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30316",
+    "stopName": "YAKUTİYE 183 NOLU DURAĞI",
+    "lat": "39.9176237",
+    "lng": "41.26592",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30315",
+    "stopName": "YAKUTİYE 184 NOLU DURAĞI",
+    "lat": "39.9166187",
+    "lng": "41.2647669",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "3349",
+    "stopName": "YAKUTİYE BOSTANCIOĞLU",
+    "lat": "39.914501",
+    "lng": "41.2642676",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30313",
+    "stopName": "YAKUTİYE 176 NOLU DURAĞI",
+    "lat": "39.9124477",
+    "lng": "41.2650449",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7",
+      "K7/A",
+      "M11",
+      "M13",
+      "M14"
+    ]
+  },
+  {
+    "stopId": "30314",
+    "stopName": "YAKUTİYE 177 NOLU DURAĞI",
+    "lat": "39.9161426",
+    "lng": "41.2646429",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30317",
+    "stopName": "YAKUTİYE 178 NOLU DURAĞI",
+    "lat": "39.917723",
+    "lng": "41.266494",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30318",
+    "stopName": "YAKUTİYE 179 NOLU DURAĞI",
+    "lat": "39.9184574",
+    "lng": "41.2679983",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30320",
+    "stopName": "YAKUTİYE 180 NOLU DURAĞI",
+    "lat": "39.9191964",
+    "lng": "41.2693609",
+    "routes": [
+      "K1",
+      "K1/A",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30322",
+    "stopName": "YAKUTİYE 191 NOLU DURAĞI",
+    "lat": "39.9218657",
+    "lng": "41.2694692",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30323",
+    "stopName": "YAKUTİYE 192 NOLU DURAĞI",
+    "lat": "39.9227836",
+    "lng": "41.2689616",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30324",
+    "stopName": "YAKUTİYE 193 NOLU DURAĞI",
+    "lat": "39.9246462",
+    "lng": "41.267885",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30325",
+    "stopName": "YAKUTİYE 194 NOLU DURAĞI",
+    "lat": "39.9266108",
+    "lng": "41.2667722",
+    "routes": [
+      "K1",
+      "K10",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30234",
+    "stopName": "YAKUTİYE 204 NOLU DURAĞI",
+    "lat": "39.9272865",
+    "lng": "41.2642692",
+    "routes": [
+      "K1/A",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30238",
+    "stopName": "YAKUTİYE 203 NOLU DURAĞI",
+    "lat": "39.9274506",
+    "lng": "41.2648736",
+    "routes": [
+      "K1/A",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30024",
+    "stopName": "YAKUTİYE 20 NOLU DURAĞI",
+    "lat": "39.9519747",
+    "lng": "41.3072126",
+    "routes": [
+      "K10",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30025",
+    "stopName": "YAKUTİYE 21 NOLU DURAĞI",
+    "lat": "39.9531149",
+    "lng": "41.3055985",
+    "routes": [
+      "K10",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30026",
+    "stopName": "YAKUTİYE 22 NOLU DURAĞI",
+    "lat": "39.9523277",
+    "lng": "41.3039643",
+    "routes": [
+      "K10",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30038",
+    "stopName": "YAKUTİYE 08 NOLU DURAĞI",
+    "lat": "39.9465147",
+    "lng": "41.2993346",
+    "routes": [
+      "K10"
+    ]
+  },
+  {
+    "stopId": "30037",
+    "stopName": "YAKUTİYE 09 NOLU DURAĞI",
+    "lat": "39.9448645",
+    "lng": "41.2978285",
+    "routes": [
+      "K10"
+    ]
+  },
+  {
+    "stopId": "30229",
+    "stopName": "YAKUTİYE 239 NOLU DURAĞI",
+    "lat": "39.9347086",
+    "lng": "41.2814865",
+    "routes": [
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30228",
+    "stopName": "YAKUTİYE 238 NOLU DURAĞI",
+    "lat": "39.9362175",
+    "lng": "41.2798014",
+    "routes": [
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30226",
+    "stopName": "YAKUTİYE 236 NOLU DURAĞI",
+    "lat": "39.9367075",
+    "lng": "41.2771142",
+    "routes": [
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30223",
+    "stopName": "TEDAŞ YAKUTİYE 233 NOLU DURAĞI",
+    "lat": "39.935585",
+    "lng": "41.2761351",
+    "routes": [
+      "K10",
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30220",
+    "stopName": "YAKUTİYE 231 NOLU DURAĞI",
+    "lat": "39.9330924",
+    "lng": "41.276793",
+    "routes": [
+      "K10",
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30219",
+    "stopName": "YAKUTİYE 227 NOLU DURAĞI",
+    "lat": "39.9318485",
+    "lng": "41.2771296",
+    "routes": [
+      "K10",
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30262",
+    "stopName": "YAKUTİYE 217 NOLU DURAĞI",
+    "lat": "39.9274508",
+    "lng": "41.2760479",
+    "routes": [
+      "K10",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30263",
+    "stopName": "YAKUTİYE 216 NOLU DURAĞI",
+    "lat": "39.927114",
+    "lng": "41.2753093",
+    "routes": [
+      "K10",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30264",
+    "stopName": "YAKUTİYE 214 NOLU DURAĞI",
+    "lat": "39.9264096",
+    "lng": "41.2733848",
+    "routes": [
+      "K10",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30256",
+    "stopName": "YAKUTİYE 213 NOLU DURAĞI",
+    "lat": "39.9278284",
+    "lng": "41.2724548",
+    "routes": [
+      "K10",
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30231",
+    "stopName": "YAKUTİYE 210 NOLU DURAĞI",
+    "lat": "39.9299358",
+    "lng": "41.2708913",
+    "routes": [
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30232",
+    "stopName": "YAKUTİYE 209 NOLU DURAĞI",
+    "lat": "39.9291136",
+    "lng": "41.2687948",
+    "routes": [
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30233",
+    "stopName": "YAKUTİYE 208 NOLU DURAĞI",
+    "lat": "39.9282109",
+    "lng": "41.2665159",
+    "routes": [
+      "K10",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30345",
+    "stopName": "İSTASYON SEVK İDARE -1",
+    "lat": "39.915683",
+    "lng": "41.270809",
+    "routes": [
+      "K11",
+      "M16",
+      "M17",
+      "NA1",
+      "NA2",
+      "NAO"
+    ]
+  },
+  {
+    "stopId": "30036",
+    "stopName": "YAKUTİYE 14 NOLU DURAĞI",
+    "lat": "39.9443352",
+    "lng": "41.299801",
+    "routes": [
+      "K11"
+    ]
+  },
+  {
+    "stopId": "30020",
+    "stopName": "YAKUTİYE 19 NOLU DURAĞI",
+    "lat": "39.9481337",
+    "lng": "41.3067261",
+    "routes": [
+      "K11",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30042",
+    "stopName": "YAKUTİYE 280 NOLU DURAĞI",
+    "lat": "39.9511713",
+    "lng": "41.293025",
+    "routes": [
+      "K11",
+      "M10",
+      "M17",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30043",
+    "stopName": "YAKUTİYE 279 NOLU DURAĞI",
+    "lat": "39.9543179",
+    "lng": "41.2941951",
+    "routes": [
+      "K11",
+      "M10",
+      "M17",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30113",
+    "stopName": "YAKUTİYE 289 NOLU DURAĞI",
+    "lat": "39.914641",
+    "lng": "41.279996",
+    "routes": [
+      "K11",
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30225",
+    "stopName": "ŞIH KÖYÜ YAKUTİYE 235 NOLU DURAĞI",
+    "lat": "39.9511458",
+    "lng": "41.270582",
+    "routes": [
+      "K2",
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30224",
+    "stopName": "YAKUTİYE 234 NOLU DURAĞI",
+    "lat": "39.9419444",
+    "lng": "41.2742546",
+    "routes": [
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30252",
+    "stopName": "YAKUTİYE 302 NOLU DURAĞI",
+    "lat": "39.9297041",
+    "lng": "41.2742339",
+    "routes": [
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30253",
+    "stopName": "YAKUTİYE 299 NOLU DURAĞI",
+    "lat": "39.9285754",
+    "lng": "41.2731958",
+    "routes": [
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30255",
+    "stopName": "YAKUTİYE 212 NOLU DURAĞI",
+    "lat": "39.9264802",
+    "lng": "41.2727353",
+    "routes": [
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30259",
+    "stopName": "YAKUTİYE 215 NOLU DURAĞI",
+    "lat": "39.9264123",
+    "lng": "41.2737638",
+    "routes": [
+      "K2"
+    ]
+  },
+  {
+    "stopId": "30260",
+    "stopName": "BEŞEVLER YAKUTİYE 218 NOLU DURAĞI",
+    "lat": "39.9279913",
+    "lng": "41.2776707",
+    "routes": [
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30212",
+    "stopName": "YAKUTİYE 221 NOLU DURAĞI",
+    "lat": "39.9225104",
+    "lng": "41.2787297",
+    "routes": [
+      "K2",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30213",
+    "stopName": "YAKUTİYE 274 NOLU DURAĞI",
+    "lat": "39.923348",
+    "lng": "41.2786064",
+    "routes": [
+      "K2",
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30214",
+    "stopName": "YAKUTİYE 224 NOLU DURAĞI",
+    "lat": "39.9251388",
+    "lng": "41.2784575",
+    "routes": [
+      "K2",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30216",
+    "stopName": "BEŞEVLER YAKUTİYE 219 NOLU DURAĞI",
+    "lat": "39.927582",
+    "lng": "41.2779415",
+    "routes": [
+      "K2",
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30217",
+    "stopName": "YAKUTİYE 225 NOLU DURAĞI",
+    "lat": "39.9307413",
+    "lng": "41.2774383",
+    "routes": [
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30218",
+    "stopName": "YAKUTİYE 226 NOLU DURAĞI",
+    "lat": "39.9320205",
+    "lng": "41.2772469",
+    "routes": [
+      "K2",
+      "K2",
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30221",
+    "stopName": "YAKUTİYE 230 NOLU DURAĞI",
+    "lat": "39.9333813",
+    "lng": "41.2769301",
+    "routes": [
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30222",
+    "stopName": "YAKUTİYE 232 NOLU DURAĞI",
+    "lat": "39.9357151",
+    "lng": "41.2762929",
+    "routes": [
+      "K2",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30016",
+    "stopName": "YAKUTİYE 282 NOLU DURAĞI",
+    "lat": "39.9480039",
+    "lng": "41.3007434",
+    "routes": [
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30039",
+    "stopName": "YAKUTİYE 23 NOLU DURAĞI",
+    "lat": "39.9450736",
+    "lng": "41.2947029",
+    "routes": [
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30261",
+    "stopName": "YAKUTİYE 229 NOLU DURAĞI",
+    "lat": "39.9313819",
+    "lng": "41.2792709",
+    "routes": [
+      "K3"
+    ]
+  },
+  {
+    "stopId": "30215",
+    "stopName": "YAKUTİYE 220 NOLU DURAĞI",
+    "lat": "39.9250962",
+    "lng": "41.2782946",
+    "routes": [
+      "K3",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30097",
+    "stopName": "OTOGAR YAKUTİYE 303 NOLU DURAĞI",
+    "lat": "39.9614557",
+    "lng": "41.2202555",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30096",
+    "stopName": "YAKUTİYE 273 NOLU DURAĞI",
+    "lat": "39.9610982",
+    "lng": "41.2209697",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30082",
+    "stopName": "YAKUTİYE 155 NOLU DURAĞI",
+    "lat": "39.9178007",
+    "lng": "41.2262243",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30081",
+    "stopName": "YAKUTİYE 152 NOLU DURAĞI",
+    "lat": "39.9179904",
+    "lng": "41.226347",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30080",
+    "stopName": "YAKUTİYE 151 NOLU DURAĞI",
+    "lat": "39.9167656",
+    "lng": "41.2321117",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30079",
+    "stopName": "YAKUTİYE 156 NOLU DURAĞI",
+    "lat": "39.9164635",
+    "lng": "41.2326226",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30078",
+    "stopName": "YAKUTİYE 150 NOLU DURAĞI",
+    "lat": "39.9162223",
+    "lng": "41.2347118",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30077",
+    "stopName": "YAKUTİYE 149 NOLU DURAĞI",
+    "lat": "39.9154746",
+    "lng": "41.2380602",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "30076",
+    "stopName": "YAKUTİYE 148 NOLU DURAĞI",
+    "lat": "39.914871",
+    "lng": "41.240952",
+    "routes": [
+      "K4"
+    ]
+  },
+  {
+    "stopId": "20037",
+    "stopName": "PALANDÖKEN 60 NOLU DURAĞI",
+    "lat": "39.880107",
+    "lng": "41.232852",
+    "routes": [
+      "K5",
+      "K6",
+      "K7"
+    ]
+  },
+  {
+    "stopId": "20036",
+    "stopName": "PALANDÖKEN 43 NOLU DURAĞI",
+    "lat": "39.874902",
+    "lng": "41.23705",
+    "routes": [
+      "K5",
+      "K6",
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30244",
+    "stopName": "YAKUTİYE 254 NOLU DURAĞI",
+    "lat": "39.9256205",
+    "lng": "41.2928379",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30245",
+    "stopName": "YAKUTİYE 255 NOLU DURAĞI",
+    "lat": "39.9295179",
+    "lng": "41.2970791",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30246",
+    "stopName": "TEKSTİLKENT YAKUTİYE 260 NOLU DURAĞI",
+    "lat": "39.9342699",
+    "lng": "41.304791",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30247",
+    "stopName": "YAKUTİYE 265 NOLU DURAĞI",
+    "lat": "39.9338955",
+    "lng": "41.2951069",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30248",
+    "stopName": "YAKUTİYE 301 NOLU DURAĞI",
+    "lat": "39.9332327",
+    "lng": "41.2944531",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30249",
+    "stopName": "YAKUTİYE 256 NOLU DURAĞI",
+    "lat": "39.9294225",
+    "lng": "41.2936567",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30250",
+    "stopName": "YAKUTİYE 257 NOLU DURAĞI",
+    "lat": "39.924585",
+    "lng": "41.2876409",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30251",
+    "stopName": "YAKUTİYE 258 NOLU DURAĞI",
+    "lat": "39.9179493",
+    "lng": "41.2808681",
+    "routes": [
+      "K6"
+    ]
+  },
+  {
+    "stopId": "30344",
+    "stopName": "HİLALKENT SEVK İDARE -1",
+    "lat": "39.951605",
+    "lng": "41.310482",
+    "routes": [
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30257",
+    "stopName": "YAKUTİYE 297 NOLU DURAĞI",
+    "lat": "39.9235844",
+    "lng": "41.2742405",
+    "routes": [
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30258",
+    "stopName": "YAKUTİYE 298 NOLU DURAĞI",
+    "lat": "39.9252922",
+    "lng": "41.2735711",
+    "routes": [
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30235",
+    "stopName": "YAKUTİYE 205 NOLU DURAĞI",
+    "lat": "39.9261253",
+    "lng": "41.261299",
+    "routes": [
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30236",
+    "stopName": "YAKUTİYE 207 NOLU DURAĞI",
+    "lat": "39.9255108",
+    "lng": "41.2597846",
+    "routes": [
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30338",
+    "stopName": "YAKUTİYE 188 NOLU DURAĞI",
+    "lat": "39.9238798",
+    "lng": "41.2585754",
+    "routes": [
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30339",
+    "stopName": "YAKUTİYE 189 NOLU DURAĞI",
+    "lat": "39.9195369",
+    "lng": "41.261093",
+    "routes": [
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30334",
+    "stopName": "YAKUTİYE 174 NOLU DURAĞI",
+    "lat": "39.9151929",
+    "lng": "41.2594025",
+    "routes": [
+      "K7"
+    ]
+  },
+  {
+    "stopId": "30336",
+    "stopName": "YAKUTİYE 186 NOLU DURAĞI",
+    "lat": "39.9196116",
+    "lng": "41.2613776",
+    "routes": [
+      "K7",
+      "M13",
+      "M14"
+    ]
+  },
+  {
+    "stopId": "30337",
+    "stopName": "YAKUTİYE 187 NOLU DURAĞI",
+    "lat": "39.9239297",
+    "lng": "41.258956",
+    "routes": [
+      "K7",
+      "M13",
+      "M14"
+    ]
+  },
+  {
+    "stopId": "30254",
+    "stopName": "YAKUTİYE 211 NOLU DURAĞI",
+    "lat": "39.929047",
+    "lng": "41.2716809",
+    "routes": [
+      "K7",
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30227",
+    "stopName": "YAKUTİYE 237 NOLU DURAĞI",
+    "lat": "39.9381321",
+    "lng": "41.2780237",
+    "routes": [
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "20034",
+    "stopName": "PALANDÖKEN 46 NOLU DURAĞI",
+    "lat": "39.8756392",
+    "lng": "41.2325131",
+    "routes": [
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30013",
+    "stopName": "YAKUTİYE 283 NOLU DURAĞI",
+    "lat": "39.9447398",
+    "lng": "41.302334",
+    "routes": [
+      "K7/A"
+    ]
+  },
+  {
+    "stopId": "30041",
+    "stopName": "YAKUTİYE 281 NOLU DURAĞI",
+    "lat": "39.9487794",
+    "lng": "41.2916641",
+    "routes": [
+      "M10",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30049",
+    "stopName": "YAKUTİYE 295 NOLU DURAĞI",
+    "lat": "40.0365685",
+    "lng": "41.3297083",
+    "routes": [
+      "M10",
+      "M7",
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30285",
+    "stopName": "YAKUTİYE 308 NOLU DURAĞI",
+    "lat": "40.2078433",
+    "lng": "41.4687593",
+    "routes": [
+      "M10"
+    ]
+  },
+  {
+    "stopId": "30272",
+    "stopName": "YAKUTİYE 309 NOLU DURAĞI",
+    "lat": "40.1547675",
+    "lng": "41.367714",
+    "routes": [
+      "M10"
+    ]
+  },
+  {
+    "stopId": "30050",
+    "stopName": "YAKUTİYE 294 NOLU DURAĞI",
+    "lat": "40.0310169",
+    "lng": "41.32393",
+    "routes": [
+      "M10",
+      "M17",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30051",
+    "stopName": "YAKUTİYE 292 NOLU DURAĞI",
+    "lat": "39.9623393",
+    "lng": "41.2965347",
+    "routes": [
+      "M10",
+      "M17",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30095",
+    "stopName": "ÇİFTLİK YAKUTİYE 300 NOLU DURAĞI",
+    "lat": "39.9434786",
+    "lng": "41.2112178",
+    "routes": [
+      "M11"
+    ]
+  },
+  {
+    "stopId": "30351",
+    "stopName": "TAŞLI GÜNEY",
+    "lat": "39.808397",
+    "lng": "41.118613",
+    "routes": [
+      "M12"
+    ]
+  },
+  {
+    "stopId": "30350",
+    "stopName": "KÜMBET DURAĞI",
+    "lat": "39.80834",
+    "lng": "41.084243",
+    "routes": [
+      "M12"
+    ]
+  },
+  {
+    "stopId": "30349",
+    "stopName": "GÜZELYURT DURAĞI",
+    "lat": "39.792579",
+    "lng": "41.035963",
+    "routes": [
+      "M12"
+    ]
+  },
+  {
+    "stopId": "30335",
+    "stopName": "YAKUTİYE 185 NOLU DURAĞI",
+    "lat": "39.9176183",
+    "lng": "41.2622805",
+    "routes": [
+      "M13",
+      "M14"
+    ]
+  },
+  {
+    "stopId": "10178",
+    "stopName": "BAŞÇAKMAK",
+    "lat": "40.003754",
+    "lng": "40.883796",
+    "routes": [
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10179",
+    "stopName": "GELİNKAYA",
+    "lat": "40.02198",
+    "lng": "40.91521",
+    "routes": [
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10180",
+    "stopName": "YONCALIK KÖYÜ",
+    "lat": "40.054342",
+    "lng": "40.925961",
+    "routes": [
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10181",
+    "stopName": "ESKİPOLAT",
+    "lat": "40.073475",
+    "lng": "40.935016",
+    "routes": [
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10182",
+    "stopName": "SORKUNLU",
+    "lat": "40.079098",
+    "lng": "40.959917",
+    "routes": [
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10177",
+    "stopName": "EĞERTİ",
+    "lat": "40.10617",
+    "lng": "40.976429",
+    "routes": [
+      "M15"
+    ]
+  },
+  {
+    "stopId": "10159",
+    "stopName": "AZİZİYE 160 NOLU DURAĞI",
+    "lat": "39.8924808",
+    "lng": "41.1714019",
+    "routes": [
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10161",
+    "stopName": "AZİZİYE 162 NOLU DURAĞI",
+    "lat": "39.8727242",
+    "lng": "41.127978",
+    "routes": [
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30366",
+    "stopName": "SAKALIKESİK",
+    "lat": "39.844142",
+    "lng": "41.100972",
+    "routes": [
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30365",
+    "stopName": "DEREBOĞAZI",
+    "lat": "39.81841",
+    "lng": "41.025803",
+    "routes": [
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30367",
+    "stopName": "ÖZBEK",
+    "lat": "39.828463",
+    "lng": "41.063097",
+    "routes": [
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30368",
+    "stopName": "AŞAĞI YENİCE",
+    "lat": "39.852896",
+    "lng": "41.017113",
+    "routes": [
+      "M16"
+    ]
+  },
+  {
+    "stopId": "30369",
+    "stopName": "YUKARI YENİCE",
+    "lat": "39.866451",
+    "lng": "40.991986",
+    "routes": [
+      "M16"
+    ]
+  },
+  {
+    "stopId": "10166",
+    "stopName": "YARIMCA AZİZİYE 159 NOLU DURAĞI",
+    "lat": "39.8927272",
+    "lng": "41.1734525",
+    "routes": [
+      "M16",
+      "M3"
+    ]
+  },
+  {
+    "stopId": "30275",
+    "stopName": "YAKUTİYE 317 NOLU DURAĞI",
+    "lat": "40.0309051",
+    "lng": "41.3103858",
+    "routes": [
+      "M17",
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30671",
+    "stopName": "YEŞİLYAYLA",
+    "lat": "40.054231",
+    "lng": "41.27923",
+    "routes": [
+      "M17"
+    ]
+  },
+  {
+    "stopId": "30670",
+    "stopName": "YOLGEÇTİ",
+    "lat": "40.029578",
+    "lng": "41.303873",
+    "routes": [
+      "M17"
+    ]
+  },
+  {
+    "stopId": "10165",
+    "stopName": "AZİZİYE 157 NOLU DURAĞI",
+    "lat": "39.9549922",
+    "lng": "41.0574362",
+    "routes": [
+      "M2"
+    ]
+  },
+  {
+    "stopId": "10160",
+    "stopName": "TINAZLI AZİZİYE 161 NOLU DURAĞI",
+    "lat": "39.8907842",
+    "lng": "41.1433359",
+    "routes": [
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10163",
+    "stopName": "SÖĞÜTLÜ AZİZİYE 164 NOLU DURAĞI",
+    "lat": "39.8830482",
+    "lng": "41.1101517",
+    "routes": [
+      "M3"
+    ]
+  },
+  {
+    "stopId": "10162",
+    "stopName": "ADAÇAY AZİZİYE 163 NOLU DURAĞI",
+    "lat": "39.8716491",
+    "lng": "41.1269573",
+    "routes": [
+      "M3"
+    ]
+  },
+  {
+    "stopId": "88880",
+    "stopName": "Test 1",
+    "lat": "39.90169",
+    "lng": "41.26641",
+    "routes": [
+      "M4"
+    ]
+  },
+  {
+    "stopId": "30273",
+    "stopName": "YAKUTİYE 305 NOLU DURAĞI",
+    "lat": "39.9992444",
+    "lng": "41.3744732",
+    "routes": [
+      "M5"
+    ]
+  },
+  {
+    "stopId": "30274",
+    "stopName": "YAKUTİYE 318 NOLU DURAĞI",
+    "lat": "40.0315441",
+    "lng": "41.3312941",
+    "routes": [
+      "M6"
+    ]
+  },
+  {
+    "stopId": "30047",
+    "stopName": "YAKUTİYE 293 NOLU DURAĞI",
+    "lat": "40.0616726",
+    "lng": "41.3691269",
+    "routes": [
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30048",
+    "stopName": "YAKUTİYE 296 NOLU DURAĞI",
+    "lat": "40.0588805",
+    "lng": "41.3610334",
+    "routes": [
+      "M7",
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30044",
+    "stopName": "YAKUTİYE 277 NOLU DURAĞI",
+    "lat": "40.0646206",
+    "lng": "41.3560134",
+    "routes": [
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30045",
+    "stopName": "YAKUTİYE 276 NOLU DURAĞI",
+    "lat": "40.0632963",
+    "lng": "41.3606734",
+    "routes": [
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30046",
+    "stopName": "DUMLU YAKUTİYE 278 NOLU DURAĞI",
+    "lat": "40.0606105",
+    "lng": "41.3646218",
+    "routes": [
+      "M7"
+    ]
+  },
+  {
+    "stopId": "30276",
+    "stopName": "YAKUTİYE 316 NOLU DURAĞI",
+    "lat": "40.0340865",
+    "lng": "41.3073489",
+    "routes": [
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30277",
+    "stopName": "YAKUTİYE 315 NOLU DURAĞI",
+    "lat": "40.0560762",
+    "lng": "41.3156329",
+    "routes": [
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30278",
+    "stopName": "YAKUTİYE 313 NOLU DURAĞI",
+    "lat": "40.0705189",
+    "lng": "41.3349632",
+    "routes": [
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30279",
+    "stopName": "YAKUTİYE 314 NOLU DURAĞI",
+    "lat": "40.0843667",
+    "lng": "41.3140063",
+    "routes": [
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30280",
+    "stopName": "YAKUTİYE 312 NOLU DURAĞI",
+    "lat": "40.1022437",
+    "lng": "41.3482276",
+    "routes": [
+      "M8"
+    ]
+  },
+  {
+    "stopId": "30281",
+    "stopName": "YAKUTİYE 306 NOLU DURAĞI",
+    "lat": "40.0911061",
+    "lng": "41.3781428",
+    "routes": [
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30282",
+    "stopName": "YAKUTİYE 307 NOLU DURAĞI",
+    "lat": "40.090869",
+    "lng": "41.4298147",
+    "routes": [
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30283",
+    "stopName": "YAKUTİYE 310 NOLU DURAĞI",
+    "lat": "40.1181211",
+    "lng": "41.3993942",
+    "routes": [
+      "M9"
+    ]
+  },
+  {
+    "stopId": "30284",
+    "stopName": "YAKUTİYE 311 NOLU DURAĞI",
+    "lat": "40.1082729",
+    "lng": "41.3775171",
+    "routes": [
+      "M9"
+    ]
+  },
+  {
+    "stopId": "20035",
+    "stopName": "PALANDÖKEN 44 NOLU DURAĞI",
+    "lat": "39.8766089",
+    "lng": "41.2345884",
+    "routes": [
+      "T6"
+    ]
+  }
+]
