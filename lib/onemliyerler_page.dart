@@ -169,7 +169,7 @@ class _OnemliYerlerPageState extends State<OnemliYerlerPage>
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF1A237E), Color(0xFF64B5F6)],
+                colors: [Color(0xFF0D47A1), Color(0xFF1565C0), Color(0xFF1A237E)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
