@@ -258,7 +258,7 @@ Widget build(BuildContext context) {
 
 Widget _buildMainTab(Size size) {
   return SingleChildScrollView(
-    padding: const EdgeInsets.fromLTRB(24, 185, 24, 40), 
+    padding: const EdgeInsets.fromLTRB(24, 155, 24, 40), 
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
