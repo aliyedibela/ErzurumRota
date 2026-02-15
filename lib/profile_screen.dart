@@ -243,267 +243,266 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-
-  void _showCardDetail(UserCard card) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (ctx) => DraggableScrollableSheet(
-        initialChildSize: 0.9,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        builder: (_, scrollController) => ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF0D47A1).withOpacity(0.93),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-                border: Border.all(color: Colors.white.withOpacity(0.15)),
-              ),
-              child: ListView(
-                controller: scrollController,
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-                children: [
-
-                  Center(
-                    child: Container(
-                      width: 44, height: 5,
-                      decoration: BoxDecoration(
-                          color: Colors.white24, borderRadius: BorderRadius.circular(3))),
-                  ),
-                  const SizedBox(height: 20),
-
-
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(22),
+void _showCardDetail(UserCard card) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (ctx) => DraggableScrollableSheet(
+      initialChildSize: 0.9,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      builder: (_, scrollController) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF0D47A1).withOpacity(0.93),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              border: Border.all(color: Colors.white.withOpacity(0.15)),
+            ),
+            child: ListView(
+              controller: scrollController,
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+              children: [
+                Center(
+                  child: Container(
+                    width: 44, height: 5,
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF1565C0), Color(0xFF0D47A1)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.2)),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.blue.withOpacity(0.4),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8))
-                      ],
+                        color: Colors.white24, borderRadius: BorderRadius.circular(3))),
+                ),
+                const SizedBox(height: 20),
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(22),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1565C0), Color(0xFF0D47A1)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Row(children: [
-                        const Icon(Icons.nfc, color: Colors.white60, size: 26),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text('RFID',
-                              style: TextStyle(color: Colors.white70, fontSize: 11,
-                                  letterSpacing: 1.5)),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white.withOpacity(0.2)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.blue.withOpacity(0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8))
+                    ],
+                  ),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Row(children: [
+                      const Icon(Icons.nfc, color: Colors.white60, size: 26),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ]),
-                      const SizedBox(height: 18),
-                      Text(card.cardCode,
-                          style: const TextStyle(
-                              color: Colors.white54, fontSize: 13,
-                              fontFamily: 'monospace', letterSpacing: 3)),
-                      const SizedBox(height: 6),
-                      Text(card.cardNickname,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 18),
-                      Row(children: [
-                        const Text('BAKİYE',
-                            style: TextStyle(
-                                color: Colors.white38, fontSize: 11, letterSpacing: 2)),
-                        const Spacer(),
-                        Text('${card.balance.toStringAsFixed(2)} ₺',
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
-                      ]),
-                    ]),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  Row(children: [
-                    _statBox(Icons.calendar_today_outlined, 'Eklenme',
-                        _formatDate(card.addedAt)),
-                    const SizedBox(width: 12),
-                    _statBox(Icons.access_time_rounded, 'Son Kullanım',
-                        _formatDate(card.lastUsedAt)),
-                  ]),
-
-                  const SizedBox(height: 20),
-
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF42A5F5), 
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      elevation: 4,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                      _showIyzicoPayment(card);
-                    },
-                    icon: const Icon(Icons.payment, color: Colors.white, size: 22),
-                    label: const Text('Bakiye Yükle (Kart ile Ödeme)',
-                        style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  Row(children: [
-                    const Icon(Icons.receipt_long_outlined, color: Colors.white54, size: 16),
-                    const SizedBox(width: 8),
-                    const Text('Son İşlemler',
-                        style: TextStyle(
-                            color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600)),
-                  ]),
-                  const SizedBox(height: 10),
-
-                  FutureBuilder<List<dynamic>>(
-                    future: _svc.getCardHistory(card.cardCode),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: CircularProgressIndicator(color: Colors.white54),
-                          ),
-                        );
-                      }
-                      
-                      final logs = snapshot.data!;
-                      if (logs.isEmpty) {
-                        return Container(
-                          padding: const EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.07),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Text('Henüz işlem yok',
-                              style: TextStyle(color: Colors.white30),
-                              textAlign: TextAlign.center),
-                        );
-                      }
-                      
-                      return Column(
-                        children: logs.map((t) => Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.white.withOpacity(0.1)),
-                          ),
-                          child: Row(children: [
-                            Icon(
-                              t['Amount'] < 0 ? Icons.arrow_downward : Icons.arrow_upward,
-                              color: t['Amount'] < 0 ? Colors.redAccent : const Color(0xFF4CAF50),
-                              size: 20,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(t['Description'],
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
-                                  const SizedBox(height: 2),
-                                  Text(t['CreatedAt'].toString().substring(0, 16),
-                                      style: const TextStyle(color: Colors.white30, fontSize: 11)),
-                                ],
-                              ),
-                            ),
-                            Text('${t['Amount']} ₺',
-                                style: TextStyle(
-                                    color: t['Amount'] < 0 ? Colors.redAccent : const Color(0xFF4CAF50),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)),
-                          ]),
-                        )).toList(),
-                      );
-                    },
-                  ),
-
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.red.withOpacity(0.5)),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        child: const Text('RFID',
+                            style: TextStyle(color: Colors.white70, fontSize: 11,
+                                letterSpacing: 1.5)),
                       ),
-                      onPressed: () async {
-                        Navigator.pop(ctx);
-                        final confirm = await showDialog<bool>(
-                          context: context,
-                          builder: (c) => AlertDialog(
-                            backgroundColor: const Color(0xFF1A237E),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            title: const Text('Kartı Sil',
-                                style: TextStyle(color: Colors.white)),
-                            content: Text(
-                                '"${card.cardNickname}" kartını silmek istediğinizden emin misiniz?',
-                                style: const TextStyle(color: Colors.white70)),
-                            actions: [
-                              TextButton(
-                                  onPressed: () => Navigator.pop(c, false),
-                                  child: const Text('İptal',
-                                      style: TextStyle(color: Colors.white54))),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red.shade400),
-                                  onPressed: () => Navigator.pop(c, true),
-                                  child: const Text('Sil',
-                                      style: TextStyle(color: Colors.white))),
-                            ],
-                          ),
-                        );
-                        
-                        if (confirm == true) {
-                          setState(() => _loading = true);
-                          final res = await _svc.deleteCard(
-                              cardId: card.id, userId: _user!.id);
-                          setState(() => _loading = false);
-                          
-                          if (res['success']) {
-                            await _refresh();
-                            _snack('Kart silindi ✅', Colors.orange);
-                          } else {
-                            _snack(res['error'], Colors.red);
-                          }
-                        }
-                      },
-                      icon: const Icon(Icons.delete_outline,
-                          color: Colors.redAccent, size: 18),
-                      label: const Text('Kartı Kaldır',
-                          style: TextStyle(color: Colors.redAccent)),
-                    ),
+                    ]),
+                    const SizedBox(height: 18),
+                    Text(card.cardCode,
+                        style: const TextStyle(
+                            color: Colors.white54, fontSize: 13,
+                            fontFamily: 'monospace', letterSpacing: 3)),
+                    const SizedBox(height: 6),
+                    Text(card.cardNickname,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 18),
+                    Row(children: [
+                      const Text('BAKİYE',
+                          style: TextStyle(
+                              color: Colors.white38, fontSize: 11, letterSpacing: 2)),
+                      const Spacer(),
+                      Text('${card.balance.toStringAsFixed(2)} ₺',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
+                    ]),
+                  ]),
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(children: [
+                  _statBox(Icons.calendar_today_outlined, 'Eklenme',
+                      _formatDate(card.addedAt)),
+                  const SizedBox(width: 12),
+                  _statBox(Icons.access_time_rounded, 'Son Kullanım',
+                      _formatDate(card.lastUsedAt)),
+                ]),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF42A5F5), 
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    elevation: 4,
                   ),
-                ],
-              ),
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    _showIyzicoPayment(card);
+                  },
+                  icon: const Icon(Icons.currency_lira, color: Colors.white, size: 22),
+                  label: const Text('Bakiye Yükle (Kart ile Ödeme)',
+                      style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(children: [
+                  const Icon(Icons.receipt_long_outlined, color: Colors.white54, size: 16),
+                  const SizedBox(width: 8),
+                  const Text('Son İşlemler',
+                      style: TextStyle(
+                          color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600)),
+                ]),
+                const SizedBox(height: 10),
+
+                FutureBuilder<List<dynamic>>(
+                  future: _svc.getCardHistory(card.cardCode),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: CircularProgressIndicator(color: Colors.white54),
+                        ),
+                      );
+                    }
+                    
+                    final logs = snapshot.data!;
+                    if (logs.isEmpty) {
+                      return Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.07),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Text('Henüz işlem yok',
+                            style: TextStyle(color: Colors.white30),
+                            textAlign: TextAlign.center),
+                      );
+                    }
+         return Column(
+  children: logs.map((t) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
+      ),
+      child: Row(children: [
+        Icon(
+          t['Amount'] > 0 ? Icons.arrow_upward : Icons.arrow_downward,
+          color: t['Amount'] > 0 ? const Color(0xFF4CAF50) : Colors.redAccent,
+          size: 20,
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(t['Description'],
+                  style: const TextStyle(
+                      color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 2),
+              Text(t['CreatedAt'].toString().substring(0, 16),
+                  style: const TextStyle(color: Colors.white30, fontSize: 11)),
+            ],
+          ),
+        ),
+        Text('${t['Amount']} ₺',  
+            style: TextStyle(
+                color: t['Amount'] > 0 ? const Color(0xFF4CAF50) : Colors.redAccent,
+                fontWeight: FontWeight.bold,
+                fontSize: 15)),
+      ]),
+    );
+  }).toList(),
+);
+                  },
+                ),
+
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.red.withOpacity(0.5)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(ctx);
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (c) => AlertDialog(
+                          backgroundColor: const Color(0xFF1A237E),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          title: const Text('Kartı Sil',
+                              style: TextStyle(color: Colors.white)),
+                          content: Text(
+                              '"${card.cardNickname}" kartını silmek istediğinizden emin misiniz?',
+                              style: const TextStyle(color: Colors.white70)),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(c, false),
+                                child: const Text('İptal',
+                                    style: TextStyle(color: Colors.white54))),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red.shade400),
+                                onPressed: () => Navigator.pop(c, true),
+                                child: const Text('Sil',
+                                    style: TextStyle(color: Colors.white))),
+                          ],
+                        ),
+                      );
+                      
+                      if (confirm == true) {
+                        setState(() => _loading = true);
+                        final res = await _svc.deleteCard(
+                            cardId: card.id, userId: _user!.id);
+                        setState(() => _loading = false);
+                        
+                        if (res['success']) {
+                          await _refresh();
+                          _snack('Kart silindi ✅', Colors.orange);
+                        } else {
+                          _snack(res['error'], Colors.red);
+                        }
+                      }
+                    },
+                    icon: const Icon(Icons.delete_outline,
+                        color: Colors.redAccent, size: 18),
+                    label: const Text('Kartı Kaldır',
+                        style: TextStyle(color: Colors.redAccent)),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
   Widget _statBox(IconData icon, String label, String value) {
     return Expanded(
       child: Container(
@@ -1254,7 +1253,7 @@ class _IyzicoPaymentFormState extends State<IyzicoPaymentForm> {
               keyboardType: TextInputType.number,
               style: const TextStyle(color: Colors.white, fontSize: 16),
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.attach_money, color: Colors.white54),
+                prefixIcon: const Icon(Icons.currency_lira, color: Colors.white54),
                 hintText: 'Özel tutar girin',
                 hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
                 filled: true,

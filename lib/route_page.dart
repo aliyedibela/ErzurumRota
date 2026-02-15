@@ -206,6 +206,19 @@ Future<List<RouteOption>> _calculateTaxiOptions() async {
 
 
 void _showTaxiSelector() {
+
+  final userLocation = startPoint ?? LatLng(39.9042, 41.2670);
+  
+  final sortedStands = erzurumTaxiStands.map((stand) {
+    final distance = _dist(userLocation, stand.location);
+    return {'stand': stand, 'distance': distance};
+  }).toList()
+    ..sort((a, b) {
+  final distA = a['distance'] as double;
+  final distB = b['distance'] as double;
+  return distA.compareTo(distB);
+});
+
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -257,9 +270,15 @@ void _showTaxiSelector() {
                 Expanded(
                   child: ListView.builder(
                     controller: scrollController,
-                    itemCount: erzurumTaxiStands.length,
+                    itemCount: sortedStands.length,
                     itemBuilder: (ctx, index) {
-                      final stand = erzurumTaxiStands[index];
+                      final item = sortedStands[index];
+                      final stand = item['stand'] as TaxiStand;
+                      final distance = item['distance'] as double;
+                  
+                      final distanceText = distance < 1000
+                          ? '${distance.toStringAsFixed(0)} m'
+                          : '${(distance / 1000).toStringAsFixed(1)} km';
 
                       return Container(
                         margin: const EdgeInsets.symmetric(
@@ -284,13 +303,41 @@ void _showTaxiSelector() {
                               size: 24,
                             ),
                           ),
-                          title: Text(
-                            stand.name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          title: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  stand.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFF6F00).withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: const Color(0xFFFF6F00).withOpacity(0.5),
+                                  ),
+                                ),
+                                child: Text(
+                                  distanceText,
+                                  style: const TextStyle(
+                                    color: Color(0xFFFF6F00),
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           subtitle: Text(
                             stand.address,
@@ -342,8 +389,6 @@ void _showTaxiSelector() {
     },
   );
 }
-
-
 
 void _callTaxi(TaxiStand stand) async {
 
