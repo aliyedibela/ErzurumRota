@@ -583,119 +583,171 @@ Marker _buildSingleTaxiMarker(TaxiStand stand) {
 }
 
 void _showWaitingDialog(String requestId, TaxiStand stand) {
+  int remainingSeconds = 60; 
+  Timer? countdownTimer;
+
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (ctx) {
-      _waitingDialogCtx = ctx; 
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            gradient: const LinearGradient(
-              colors: [Color(0xFFFF8F00), Color(0xFFE65100)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.orange.withOpacity(0.4),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8))
-            ],
-          ),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.15),
-                    shape: BoxShape.circle,
+      _waitingDialogCtx = ctx;
+      
+      return StatefulBuilder(
+        builder: (context, setDialogState) {
+ 
+          countdownTimer?.cancel();
+          countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+            if (remainingSeconds > 0) {
+              setDialogState(() => remainingSeconds--);
+            } else {
+
+              timer.cancel();
+              if (_waitingDialogCtx != null) {
+                Navigator.of(_waitingDialogCtx!).pop();
+                _waitingDialogCtx = null;
+              }
+              _waitingRequestId = null;
+              _showResultDialog(accepted: false);
+            }
+          });
+
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFF8F00), Color(0xFFE65100)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.orange.withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8))
+                ],
+              ),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.local_taxi, color: Colors.white, size: 28),
+                    ),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text("Taksi Aranıyor",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ]),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(stand.name,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16)),
+                        const SizedBox(height: 8),
+                        Row(children: [
+                          const Icon(Icons.location_on, color: Colors.white70, size: 16),
+                          const SizedBox(width: 6),
+                          Expanded(child: Text(stand.address,
+                              style: const TextStyle(color: Colors.white70, fontSize: 13))),
+                        ]),
+                        const SizedBox(height: 4),
+                        Row(children: [
+                          const Icon(Icons.phone, color: Colors.white70, size: 16),
+                          const SizedBox(width: 6),
+                          Text(stand.phone,
+                              style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                        ]),
+                      ],
+                    ),
                   ),
-                  child: const Icon(Icons.local_taxi, color: Colors.white, size: 28),
-                ),
-                const SizedBox(width: 12),
-                const Expanded(
-                  child: Text("Taksi Aranıyor",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ]),
-              const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(stand.name,
-                        style: const TextStyle(
+                  const SizedBox(height: 24),
+                  const SizedBox(
+                    width: 48, height: 48,
+                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 4),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text("Sürücü onayı bekleniyor...",
+                      style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.timer_outlined, color: Colors.white70, size: 16),
+                        const SizedBox(width: 6),
+                        Text(
+                          "$remainingSeconds sn",
+                          style: const TextStyle(
                             color: Colors.white,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16)),
-                    const SizedBox(height: 8),
-                    Row(children: [
-                      const Icon(Icons.location_on, color: Colors.white70, size: 16),
-                      const SizedBox(width: 6),
-                      Expanded(child: Text(stand.address,
-                          style: const TextStyle(color: Colors.white70, fontSize: 13))),
-                    ]),
-                    const SizedBox(height: 4),
-                    Row(children: [
-                      const Icon(Icons.phone, color: Colors.white70, size: 16),
-                      const SizedBox(width: 6),
-                      Text(stand.phone,
-                          style: const TextStyle(color: Colors.white70, fontSize: 13)),
-                    ]),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              const SizedBox(
-                width: 48, height: 48,
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 4),
-              ),
-              const SizedBox(height: 12),
-              const Text("Sürücü onayı bekleniyor...",
-                  style: TextStyle(color: Colors.white70, fontSize: 14)),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.white54),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  onPressed: () {
-                    _waitingRequestId = null;
-                    _waitingDialogCtx = null;
-                    Navigator.pop(ctx);
-                  },
-                  child: const Text("İptal Et",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                ),
+                  
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.white54),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () {
+                        countdownTimer?.cancel();
+                        _waitingRequestId = null;
+                        _waitingDialogCtx = null;
+                        Navigator.pop(ctx);
+                      },
+                      child: const Text("İptal Et",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
     },
-  );
+  ).then((_) {
+    countdownTimer?.cancel();
+  });
 }
-
 Widget _infoRow(IconData icon, String label, String value) {
   return Row(children: [
     Icon(icon, color: Colors.white70, size: 18),
