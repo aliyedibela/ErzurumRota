@@ -140,7 +140,7 @@ final List<TaxiStand> erzurumTaxiStands = [
     TaxiStand(
     id: "erz_gez",
     name: "Erzurum Gez Taksi Durağı",
-    location: LatLng(339.912019, 41.266165),
+    location: LatLng(39.912019, 41.266165),
     phone: "+90 538 898 95 69",
     address: "Lalapaşa, Kuşkay Binasi Yanı, 25000 Yakutiye/Erzurum",
   ),
@@ -186,6 +186,13 @@ final List<TaxiStand> erzurumTaxiStands = [
     phone: "+90 543 714 25 00",
     address: "Hilalkent, 25200 Yakutiye/Erzurum",
   ),
+    TaxiStand(
+    id: "tashan",
+    name: "Erzurum Taşhan Taksi",
+    location: LatLng(39.908376, 41.273495),
+    phone: "+90 539 891 15 15",
+    address: "Rabia Ana, Adnan Menderes Caddesi, 25000 Yakutiye/Erzurum",
+  ),
       TaxiStand(
     id: "dadaskent_lokka",
     name: "Dadaşkent Lokka Taksi",
@@ -217,7 +224,7 @@ final List<TaxiStand> erzurumTaxiStands = [
         TaxiStand(
     id: "azel_park",
     name: "Azel Park Taksi",
-    location: LatLng(339.924292, 41.182855),
+    location: LatLng(39.924292, 41.182855),
     phone: "+90 507 220 82 25",
     address: "GezKöy Azel Park Taksi, Saltuklu, Dadaşkent Yolu, 25030 Aziziye/Erzurum",
   ),
