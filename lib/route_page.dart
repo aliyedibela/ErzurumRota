@@ -204,192 +204,228 @@ Future<List<RouteOption>> _calculateTaxiOptions() async {
   return taxiOptions;
 }
 
-
 void _showTaxiSelector() {
-
-  final userLocation = startPoint ?? LatLng(39.9042, 41.2670);
-  
-  final sortedStands = erzurumTaxiStands.map((stand) {
-    final distance = _dist(userLocation, stand.location);
-    return {'stand': stand, 'distance': distance};
-  }).toList()
-    ..sort((a, b) {
-  final distA = a['distance'] as double;
-  final distB = b['distance'] as double;
-  return distA.compareTo(distB);
-});
-
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (ctx) {
-      return DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.4,
-        maxChildSize: 0.9,
-        builder: (_, scrollController) {
-          return Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF1A1A1A),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(25),
-              ),
-              border: Border.all(
-                color: const Color(0xFFFF6F00).withOpacity(0.3),
-              ),
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 12),
-                Container(
-                  width: 50,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(3),
-                  ),
+      LatLng userLocation = startPoint ?? LatLng(39.9042, 41.2670);
+      bool isLocating = false;
+
+      List<Map<String, dynamic>> buildSorted(LatLng loc) {
+        return erzurumTaxiStands.map((stand) {
+          final distance = _dist(loc, stand.location);
+          return {'stand': stand, 'distance': distance};
+        }).toList()
+          ..sort((a, b) => (a['distance'] as double).compareTo(b['distance'] as double));
+      }
+
+      return StatefulBuilder(
+        builder: (ctx, setSheetState) {
+          final sortedStands = buildSorted(userLocation);
+
+          return DraggableScrollableSheet(
+            initialChildSize: 0.6,
+            minChildSize: 0.4,
+            maxChildSize: 0.9,
+            builder: (_, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1A1A),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
+                  border: Border.all(color: const Color(0xFFFF6F00).withOpacity(0.3)),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.local_taxi, color: Color(0xFFFF6F00), size: 26),
-                      SizedBox(width: 10),
-                      Text(
-                        "Taksi Durağı Seç",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 12),
+                    Container(
+                      width: 50,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(3),
                       ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: sortedStands.length,
-                    itemBuilder: (ctx, index) {
-                      final item = sortedStands[index];
-                      final stand = item['stand'] as TaxiStand;
-                      final distance = item['distance'] as double;
-                  
-                      final distanceText = distance < 1000
-                          ? '${distance.toStringAsFixed(0)} m'
-                          : '${(distance / 1000).toStringAsFixed(1)} km';
-
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2C2C2E),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: const Color(0xFFFF6F00).withOpacity(0.25),
-                          ),
-                        ),
-                        child: ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFF6F00).withOpacity(0.15),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.local_taxi,
-                              color: Color(0xFFFF6F00),
-                              size: 24,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.local_taxi, color: Color(0xFFFF6F00), size: 26),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Taksi Durağı Seç",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          title: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  stand.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFFF6F00).withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: const Color(0xFFFF6F00).withOpacity(0.5),
-                                  ),
-                                ),
-                                child: Text(
-                                  distanceText,
-                                  style: const TextStyle(
-                                    color: Color(0xFFFF6F00),
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Text(
-                            stand.address,
-                            style: const TextStyle(
-                              color: Colors.white54,
-                              fontSize: 12,
-                            ),
-                          ),
-                          trailing: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFFF6F00),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 8),
-                              elevation: 0,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              _callTaxi(stand);
-                            },
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.phone, size: 15, color: Colors.white),
-                                SizedBox(width: 4),
-                                Text(
-                                  "Çağır",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                          const Spacer(),
+                     GestureDetector(
+  onTap: isLocating
+      ? null
+      : () async {
+          setSheetState(() => isLocating = true);
+          final pos = await _getCurrentLocation();
+          setSheetState(() {
+            userLocation = LatLng(pos.latitude, pos.longitude);
+            isLocating = false;
+          });
+        },
+  child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    decoration: BoxDecoration(
+      color: const Color(0xFFFF6F00).withOpacity(0.15),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(
+        color: const Color(0xFFFF6F00).withOpacity(0.4),
+      ),
+    ),
+    child: isLocating
+        ? const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              color: Color(0xFFFF6F00),
+              strokeWidth: 2,
             ),
+          )
+        : const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.my_location, color: Color(0xFFFF6F00), size: 18),
+              SizedBox(width: 6),
+              Text(
+                "Konumumu Al",
+                style: TextStyle(
+                  color: Color(0xFFFF6F00),
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+  ),
+),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: sortedStands.length,
+                        itemBuilder: (ctx, index) {
+                          final item = sortedStands[index];
+                          final stand = item['stand'] as TaxiStand;
+                          final distance = item['distance'] as double;
+
+                          final distanceText = distance < 1000
+                              ? '${distance.toStringAsFixed(0)} m'
+                              : '${(distance / 1000).toStringAsFixed(1)} km';
+
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2C2C2E),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: const Color(0xFFFF6F00).withOpacity(0.25),
+                              ),
+                            ),
+                            child: ListTile(
+                              leading: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFF6F00).withOpacity(0.15),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.local_taxi,
+                                  color: Color(0xFFFF6F00),
+                                  size: 24,
+                                ),
+                              ),
+                              title: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      stand.name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFF6F00).withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: const Color(0xFFFF6F00).withOpacity(0.5),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      distanceText,
+                                      style: const TextStyle(
+                                        color: Color(0xFFFF6F00),
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Text(
+                                stand.address,
+                                style: const TextStyle(color: Colors.white54, fontSize: 12),
+                              ),
+                              trailing: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF6F00),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                  elevation: 0,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _callTaxi(stand);
+                                },
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.phone, size: 15, color: Colors.white),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      "Çağır",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           );
         },
       );
     },
   );
 }
-
 void _callTaxi(TaxiStand stand) async {
 
   if (startPoint == null) {
