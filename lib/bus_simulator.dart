@@ -1,25 +1,24 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:latlong2/latlong.dart';
 
+// 1. SADELEŞTİRİLMİŞ VE GÜÇLENDİRİLMİŞ OTOBÜS SINIFI
 class SimulatedBus {
+  String id;
   String lineName;
   List<LatLng> routePath;
-  double cachedTotalLength; 
-
-  int currentSegmentIndex;
-  double distanceTraveledInSegment;
+  double cachedTotalLength;
+  int durationMs; // Bu otobüsün seferi kaç milisaniye sürüyor
+  int timeOffsetMs; // Diğer otobüsle aralarındaki mesafe (Zaman farkı)
   LatLng currentLocation;
-  bool isWaiting;
-  int waitTicksLeft;
 
   SimulatedBus({
+    required this.id,
     required this.lineName,
     required this.routePath,
-    required this.cachedTotalLength, 
-    this.currentSegmentIndex = 0,
-    this.distanceTraveledInSegment = 0.0,
-    this.isWaiting = false,
-    this.waitTicksLeft = 0,
+    required this.cachedTotalLength,
+    required this.durationMs,
+    required this.timeOffsetMs,
   }) : currentLocation = routePath.isNotEmpty
            ? routePath[0]
            : const LatLng(0, 0);
@@ -30,12 +29,8 @@ class BusSimulationManager {
   Timer? _timer;
   final Function(List<SimulatedBus>) onUpdate;
   final Distance _dist = const Distance();
-
   Map<String, List<LatLng>> allRouteData = {};
   Map<String, double> _cachedRouteLengths = {};
-
-  static const int targetDurationMinutes = 30;
-  static const int stopWaitSeconds = 15;
 
   BusSimulationManager({required this.onUpdate});
 
@@ -55,150 +50,241 @@ class BusSimulationManager {
     }
   }
 
-  void startSimulation(String startLineKey, [List<LatLng>? initialPath]) {
-    if (!allRouteData.containsKey(startLineKey) && initialPath != null) {
-      allRouteData[startLineKey] = initialPath;
+  void startSimulation(String lineKey, [List<LatLng>? initialPath]) {
+    // 1. Yeni gelen rotayı kaydet
+    if (initialPath != null) {
+      allRouteData[lineKey] = initialPath;
       double totalLen = 0;
       for (int i = 0; i < initialPath.length - 1; i++) {
         totalLen += _dist(initialPath[i], initialPath[i + 1]);
       }
-      _cachedRouteLengths[startLineKey] = totalLen;
+      _cachedRouteLengths[lineKey] = totalLen;
     }
-    if (!allRouteData.containsKey(startLineKey)) return;
 
-    if (activeBuses.any((b) => b.lineName == startLineKey)) return;
+    // 2. Sadece ilgili yön için otobüs var mı kontrol et
+    // Eğer bu spesifik yön (örn: K10_Donus) zaten varsa ekleme yapma
+    if (activeBuses.any((b) => b.lineName == lineKey)) return;
 
-    final path = allRouteData[startLineKey]!;
-    final cachedLength = _cachedRouteLengths[startLineKey] ?? 0;
-    
-    final bus = SimulatedBus(
-      lineName: startLineKey,
-      routePath: path,
-      cachedTotalLength: cachedLength,
-    );
-    activeBuses.add(bus);
+    // 3. Sadece çağrılan yön için otobüs üret
+    // Bu sayede Gidis yüklendiğinde gidiş, Donus yüklendiğinde dönüş otobüsleri oluşur.
+    _spawnBusesForDirection(lineKey);
 
     if (_timer == null || !_timer!.isActive) {
       _startTimer();
     }
   }
 
+  void _spawnBusesForDirection(String key) {
+    if (!allRouteData.containsKey(key)) {
+      print("⚠️ $key için rota verisi henüz yok, otobüs oluşturulamadı.");
+      return;
+    }
+
+    final path = allRouteData[key]!;
+    final cachedLength = _cachedRouteLengths[key] ?? 0.1;
+
+    // Her yönün kendi "Random" seed'i olsun ki süreler gidiş-dönüşte farklı olsun
+    Random random = Random(key.hashCode);
+    int durationMins = 75 + random.nextInt(31); // 20-40 dk
+    int durationMs = durationMins * 60 * 1000;
+
+    for (int i = 0; i < 3; i++) {
+      int offsetMs = (durationMs ~/ 3) * i;
+
+      activeBuses.add(
+        SimulatedBus(
+          id: "${key}_Bus_$i",
+          lineName: key,
+          routePath: path,
+          cachedTotalLength: cachedLength,
+          durationMs: durationMs,
+          timeOffsetMs: offsetMs,
+        ),
+      );
+    }
+    print(
+      "✅ $key yönü için 2 otobüs oluşturuldu. Sefer süresi: $durationMins dk",
+    );
+  }
+
   void _startTimer() {
     _timer?.cancel();
-    const int tickMs = 300;
-
-    _timer = Timer.periodic(const Duration(milliseconds: tickMs), (timer) {
+    // Animasyon akıcı olsun diye saniyede 1 güncelliyoruz.
+    // Artık TickMs hesaplamaya gerek yok, saat kaçsa ona göre çizilecek.
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (activeBuses.isEmpty) return;
 
+      int nowMs = DateTime.now().millisecondsSinceEpoch;
+
       for (var bus in activeBuses) {
-        if (bus.isWaiting) {
-          bus.waitTicksLeft--;
-          if (bus.waitTicksLeft <= 0) {
-            bus.isWaiting = false;
-          }
-          continue;
-        }
-
-        double speedMps = bus.cachedTotalLength / (targetDurationMinutes * 60);
-        double stepDist = speedMps * (tickMs / 1000.0);
-
-        _moveSingleBus(bus, stepDist, tickMs);
+        _updateBusPosition(bus, nowMs);
       }
 
       onUpdate(activeBuses);
     });
   }
 
-  void _moveSingleBus(SimulatedBus bus, double stepDistance, int tickMs) {
+  // 🧠 MATEMATİK BÜYÜSÜ: Zamanı mesafeye çeviren fonksiyon
+  void _updateBusPosition(SimulatedBus bus, int nowMs) {
     if (bus.routePath.isEmpty) return;
 
-    LatLng startNode = bus.routePath[bus.currentSegmentIndex];
-    LatLng endNode = bus.routePath[bus.currentSegmentIndex + 1];
-    double segmentLength = _dist(startNode, endNode);
+    // Şu anki zaman + Otobüsün başlangıç farkı
+    int logicalTimeMs = nowMs + bus.timeOffsetMs;
 
-    if (segmentLength == 0) segmentLength = 0.001;
+    // Yüzdelik İlerleme (0.0 ile 1.0 arası). Modulo (%) sayesinde başa döner.
+    double progress = (logicalTimeMs % bus.durationMs) / bus.durationMs;
 
-    bus.distanceTraveledInSegment += stepDistance;
+    // Yüzdeyi metreye çevir
+    double targetDist = progress * bus.cachedTotalLength;
 
-    while (bus.distanceTraveledInSegment >= segmentLength) {
-      bus.isWaiting = true;
-      bus.waitTicksLeft = (stopWaitSeconds * 1000) ~/ tickMs;
-      bus.distanceTraveledInSegment = 0;
-      bus.currentLocation = endNode;
+    // Haritadaki tam GPS koordinatını bul
+    bus.currentLocation = _getPositionAtDistance(bus.routePath, targetDist);
+  }
 
-      bus.currentSegmentIndex++;
+  LatLng _getPositionAtDistance(List<LatLng> path, double targetDist) {
+    if (targetDist <= 0) return path.first;
 
-      if (bus.currentSegmentIndex >= bus.routePath.length - 1) {
-        _switchDirection(bus);
-        bus.isWaiting = false;
-        return;
+    double accumulated = 0.0;
+    for (int i = 0; i < path.length - 1; i++) {
+      double segLen = _dist(path[i], path[i + 1]);
+      if (accumulated + segLen >= targetDist) {
+        double ratio = (targetDist - accumulated) / segLen;
+        double lat =
+            path[i].latitude +
+            (path[i + 1].latitude - path[i].latitude) * ratio;
+        double lng =
+            path[i].longitude +
+            (path[i + 1].longitude - path[i].longitude) * ratio;
+        return LatLng(lat, lng);
       }
-
-      return;
+      accumulated += segLen;
     }
-
-    double ratio = bus.distanceTraveledInSegment / segmentLength;
-    double newLat =
-        startNode.latitude + (endNode.latitude - startNode.latitude) * ratio;
-    double newLng =
-        startNode.longitude + (endNode.longitude - startNode.longitude) * ratio;
-    bus.currentLocation = LatLng(newLat, newLng);
+    return path.last;
   }
 
-  void _switchDirection(SimulatedBus bus) {
-    String current = bus.lineName;
-    String nextLineKey = "";
-
-    if (current.endsWith("_Gidis")) {
-      nextLineKey = current.replaceAll("_Gidis", "_Donus");
-    } else if (current.endsWith("_Donus")) {
-      nextLineKey = current.replaceAll("_Donus", "_Gidis");
-    }
-
-    if (nextLineKey.isNotEmpty && allRouteData.containsKey(nextLineKey)) {
-      bus.lineName = nextLineKey;
-      bus.routePath = allRouteData[nextLineKey]!;
-      bus.cachedTotalLength = _cachedRouteLengths[nextLineKey] ?? 0; 
-      bus.currentSegmentIndex = 0;
-      bus.distanceTraveledInSegment = 0;
-    } else {
-      bus.currentSegmentIndex = 0;
-      bus.distanceTraveledInSegment = 0;
-    }
-  }
-
-  int? calculateEtaMinutes(String lineName, LatLng userStopLocation) {
+  // 👻 HAYALET ETA HESAPLAYICI (Sıfır RAM, Sadece Matematik)
+  int? getGhostEta(
+    String lineKey,
+    LatLng stopLoc,
+    Map<String, List<LatLng>> externalBusLines,
+  ) {
     try {
-      final bus = activeBuses.firstWhere((b) => b.lineName == lineName);
-      int stopIndex = _findNearestIndex(bus.routePath, userStopLocation);
-      if (bus.currentSegmentIndex >= stopIndex) return null;
-      
-      LatLng nextStop = bus.routePath[bus.currentSegmentIndex + 1];
-      double distToNext = _dist(bus.currentLocation, nextStop);
-      double segmentsDist = 0;
-      for (int i = bus.currentSegmentIndex + 1; i < stopIndex; i++) {
-        segmentsDist += _dist(bus.routePath[i], bus.routePath[i + 1]);
+      // 1. Rota verisi bizde yoksa external map'ten (RoutePage'den) al
+      if (!allRouteData.containsKey(lineKey) &&
+          externalBusLines.containsKey(lineKey)) {
+        allRouteData[lineKey] = externalBusLines[lineKey]!;
+
+        double totalLen = 0;
+        final path = externalBusLines[lineKey]!;
+        for (int i = 0; i < path.length - 1; i++) {
+          totalLen += _dist(path[i], path[i + 1]);
+        }
+        _cachedRouteLengths[lineKey] = totalLen;
       }
 
-      double speed = bus.cachedTotalLength / (targetDurationMinutes * 60);
-      double seconds = (distToNext + segmentsDist) / speed;
-      return (seconds / 60).ceil();
+      // Veri hala yoksa hesaplayamayız
+      if (!allRouteData.containsKey(lineKey)) return null;
+
+      final path = allRouteData[lineKey]!;
+      final totalLength = _cachedRouteLengths[lineKey] ?? 0.1;
+
+      // 2. Hattın süresini bul (Simülasyondaki aynı mantık)
+      Random random = Random(lineKey.hashCode);
+      int durationMins = 75 + random.nextInt(31); // 20-40 dk
+      int durationMs = durationMins * 60 * 1000;
+
+      // 3. Kullanıcının durağının başlangıca uzaklığı
+      double userDist = _getDistanceToPoint(path, stopLoc);
+      int minEta = 9999;
+
+      int nowMs = DateTime.now().millisecondsSinceEpoch;
+
+      // 4. 2 adet otobüs için matematiksel konumu bul
+      for (int i = 0; i < 3; i++) {
+        int offsetMs = (durationMs ~/ 3) * i;
+        int logicalTimeMs = nowMs + offsetMs;
+        double progress = (logicalTimeMs % durationMs) / durationMs;
+
+        double currentDist = progress * totalLength;
+
+        double distRemaining;
+        if (userDist >= currentDist) {
+          distRemaining = userDist - currentDist; // Otobüs henüz gelmedi
+        } else {
+          distRemaining =
+              (totalLength - currentDist) + userDist; // Otobüs tur atıp gelecek
+        }
+
+        double speed = totalLength / durationMs;
+        int etaMs = (distRemaining / speed).round();
+        int etaMins = (etaMs / 1000 / 60).ceil();
+
+        if (etaMins < minEta) {
+          minEta = etaMins;
+        }
+      }
+      return minEta;
     } catch (e) {
       return null;
     }
   }
 
-  int _findNearestIndex(List<LatLng> path, LatLng point) {
-    int bestIdx = 0;
+  // 🕒 YENİ ETA (TAHMİNİ VARIŞ) HESAPLAYICI (Sana en yakın otobüsü bulur)
+  int? calculateEtaMinutes(String lineName, LatLng userStopLocation) {
+    try {
+      final buses = activeBuses.where((b) => b.lineName == lineName).toList();
+      if (buses.isEmpty) return null;
+
+      double userDist = _getDistanceToPoint(
+        allRouteData[lineName]!,
+        userStopLocation,
+      );
+      int minEta = 9999;
+
+      for (var bus in buses) {
+        int nowMs = DateTime.now().millisecondsSinceEpoch;
+        int logicalTimeMs = nowMs + bus.timeOffsetMs;
+        double progress = (logicalTimeMs % bus.durationMs) / bus.durationMs;
+        double currentDist = progress * bus.cachedTotalLength;
+
+        double distRemaining;
+        if (userDist >= currentDist) {
+          distRemaining = userDist - currentDist; // Otobüs henüz gelmedi
+        } else {
+          distRemaining =
+              (bus.cachedTotalLength - currentDist) +
+              userDist; // Otobüs geçti, turlayıp gelecek
+        }
+
+        double speed = bus.cachedTotalLength / bus.durationMs; // ms başına hız
+        int etaMs = (distRemaining / speed).round();
+        int etaMins = (etaMs / 1000 / 60).ceil();
+
+        if (etaMins < minEta) {
+          minEta = etaMins;
+        }
+      }
+      return minEta;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  double _getDistanceToPoint(List<LatLng> path, LatLng point) {
+    int nearestIdx = 0;
     double minD = double.infinity;
     for (int i = 0; i < path.length; i++) {
-      final dist = _dist(point, path[i]);
-      if (dist < minD) {
-        minD = dist;
-        bestIdx = i;
+      final d = _dist(point, path[i]);
+      if (d < minD) {
+        minD = d;
+        nearestIdx = i;
       }
     }
-    return bestIdx;
+    double dist = 0.0;
+    for (int i = 0; i < nearestIdx; i++) {
+      dist += _dist(path[i], path[i + 1]);
+    }
+    return dist;
   }
 
   void stop() {

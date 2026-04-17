@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'taxi_stands.dart'; 
+import 'taxi_stands.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,8 +17,6 @@ import 'package:signalr_core/signalr_core.dart';
 import 'stops_layer.dart';
 import 'bus_simulator.dart';
 import 'utils/stop_utils.dart';
-
-
 
 class RoutePage extends StatefulWidget {
   final LatLng? startPoint;
@@ -51,1208 +49,1335 @@ class SegmentResult {
 }
 
 class _RoutePageState extends State<RoutePage> {
-
   List<LatLng>? bus1Segment;
   List<LatLng>? bus2Segment;
-  TaxiStand? selectedTaxiStand; 
-  bool showTaxiStands = false; 
-  List<Marker> _taxiStandMarkers = []; 
-  bool isRouteMode = false; 
+  TaxiStand? selectedTaxiStand;
+  bool showTaxiStands = false;
+  List<Marker> _taxiStandMarkers = [];
+  bool isRouteMode = false;
   bool showBusStops = true;
   List<dynamic>? _cachedStops;
   HubConnection? _hubConnection;
-bool _signalRConnected = false;
+  bool _signalRConnected = false;
   final Distance _dist = const Distance();
   BusSimulationManager? _simulationManager;
   List<Marker> _busMarkers = [];
   String? _waitingRequestId;
-BuildContext? _waitingDialogCtx;
+  BuildContext? _waitingDialogCtx;
 
-  double progress = 0.0; 
+  double progress = 0.0;
 
-
-void _showError(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(message)),
-  );
-}
-
-void _renderTaxiRouteOnMap(RouteOption opt) {
-  final lines = <Polyline>[];
-
-  if (opt.walk1.isNotEmpty) {
-    lines.add(
-      Polyline(
-        points: opt.walk1,
-        color: Colors.green,
-        strokeWidth: 5,
-      ),
-    );
+  void _showError(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  if (opt.bus1.isNotEmpty) {
-    lines.add(
-      Polyline(
-        points: opt.bus1,
-        color: const Color(0xFFFF6F00),
-        strokeWidth: 7,
-      ),
-    );
-  }
+  void _renderTaxiRouteOnMap(RouteOption opt) {
+    final lines = <Polyline>[];
 
-  setState(() {
-    polylines = lines;
-    suggestedLine = null; 
-    transferLine = null;
-    showBusStops = false;
-    
-
-    if (opt.taxiStand != null) {
-      selectedTaxiStand = opt.taxiStand;
-      showTaxiStands = true;
+    if (opt.walk1.isNotEmpty) {
+      lines.add(
+        Polyline(points: opt.walk1, color: Colors.green, strokeWidth: 5),
+      );
     }
-  });
 
+    if (opt.bus1.isNotEmpty) {
+      lines.add(
+        Polyline(
+          points: opt.bus1,
+          color: const Color(0xFFFF6F00),
+          strokeWidth: 7,
+        ),
+      );
+    }
 
-  final allPts = [...opt.walk1, ...opt.bus1];
-  if (allPts.isNotEmpty) {
-    final bounds = LatLngBounds.fromPoints(allPts);
-    mapController.fitCamera(
-      CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
+    setState(() {
+      polylines = lines;
+      suggestedLine = null;
+      transferLine = null;
+      showBusStops = false;
+
+      if (opt.taxiStand != null) {
+        selectedTaxiStand = opt.taxiStand;
+        showTaxiStands = true;
+      }
+    });
+
+    final allPts = [...opt.walk1, ...opt.bus1];
+    if (allPts.isNotEmpty) {
+      final bounds = LatLngBounds.fromPoints(allPts);
+      mapController.fitCamera(
+        CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
+      );
+    }
+  }
+
+  Future<List<RouteOption>> _calculateTaxiOptions() async {
+    if (startPoint == null || endPoint == null) return [];
+
+    final Distance dist = const Distance();
+    final List<RouteOption> taxiOptions = [];
+
+    final nearbyStands = TaxiStandUtils.findNearbyTaxiStands(startPoint!, 3000);
+
+    if (nearbyStands.isEmpty) {
+      print("⚠️ Yakınlarda taksi durağı bulunamadı");
+      return [];
+    }
+
+    nearbyStands.sort((a, b) {
+      final distA = dist(startPoint!, a.location);
+      final distB = dist(startPoint!, b.location);
+      return distA.compareTo(distB);
+    });
+
+    final topStands = nearbyStands.take(3).toList();
+
+    for (final stand in topStands) {
+      try {
+        final walkToStand = await _getRoute(
+          startPoint!,
+          stand.location,
+          mode: "walking",
+        );
+
+        final taxiRoute = await _getRoute(
+          stand.location,
+          endPoint!,
+          mode: "driving",
+        );
+
+        if (walkToStand.isEmpty || taxiRoute.isEmpty) continue;
+
+        final walkDistance = _polylineLength(walkToStand);
+        final taxiDistance = _polylineLength(taxiRoute);
+        final totalDistance = walkDistance + taxiDistance;
+
+        final fare = TaxiStandUtils.calculateEstimatedFare(taxiDistance);
+
+        taxiOptions.add(
+          RouteOption(
+            lineName: "Taksi (${stand.name})",
+            walk1: walkToStand,
+            bus1: taxiRoute,
+            walk2: [],
+            totalDistance: totalDistance,
+            isTransfer: false,
+            isTaxi: true,
+            taxiStand: stand,
+            estimatedFare: fare,
+            startStopName: stand.address,
+            endStopName: "Varış Noktası",
+          ),
+        );
+
+        print(
+          "🚕 Taksi seçeneği eklendi: ${stand.name} (${fare.toStringAsFixed(0)} TL)",
+        );
+      } catch (e) {
+        print("Taksi rotası hesaplanamadı (${stand.name}): $e");
+      }
+    }
+
+    return taxiOptions;
+  }
+
+  void _showTaxiSelector() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) {
+        LatLng userLocation = startPoint ?? LatLng(39.9042, 41.2670);
+        bool isLocating = false;
+
+        List<Map<String, dynamic>> buildSorted(LatLng loc) {
+          return erzurumTaxiStands.map((stand) {
+            final distance = _dist(loc, stand.location);
+            return {'stand': stand, 'distance': distance};
+          }).toList()..sort(
+            (a, b) =>
+                (a['distance'] as double).compareTo(b['distance'] as double),
+          );
+        }
+
+        return StatefulBuilder(
+          builder: (ctx, setSheetState) {
+            final sortedStands = buildSorted(userLocation);
+
+            return DraggableScrollableSheet(
+              initialChildSize: 0.6,
+              minChildSize: 0.4,
+              maxChildSize: 0.9,
+              builder: (_, scrollController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1A1A),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(25),
+                    ),
+                    border: Border.all(
+                      color: const Color(0xFFFF6F00).withOpacity(0.3),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Container(
+                        width: 50,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.white24,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.local_taxi,
+                              color: Color(0xFFFF6F00),
+                              size: 26,
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Taksi Durağı Seç",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: isLocating
+                                  ? null
+                                  : () async {
+                                      setSheetState(() => isLocating = true);
+                                      final pos = await _getCurrentLocation();
+                                      setSheetState(() {
+                                        userLocation = LatLng(
+                                          pos.latitude,
+                                          pos.longitude,
+                                        );
+                                        isLocating = false;
+                                      });
+                                    },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(
+                                    0xFFFF6F00,
+                                  ).withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: const Color(
+                                      0xFFFF6F00,
+                                    ).withOpacity(0.4),
+                                  ),
+                                ),
+                                child: isLocating
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          color: Color(0xFFFF6F00),
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.my_location,
+                                            color: Color(0xFFFF6F00),
+                                            size: 18,
+                                          ),
+                                          SizedBox(width: 6),
+                                          Text(
+                                            "Konumumu Al",
+                                            style: TextStyle(
+                                              color: Color(0xFFFF6F00),
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: sortedStands.length,
+                          itemBuilder: (ctx, index) {
+                            final item = sortedStands[index];
+                            final stand = item['stand'] as TaxiStand;
+                            final distance = item['distance'] as double;
+
+                            final distanceText = distance < 1000
+                                ? '${distance.toStringAsFixed(0)} m'
+                                : '${(distance / 1000).toStringAsFixed(1)} km';
+
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF2C2C2E),
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                  color: const Color(
+                                    0xFFFF6F00,
+                                  ).withOpacity(0.25),
+                                ),
+                              ),
+                              child: ListTile(
+                                leading: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: const Color(
+                                      0xFFFF6F00,
+                                    ).withOpacity(0.15),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.local_taxi,
+                                    color: Color(0xFFFF6F00),
+                                    size: 24,
+                                  ),
+                                ),
+                                title: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        stand.name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                          0xFFFF6F00,
+                                        ).withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: const Color(
+                                            0xFFFF6F00,
+                                          ).withOpacity(0.5),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        distanceText,
+                                        style: const TextStyle(
+                                          color: Color(0xFFFF6F00),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(
+                                  stand.address,
+                                  style: const TextStyle(
+                                    color: Colors.white54,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                trailing: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFFF6F00),
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 8,
+                                    ),
+                                    elevation: 0,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    _callTaxi(stand);
+                                  },
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.phone,
+                                        size: 15,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        "Çağır",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
-}
 
+  void _callTaxi(TaxiStand stand) async {
+    if (startPoint == null) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => Dialog(
+          backgroundColor: Colors.transparent,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                padding: const EdgeInsets.all(28),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF0D47A1), Color(0xFF1565C0)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1565C0).withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.1),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 4,
+                          ),
+                        ),
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.15),
+                          ),
+                          child: const Icon(
+                            Icons.my_location,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ],
+                    ),
 
+                    const SizedBox(height: 20),
 
-Future<List<RouteOption>> _calculateTaxiOptions() async {
-  if (startPoint == null || endPoint == null) return [];
+                    const Text(
+                      'Konumunuz Alınıyor',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
 
-  final Distance dist = const Distance();
-  final List<RouteOption> taxiOptions = [];
+                    const SizedBox(height: 8),
 
-
-  final nearbyStands = TaxiStandUtils.findNearbyTaxiStands(
-    startPoint!,
-    3000, 
-  );
-
-  if (nearbyStands.isEmpty) {
-    print("⚠️ Yakınlarda taksi durağı bulunamadı");
-    return [];
-  }
-
-
-  nearbyStands.sort((a, b) {
-    final distA = dist(startPoint!, a.location);
-    final distB = dist(startPoint!, b.location);
-    return distA.compareTo(distB);
-  });
-
-  final topStands = nearbyStands.take(3).toList();
-
-  for (final stand in topStands) {
-    try {
-
-      final walkToStand = await _getRoute(
-        startPoint!,
-        stand.location,
-        mode: "walking",
-      );
-
-
-      final taxiRoute = await _getRoute(
-        stand.location,
-        endPoint!,
-        mode: "driving",
-      );
-
-      if (walkToStand.isEmpty || taxiRoute.isEmpty) continue;
-
-
-      final walkDistance = _polylineLength(walkToStand);
-      final taxiDistance = _polylineLength(taxiRoute);
-      final totalDistance = walkDistance + taxiDistance;
-
-    
-      final fare = TaxiStandUtils.calculateEstimatedFare(taxiDistance);
-
-      taxiOptions.add(
-        RouteOption(
-          lineName: "Taksi (${stand.name})",
-          walk1: walkToStand,
-          bus1: taxiRoute, 
-          walk2: [], 
-          totalDistance: totalDistance,
-          isTransfer: false,
-          isTaxi: true, 
-          taxiStand: stand,
-          estimatedFare: fare,
-          startStopName: stand.address,
-          endStopName: "Varış Noktası",
+                    Text(
+                      'Lütfen bekleyin...',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       );
 
-      print(
-        "🚕 Taksi seçeneği eklendi: ${stand.name} (${fare.toStringAsFixed(0)} TL)",
+      try {
+        final pos = await _getCurrentLocation();
+
+        if (!mounted) return;
+        Navigator.pop(context);
+
+        setState(() {
+          startPoint = LatLng(pos.latitude, pos.longitude);
+          _startController.text = "Mevcut Konumunuz";
+        });
+      } catch (e) {
+        if (!mounted) return;
+        Navigator.pop(context);
+
+        _showError(
+          "Konum alınamadı. Lütfen haritadan başlangıç noktası seçin.",
+        );
+        return;
+      }
+    }
+
+    if (_hubConnection?.state != HubConnectionState.connected) {
+      await _connectSignalR();
+    }
+
+    final requestId = const Uuid().v4();
+    _waitingRequestId = requestId;
+
+    final fare = endPoint != null
+        ? TaxiStandUtils.calculateEstimatedFare(
+            const Distance()(startPoint!, endPoint!),
+          )
+        : TaxiStandUtils.calculateEstimatedFare(
+            const Distance()(startPoint!, stand.location) + 1000,
+          );
+
+    try {
+      await _hubConnection!.invoke(
+        "RequestTaxi",
+        args: [
+          {
+            "requestId": requestId,
+            "userId": "anonymous",
+            "taxiStandId": stand.id,
+            "fromLat": startPoint?.latitude ?? 0,
+            "fromLng": startPoint?.longitude ?? 0,
+            "toLat": endPoint?.latitude ?? startPoint?.latitude ?? 0,
+            "toLng": endPoint?.longitude ?? startPoint?.longitude ?? 0,
+            "estimatedFare": fare,
+            "status": "Pending",
+          },
+        ],
       );
+
+      setState(() {
+        selectedTaxiStand = stand;
+        showTaxiStands = true;
+        _taxiStandMarkers = [_buildSingleTaxiMarker(stand)];
+      });
+
+      mapController.move(stand.location, 16);
+      _showWaitingDialog(requestId, stand);
     } catch (e) {
-      print("Taksi rotası hesaplanamadı (${stand.name}): $e");
+      _showError("İstek gönderilemedi: $e");
     }
   }
 
-  return taxiOptions;
-}
-
-void _showTaxiSelector() {
-  showModalBottomSheet(
-    context: context,
-    backgroundColor: Colors.transparent,
-    isScrollControlled: true,
-    builder: (ctx) {
-      LatLng userLocation = startPoint ?? LatLng(39.9042, 41.2670);
-      bool isLocating = false;
-
-      List<Map<String, dynamic>> buildSorted(LatLng loc) {
-        return erzurumTaxiStands.map((stand) {
-          final distance = _dist(loc, stand.location);
-          return {'stand': stand, 'distance': distance};
-        }).toList()
-          ..sort((a, b) => (a['distance'] as double).compareTo(b['distance'] as double));
-      }
-
-      return StatefulBuilder(
-        builder: (ctx, setSheetState) {
-          final sortedStands = buildSorted(userLocation);
-
-          return DraggableScrollableSheet(
-            initialChildSize: 0.6,
-            minChildSize: 0.4,
-            maxChildSize: 0.9,
-            builder: (_, scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-                  border: Border.all(color: const Color(0xFFFF6F00).withOpacity(0.3)),
+  Marker _buildSingleTaxiMarker(TaxiStand stand) {
+    return Marker(
+      point: stand.location,
+      width: 70,
+      height: 70,
+      child: Column(
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
+              ),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orange.withOpacity(0.5),
+                  blurRadius: 12,
+                  spreadRadius: 2,
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 12),
-                    Container(
-                      width: 50,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
+              ],
+            ),
+            child: const Icon(Icons.local_taxi, color: Colors.white, size: 28),
+          ),
+          Container(
+            width: 8,
+            height: 8,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFF6F00),
+              shape: BoxShape.circle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showWaitingDialog(String requestId, TaxiStand stand) {
+    int remainingSeconds = 60;
+    Timer? countdownTimer;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        _waitingDialogCtx = ctx;
+
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            countdownTimer?.cancel();
+            countdownTimer = Timer.periodic(const Duration(seconds: 1), (
+              timer,
+            ) {
+              if (remainingSeconds > 0) {
+                setDialogState(() => remainingSeconds--);
+              } else {
+                timer.cancel();
+                if (_waitingDialogCtx != null) {
+                  Navigator.of(_waitingDialogCtx!).pop();
+                  _waitingDialogCtx = null;
+                }
+                _waitingRequestId = null;
+                _showResultDialog(accepted: false);
+              }
+            });
+
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFF8F00), Color(0xFFE65100)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.orange.withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.local_taxi, color: Color(0xFFFF6F00), size: 26),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Taksi Durağı Seç",
+                  ],
+                ),
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.15),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.local_taxi,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Text(
+                            "Taksi Aranıyor",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const Spacer(),
-                     GestureDetector(
-  onTap: isLocating
-      ? null
-      : () async {
-          setSheetState(() => isLocating = true);
-          final pos = await _getCurrentLocation();
-          setSheetState(() {
-            userLocation = LatLng(pos.latitude, pos.longitude);
-            isLocating = false;
-          });
-        },
-  child: Container(
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    decoration: BoxDecoration(
-      color: const Color(0xFFFF6F00).withOpacity(0.15),
-      borderRadius: BorderRadius.circular(20),
-      border: Border.all(
-        color: const Color(0xFFFF6F00).withOpacity(0.4),
-      ),
-    ),
-    child: isLocating
-        ? const SizedBox(
-            width: 20,
-            height: 20,
-            child: CircularProgressIndicator(
-              color: Color(0xFFFF6F00),
-              strokeWidth: 2,
-            ),
-          )
-        : const Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.my_location, color: Color(0xFFFF6F00), size: 18),
-              SizedBox(width: 6),
-              Text(
-                "Konumumu Al",
-                style: TextStyle(
-                  color: Color(0xFFFF6F00),
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-  ),
-),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            stand.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: Colors.white70,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  stand.address,
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.phone,
+                                color: Colors.white70,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                stand.phone,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: sortedStands.length,
-                        itemBuilder: (ctx, index) {
-                          final item = sortedStands[index];
-                          final stand = item['stand'] as TaxiStand;
-                          final distance = item['distance'] as double;
+                    const SizedBox(height: 24),
+                    const SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 4,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      "Sürücü onayı bekleniyor...",
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                    ),
 
-                          final distanceText = distance < 1000
-                              ? '${distance.toStringAsFixed(0)} m'
-                              : '${(distance / 1000).toStringAsFixed(1)} km';
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.timer_outlined,
+                            color: Colors.white70,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            "$remainingSeconds sn",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF2C2C2E),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                color: const Color(0xFFFF6F00).withOpacity(0.25),
-                              ),
-                            ),
-                            child: ListTile(
-                              leading: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFFF6F00).withOpacity(0.15),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.local_taxi,
-                                  color: Color(0xFFFF6F00),
-                                  size: 24,
-                                ),
-                              ),
-                              title: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      stand.name,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFFF6F00).withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: const Color(0xFFFF6F00).withOpacity(0.5),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      distanceText,
-                                      style: const TextStyle(
-                                        color: Color(0xFFFF6F00),
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Text(
-                                stand.address,
-                                style: const TextStyle(color: Colors.white54, fontSize: 12),
-                              ),
-                              trailing: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFF6F00),
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                                  elevation: 0,
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  _callTaxi(stand);
-                                },
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.phone, size: 15, color: Colors.white),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      "Çağır",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.white54),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: () {
+                          countdownTimer?.cancel();
+                          _waitingRequestId = null;
+                          _waitingDialogCtx = null;
+                          Navigator.pop(ctx);
                         },
+                        child: const Text(
+                          "İptal Et",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-              );
-            },
-          );
-        },
-      );
-    },
-  );
-}
-void _callTaxi(TaxiStand stand) async {
+              ),
+            );
+          },
+        );
+      },
+    ).then((_) {
+      countdownTimer?.cancel();
+    });
+  }
 
-  if (startPoint == null) {
+  Widget _infoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.white70, size: 18),
+        const SizedBox(width: 8),
+        Text(
+          "$label: ",
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
+  }
 
-   showDialog(
-  context: context,
-  barrierDismissible: false,
-  builder: (ctx) => Dialog(
-    backgroundColor: Colors.transparent,
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+  void _showResultDialog({
+    required bool accepted,
+    String? driverName,
+    String? plate,
+  }) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
         child: Container(
-          padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFF0D47A1), Color(0xFF1565C0)],
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              colors: accepted
+                  ? [const Color(0xFF2E7D32), const Color(0xFF1B5E20)]
+                  : [const Color(0xFFC62828), const Color(0xFF7F0000)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF1565C0).withOpacity(0.4),
+                color: (accepted ? Colors.green : Colors.red).withOpacity(0.4),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
             ],
           ),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.1),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 4,
-                    ),
-                  ),
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.15),
-                    ),
-                    child: const Icon(
-                      Icons.my_location,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 20),
-
-              const Text(
-                'Konumunuz Alınıyor',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              
-              const SizedBox(height: 8),
-
-              Text(
-                'Lütfen bekleyin...',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  ),
-);
-
-    try {
-      final pos = await _getCurrentLocation();
-      
-      if (!mounted) return;
-      Navigator.pop(context); 
-
-      setState(() {
-        startPoint = LatLng(pos.latitude, pos.longitude);
-        _startController.text = "Mevcut Konumunuz";
-      });
-    } catch (e) {
-      if (!mounted) return;
-      Navigator.pop(context); 
-      
-      _showError("Konum alınamadı. Lütfen haritadan başlangıç noktası seçin.");
-      return;
-    }
-  }
-
-  if (_hubConnection?.state != HubConnectionState.connected) {
-    await _connectSignalR();
-  }
-
-  final requestId = const Uuid().v4();
-  _waitingRequestId = requestId;
-
-  final fare = endPoint != null
-      ? TaxiStandUtils.calculateEstimatedFare(
-          const Distance()(startPoint!, endPoint!))
-      : TaxiStandUtils.calculateEstimatedFare(
-          const Distance()(startPoint!, stand.location) + 1000);
-
-  try {
-    await _hubConnection!.invoke("RequestTaxi", args: [{
-      "requestId": requestId,
-      "userId": "anonymous",
-      "taxiStandId": stand.id,
-      "fromLat": startPoint?.latitude ?? 0,
-      "fromLng": startPoint?.longitude ?? 0,
-      "toLat": endPoint?.latitude ?? startPoint?.latitude ?? 0,
-      "toLng": endPoint?.longitude ?? startPoint?.longitude ?? 0,
-      "estimatedFare": fare,
-      "status": "Pending",
-    }]);
-
-    setState(() {
-      selectedTaxiStand = stand;
-      showTaxiStands = true;
-      _taxiStandMarkers = [_buildSingleTaxiMarker(stand)];
-    });
-    
-    mapController.move(stand.location, 16);
-    _showWaitingDialog(requestId, stand);
-  } catch (e) {
-    _showError("İstek gönderilemedi: $e");
-  }
-}
-
-
-Marker _buildSingleTaxiMarker(TaxiStand stand) {
-  return Marker(
-    point: stand.location,
-    width: 70,
-    height: 70,
-    child: Column(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
-            ),
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.orange.withOpacity(0.5),
-                  blurRadius: 12,
-                  spreadRadius: 2)
-            ],
-          ),
-          child: const Icon(Icons.local_taxi, color: Colors.white, size: 28),
-        ),
-        Container(
-          width: 8,
-          height: 8,
-          decoration: const BoxDecoration(
-              color: Color(0xFFFF6F00), shape: BoxShape.circle),
-        ),
-      ],
-    ),
-  );
-}
-
-void _showWaitingDialog(String requestId, TaxiStand stand) {
-  int remainingSeconds = 60; 
-  Timer? countdownTimer;
-
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (ctx) {
-      _waitingDialogCtx = ctx;
-      
-      return StatefulBuilder(
-        builder: (context, setDialogState) {
- 
-          countdownTimer?.cancel();
-          countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-            if (remainingSeconds > 0) {
-              setDialogState(() => remainingSeconds--);
-            } else {
-
-              timer.cancel();
-              if (_waitingDialogCtx != null) {
-                Navigator.of(_waitingDialogCtx!).pop();
-                _waitingDialogCtx = null;
-              }
-              _waitingRequestId = null;
-              _showResultDialog(accepted: false);
-            }
-          });
-
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF8F00), Color(0xFFE65100)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.orange.withOpacity(0.4),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8))
-                ],
-              ),
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.local_taxi, color: Colors.white, size: 28),
-                    ),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Text("Taksi Aranıyor",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ]),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(stand.name,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16)),
-                        const SizedBox(height: 8),
-                        Row(children: [
-                          const Icon(Icons.location_on, color: Colors.white70, size: 16),
-                          const SizedBox(width: 6),
-                          Expanded(child: Text(stand.address,
-                              style: const TextStyle(color: Colors.white70, fontSize: 13))),
-                        ]),
-                        const SizedBox(height: 4),
-                        Row(children: [
-                          const Icon(Icons.phone, color: Colors.white70, size: 16),
-                          const SizedBox(width: 6),
-                          Text(stand.phone,
-                              style: const TextStyle(color: Colors.white70, fontSize: 13)),
-                        ]),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  const SizedBox(
-                    width: 48, height: 48,
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 4),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text("Sürücü onayı bekleniyor...",
-                      style: TextStyle(color: Colors.white70, fontSize: 14)),
-                  
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.timer_outlined, color: Colors.white70, size: 16),
-                        const SizedBox(width: 6),
-                        Text(
-                          "$remainingSeconds sn",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.white54),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      onPressed: () {
-                        countdownTimer?.cancel();
-                        _waitingRequestId = null;
-                        _waitingDialogCtx = null;
-                        Navigator.pop(ctx);
-                      },
-                      child: const Text("İptal Et",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    },
-  ).then((_) {
-    countdownTimer?.cancel();
-  });
-}
-Widget _infoRow(IconData icon, String label, String value) {
-  return Row(children: [
-    Icon(icon, color: Colors.white70, size: 18),
-    const SizedBox(width: 8),
-    Text("$label: ", style: const TextStyle(color: Colors.white70, fontSize: 14)),
-    Text(value,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
-  ]);
-}
-
-void _showResultDialog({
-  required bool accepted,
-  String? driverName,
-  String? plate,
-}) {
-  showDialog(
-    context: context,
-    builder: (ctx) => Dialog(
-      backgroundColor: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          gradient: LinearGradient(
-            colors: accepted
-                ? [const Color(0xFF2E7D32), const Color(0xFF1B5E20)]
-                : [const Color(0xFFC62828), const Color(0xFF7F0000)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: (accepted ? Colors.green : Colors.red).withOpacity(0.4),
-                blurRadius: 20,
-                offset: const Offset(0, 8))
-          ],
-        ),
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                accepted ? Icons.check_rounded : Icons.close_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Text(
-              accepted ? "Taksi Yolda!" : "İstek Reddedildi",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-
-            if (accepted) ...[
               Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    _infoRow(Icons.person, "Sürücü", driverName ?? '-'),
-                    const SizedBox(height: 8),
-                    _infoRow(Icons.directions_car, "Plaka", plate ?? '-'),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
+                width: 72,
+                height: 72,
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
+                  shape: BoxShape.circle,
                 ),
-                child: const Row(children: [
-                  Icon(Icons.info_outline, color: Colors.white70, size: 18),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      "Sürücünüz yola çıktı. Konumunuzda bekleyin.",
-                      style: TextStyle(color: Colors.white70, fontSize: 13),
-                    ),
-                  ),
-                ]),
-              ),
-            ] else ...[
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Text(
-                  "Bu duraktaki sürücüler şu an müsait değil.\nBaşka bir durak deneyebilirsiniz.",
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                  textAlign: TextAlign.center,
+                child: Icon(
+                  accepted ? Icons.check_rounded : Icons.close_rounded,
+                  color: Colors.white,
+                  size: 40,
                 ),
               ),
-            ],
-            const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
-            Row(children: [
-              if (!accepted) ...[
-                Expanded(
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.white54),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                      _showTaxiSelector();
-                    },
-                    child: const Text("Başka Durak",
-                        style: TextStyle(color: Colors.white70)),
-                  ),
-                ),
-                const SizedBox(width: 12),
-              ],
-              Expanded(
-                flex: accepted ? 1 : 1,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  onPressed: () => Navigator.pop(ctx),
-                  child: Text(
-                    "Tamam",
-                    style: TextStyle(
-                        color: accepted
-                            ? const Color(0xFF2E7D32)
-                            : const Color(0xFFC62828),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
+              Text(
+                accepted ? "Taksi Yolda!" : "İstek Reddedildi",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ]),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+              const SizedBox(height: 16),
 
-
-
-void _selectLineToView(String lineKey) {
-  ensureBusLineLoaded(lineKey);
-
-  if (busLines.containsKey(lineKey)) {
-    final linePoints = busLines[lineKey]!;
-
-    setState(() {
-      suggestedLine = lineKey; 
-      showBusStops = true;
-
-      polylines = [
-        Polyline(
-          points: linePoints,
-          color: Colors.blueAccent,
-          strokeWidth: 5,
-        ),
-      ];
-
-      bus1Segment = linePoints;
-      bus2Segment = null;
-      showBusStops = true;
-    });
-
-    _simulationManager?.setAllRoutes({lineKey: linePoints});
-    _simulationManager?.startSimulation(lineKey);
-
-    if (linePoints.isNotEmpty) {
-      final bounds = LatLngBounds.fromPoints(linePoints);
-      mapController.fitCamera(
-        CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
-      );
-    }
-  }
-}
-
-@override
-void dispose() {
-  _hubConnection?.stop();
-  super.dispose();
-}
-
-void _updateTaxiStandMarkers() {
-  if (!showTaxiStands) {
-    setState(() => _taxiStandMarkers = []);
-    return;
-  }
-
-  setState(() {
-    _taxiStandMarkers = erzurumTaxiStands.map((stand) {
-      final isSelected = selectedTaxiStand?.id == stand.id;
-
-      return Marker(
-        point: stand.location,
-        width: isSelected ? 80 : 60,
-        height: isSelected ? 80 : 60,
-        child: GestureDetector(
-          onTap: () {
-            setState(() => selectedTaxiStand = stand);
-            mapController.move(stand.location, 16);
-            
-         
-            showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (dialogContext) => Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                backgroundColor: Colors.transparent,
-                child: Container(
-                  padding: const EdgeInsets.all(20),
+              if (accepted) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.orange.withOpacity(0.4),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
+                    color: Colors.black.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      _infoRow(Icons.person, "Sürücü", driverName ?? '-'),
+                      const SizedBox(height: 8),
+                      _infoRow(Icons.directions_car, "Plaka", plate ?? '-'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.info_outline, color: Colors.white70, size: 18),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          "Sürücünüz yola çıktı. Konumunuzda bekleyin.",
+                          style: TextStyle(color: Colors.white70, fontSize: 13),
+                        ),
                       ),
                     ],
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(Icons.local_taxi, color: Colors.white, size: 32),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              "Taksi Durağı",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                ),
+              ] else ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Text(
+                    "Bu duraktaki sürücüler şu an müsait değil.\nBaşka bir durak deneyebilirsiniz.",
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+
+              Row(
+                children: [
+                  if (!accepted) ...[
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.white54),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ],
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          _showTaxiSelector();
+                        },
+                        child: const Text(
+                          "Başka Durak",
+                          style: TextStyle(color: Colors.white70),
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                    ),
+                    const SizedBox(width: 12),
+                  ],
+                  Expanded(
+                    flex: accepted ? 1 : 1,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              stand.name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () => Navigator.pop(ctx),
+                      child: Text(
+                        "Tamam",
+                        style: TextStyle(
+                          color: accepted
+                              ? const Color(0xFF2E7D32)
+                              : const Color(0xFFC62828),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _selectLineToView(String lineKey) {
+    ensureBusLineLoaded(lineKey);
+
+    if (busLines.containsKey(lineKey)) {
+      final linePoints = busLines[lineKey]!;
+
+      setState(() {
+        suggestedLine = lineKey;
+        showBusStops = true;
+
+        polylines = [
+          Polyline(
+            points: linePoints,
+            color: Colors.blueAccent,
+            strokeWidth: 5,
+          ),
+        ];
+
+        bus1Segment = linePoints;
+        bus2Segment = null;
+        showBusStops = true;
+      });
+
+      _simulationManager?.setAllRoutes({lineKey: linePoints});
+      _simulationManager?.startSimulation(lineKey);
+
+      if (linePoints.isNotEmpty) {
+        final bounds = LatLngBounds.fromPoints(linePoints);
+        mapController.fitCamera(
+          CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _hubConnection?.stop();
+    super.dispose();
+  }
+
+  void _updateTaxiStandMarkers() {
+    if (!showTaxiStands) {
+      setState(() => _taxiStandMarkers = []);
+      return;
+    }
+
+    setState(() {
+      _taxiStandMarkers = erzurumTaxiStands.map((stand) {
+        final isSelected = selectedTaxiStand?.id == stand.id;
+
+        return Marker(
+          point: stand.location,
+          width: isSelected ? 80 : 60,
+          height: isSelected ? 80 : 60,
+          child: GestureDetector(
+            onTap: () {
+              setState(() => selectedTaxiStand = stand);
+              mapController.move(stand.location, 16);
+
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (dialogContext) => Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.orange.withOpacity(0.4),
+                          blurRadius: 15,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.local_taxi,
+                              color: Colors.white,
+                              size: 32,
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                "Taksi Durağı",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Icon(Icons.location_on, color: Colors.white70, size: 18),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    stand.address,
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                stand.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Colors.white70,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Expanded(
+                                    child: Text(
+                                      stand.address,
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.phone,
+                                    color: Colors.white70,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    stand.phone,
                                     style: const TextStyle(
                                       color: Colors.white70,
                                       fontSize: 14,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 6),
-                            Row(
-                              children: [
-                                const Icon(Icons.phone, color: Colors.white70, size: 18),
-                                const SizedBox(width: 6),
-                                Text(
-                                  stand.phone,
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 14,
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () => Navigator.pop(dialogContext),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.white.withOpacity(
+                                    0.2,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
-                              ],
+                                child: const Text(
+                                  "Kapat",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              flex: 2,
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.pop(dialogContext);
+                                  _callTaxi(stand);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: const Color(0xFFFF6F00),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.phone_forwarded,
+                                  size: 20,
+                                ),
+                                label: const Text(
+                                  "Taksi Çağır",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      
-                      const SizedBox(height: 20),
-                      
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () => Navigator.pop(dialogContext),
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.white.withOpacity(0.2),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: const Text(
-                                "Kapat",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            flex: 2,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.pop(dialogContext);
-                                _callTaxi(stand);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: const Color(0xFFFF6F00),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              icon: const Icon(Icons.phone_forwarded, size: 20),
-                              label: const Text(
-                                "Taksi Çağır",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: isSelected ? 50 : 40,
-                height: isSelected ? 50 : 40,
-                decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.3),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              Container(
-                width: isSelected ? 45 : 35,
-                height: isSelected ? 45 : 35,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.local_taxi,
-                  color: Colors.white,
-                  size: isSelected ? 26 : 20,
-                ),
-              ),
-              if (isSelected)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Container(
-                    width: 18,
-                    height: 18,
-                    decoration: const BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 12,
+                      ],
                     ),
                   ),
                 ),
-            ],
+              );
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: isSelected ? 50 : 40,
+                  height: isSelected ? 50 : 40,
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withOpacity(0.3),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: isSelected ? 45 : 35,
+                  height: isSelected ? 45 : 35,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.local_taxi,
+                    color: Colors.white,
+                    size: isSelected ? 26 : 20,
+                  ),
+                ),
+                if (isSelected)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      width: 18,
+                      height: 18,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-      );
-    }).toList();
-  });
-    }
+        );
+      }).toList();
+    });
+  }
+
   String getExactStopName(LatLng point) {
- 
     if (_cachedStops == null || _cachedStops!.isEmpty) {
       return StopUtils.stopNameFromLatLng(point);
     }
 
     final Distance distance = const Distance();
 
-  
     for (var stop in _cachedStops!) {
- 
       double lat = double.tryParse(stop['lat'].toString()) ?? 0;
       double lng = double.tryParse(stop['lon'].toString()) ?? 0;
-
 
       if (distance(point, LatLng(lat, lng)) < 15) {
         return stop['display'];
       }
     }
 
-
     return StopUtils.stopNameFromLatLng(point);
   }
 
   void _smartSelectLine(String baseLineName) {
-
     String targetLineKey = "${baseLineName}_Gidis";
 
     if (_simulationManager != null) {
       try {
-   
         final activeBus = _simulationManager!.activeBuses.firstWhere(
           (b) => b.lineName.startsWith(baseLineName),
         );
 
         targetLineKey = activeBus.lineName;
-      } catch (e) {
-  
-      }
+      } catch (e) {}
     }
     _selectLineToView(targetLineKey);
   }
@@ -1263,7 +1388,7 @@ void _updateTaxiStandMarkers() {
       polylines.clear();
       bus1Segment = null;
       bus2Segment = null;
-      _busMarkers = []; 
+      _busMarkers = [];
       isRouteMode = false;
     });
   }
@@ -1292,16 +1417,12 @@ void _updateTaxiStandMarkers() {
     SegmentResult? bestResult;
     double minTotalScore = double.infinity;
 
-
     for (final sIdx in startCandidates) {
       for (final eIdx in endCandidates) {
-
         if (sIdx >= eIdx) continue;
 
-  
         final walk1 = distance(userStart, linePoints[sIdx]);
         final walk2 = distance(userEnd, linePoints[eIdx]);
-
 
         final busScore = (eIdx - sIdx) * 10;
 
@@ -1342,86 +1463,93 @@ void _updateTaxiStandMarkers() {
     "OSRM motoru rota geometrilerini çıkarıyor...",
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _simulationManager = BusSimulationManager(
+      onUpdate: (buses) {
+        if (!mounted) return;
 
- @override
-void initState() {
-  super.initState();
-  _simulationManager = BusSimulationManager(
-    onUpdate: (buses) {
-      if (!mounted) return;
+        final visibleBuses = buses.where((b) {
+          if (suggestedLine != null) {
+            if (b.lineName == suggestedLine) return true;
+            if (!suggestedLine!.contains("_") &&
+                b.lineName.startsWith(suggestedLine!))
+              return true;
+          }
+          if (transferLine != null) {
+            if (b.lineName == transferLine) return true;
+            if (!transferLine!.contains("_") &&
+                b.lineName.startsWith(transferLine!))
+              return true;
+          }
+          return false;
+        }).toList();
 
-      final visibleBuses = buses.where((b) {
-        if (suggestedLine != null) {
-          if (b.lineName == suggestedLine) return true;
-          if (!suggestedLine!.contains("_") &&
-              b.lineName.startsWith(suggestedLine!)) return true;
-        }
-        if (transferLine != null) {
-          if (b.lineName == transferLine) return true;
-          if (!transferLine!.contains("_") &&
-              b.lineName.startsWith(transferLine!)) return true;
-        }
-        return false;
-      }).toList();
-      
-      setState(() {
-        _busMarkers = visibleBuses.map((b) {
-          return Marker(
-            point: b.currentLocation,
-            width: 45,
-            height: 45,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [BoxShadow(blurRadius: 5, color: Colors.black45)],
+        setState(() {
+          _busMarkers = visibleBuses.map((b) {
+            return Marker(
+              point: b.currentLocation,
+              width: 45,
+              height: 45,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(blurRadius: 5, color: Colors.black45),
+                      ],
+                    ),
                   ),
-                ),
-                Icon(Icons.directions_bus_rounded, color: Colors.redAccent, size: 26),
-              ],
+                  Icon(
+                    Icons.directions_bus_rounded,
+                    color: Colors.redAccent,
+                    size: 26,
+                  ),
+                ],
+              ),
+            );
+          }).toList();
+        });
+      },
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Future.microtask(() => StopUtils.loadAllStops());
+      _connectSignalR();
+      if (widget.startPoint != null && widget.destination != null) {
+        setState(() {
+          startPoint = widget.startPoint!;
+          endPoint = widget.destination!;
+          _startController.text = "Konumunuz";
+          _endController.text = widget.destinationName ?? "Seçilen Konum";
+        });
+
+        await Future.delayed(const Duration(milliseconds: 500));
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text("Rotaları hesaplamak için haritaya dokunun"),
+              action: SnackBarAction(
+                label: "Hesapla",
+                onPressed: _calculateRoutesAndShowDialog,
+              ),
+              duration: const Duration(seconds: 5),
             ),
           );
-        }).toList();
-      });
-    },
-  );
-
-WidgetsBinding.instance.addPostFrameCallback((_) async {
-    Future.microtask(() => StopUtils.loadAllStops());
-      _connectSignalR();
-    if (widget.startPoint != null && widget.destination != null) {
-      setState(() {
-        startPoint = widget.startPoint!;
-        endPoint = widget.destination!;
-        _startController.text = "Konumunuz";
-        _endController.text = widget.destinationName ?? "Seçilen Konum";
-      });
-      
-      await Future.delayed(const Duration(milliseconds: 500));
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Rotaları hesaplamak için haritaya dokunun"),
-            action: SnackBarAction(
-              label: "Hesapla",
-              onPressed: _calculateRoutesAndShowDialog,
-            ),
-            duration: const Duration(seconds: 5),
-          ),
-        );
+        }
       }
-    }
-  });
-}
+    });
+  }
+
   void _resetRouteState() {
     setState(() {
-
       startPoint = null;
       endPoint = null;
       routePoints.clear();
@@ -1434,12 +1562,10 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
       isLoading = false;
       progress = 0.0;
 
- 
       _startController.clear();
       _endController.clear();
     });
 
- 
     mapController.move(LatLng(39.9042, 41.2670), 13);
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -1450,7 +1576,7 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
   }
 
   String _formatDuration(double meters, {bool isBus = false}) {
-    final speed = isBus ? 6.9 : 1.4; 
+    final speed = isBus ? 6.9 : 1.4;
     final seconds = meters / speed;
     final minutes = (seconds / 60).round();
     return "$minutes dk";
@@ -1461,19 +1587,16 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
     setState(() {
       polylines.clear();
       _busMarkers.clear();
-      suggestedLine = lineKey; 
-
+      suggestedLine = lineKey;
 
       bus1Segment = null;
       bus2Segment = null;
     });
 
-
     ensureBusLineLoaded(lineKey);
 
     if (busLines.containsKey(lineKey)) {
       final linePoints = busLines[lineKey]!;
-
 
       setState(() {
         polylines = [
@@ -1485,14 +1608,12 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
         ];
       });
 
-
       if (linePoints.isNotEmpty) {
         final bounds = LatLngBounds.fromPoints(linePoints);
         mapController.fitCamera(
           CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
         );
       }
-
 
       print("🚌 Hat Seçildi ve Başlatılıyor: $lineKey");
       _simulationManager?.startSimulation(lineKey, linePoints);
@@ -1622,7 +1743,7 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
                       controller: scrollController,
                       itemCount: displayLines.length,
                       itemBuilder: (ctx, index) {
-                        final lineBaseName = displayLines[index]; 
+                        final lineBaseName = displayLines[index];
 
                         return ListTile(
                           leading: const Icon(
@@ -1641,7 +1762,7 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
                             color: Colors.white54,
                           ),
                           onTap: () {
-                            Navigator.pop(context); 
+                            Navigator.pop(context);
 
                             _smartSelectLine(lineBaseName);
                           },
@@ -1673,268 +1794,271 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
     _selectLineToView(newLineKey);
   }
 
- void _showSelectedRouteSummary(RouteOption opt) {
-  const double walkingSpeed = 1.4;
-  const double busSpeed = 6.9;
+  void _showSelectedRouteSummary(RouteOption opt) {
+    const double walkingSpeed = 1.4;
+    const double busSpeed = 6.9;
 
-  String displayName = opt.lineName.split('_')[0];
-  if (opt.isTransfer && opt.transferLine != null) {
-    displayName += " → ${opt.transferLine!.split('_')[0]}";
-  }
-
-  final totalWalk1 = _polylineLength(opt.walk1);
-  final totalBus1 = _polylineLength(opt.bus1);
-  final totalWalkTransfer = _polylineLength(opt.walkTransfer);
-  final totalBus2 = _polylineLength(opt.bus2);
-  final totalWalk2 = _polylineLength(opt.walk2);
-
-  String? liveBusMsg;
-
-  if (!opt.isTaxi && _simulationManager != null && opt.bus1.isNotEmpty) {
-    final stopLoc = opt.bus1.first;
-    String baseLine = opt.lineName.split('_')[0];
-    
-    final etaGidis = _simulationManager!.calculateEtaMinutes(
-      "${baseLine}_Gidis",
-      stopLoc,
-    );
-    final etaDonus = _simulationManager!.calculateEtaMinutes(
-      "${baseLine}_Donus",
-      stopLoc,
-    );
-
-    if (etaGidis != null) {
-      liveBusMsg = "Canlı Takip: Otobüsünüz tahminen $etaGidis dk sonra durakta.";
-    } else if (etaDonus != null) {
-      liveBusMsg = "Canlı Takip: Otobüsünüz tahminen $etaDonus dk sonra durakta.";
+    String displayName = opt.lineName.split('_')[0];
+    if (opt.isTransfer && opt.transferLine != null) {
+      displayName += " → ${opt.transferLine!.split('_')[0]}";
     }
-  }
 
-  showModalBottomSheet(
-  context: context,
-  backgroundColor: Colors.transparent,
-  isScrollControlled: false,
-  builder: (context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
-        ),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.25),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
-              ),
-              border: Border.all(color: Colors.white.withOpacity(0.4)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueAccent.withOpacity(0.15),
-                  blurRadius: 30,
-                  offset: const Offset(0, -5),
-                ),
-              ],
+    final totalWalk1 = _polylineLength(opt.walk1);
+    final totalBus1 = _polylineLength(opt.bus1);
+    final totalWalkTransfer = _polylineLength(opt.walkTransfer);
+    final totalBus2 = _polylineLength(opt.bus2);
+    final totalWalk2 = _polylineLength(opt.walk2);
+
+    String? liveBusMsg;
+
+    if (!opt.isTaxi && _simulationManager != null && opt.bus1.isNotEmpty) {
+      final stopLoc = opt.bus1.first;
+      String baseLine = opt.lineName.split('_')[0];
+
+      final etaGidis = _simulationManager!.calculateEtaMinutes(
+        "${baseLine}_Gidis",
+        stopLoc,
+      );
+      final etaDonus = _simulationManager!.calculateEtaMinutes(
+        "${baseLine}_Donus",
+        stopLoc,
+      );
+
+      if (etaGidis != null) {
+        liveBusMsg =
+            "Canlı Takip: Otobüsünüz tahminen $etaGidis dk sonra durakta.";
+      } else if (etaDonus != null) {
+        liveBusMsg =
+            "Canlı Takip: Otobüsünüz tahminen $etaDonus dk sonra durakta.";
+      }
+    }
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: false,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 50,
-                      height: 5,
-                      margin: const EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.25),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
                   ),
-
-     
-                  Text(
-                    opt.isTaxi ? "🚕 $displayName" : "🚌 $displayName",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-
-                  if (opt.isTaxi && opt.estimatedFare != null)
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.orange),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.account_balance_wallet, color: Colors.orange),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              "Tahmini Tutar: ${opt.estimatedFare!.toStringAsFixed(0)} TL",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  if (liveBusMsg != null)
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.green),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.sensors, color: Colors.green),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              liveBusMsg,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                
-                  if (opt.isTaxi) ...[
-                    _buildStep(
-                      "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? 'taksi durağına'})",
-                    ),
-                    _buildStep(
-                      "${_formatDuration(totalBus1, isBus: true)} taksi ile git",
-                    ),
-                  ] else if (opt.isTransfer) ...[
-                    _buildStep(
-                      "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? 'durağa'})",
-                    ),
-                    _buildStep(
-                      "${_formatDuration(totalBus1, isBus: true)} otobüsle git (${displayName.split(' → ')[0]})",
-                    ),
-                    _buildStep(
-                      "🔁 ${_formatDuration(totalWalkTransfer)} aktarma (${opt.transferStopName ?? 'aktarma durağı'})",
-                    ),
-                    _buildStep(
-                      "${_formatDuration(totalBus2, isBus: true)} otobüsle git (${opt.transferLine?.split('_')[0] ?? '2. hat'})",
-                    ),
-                    _buildStep(
-                      "${_formatDuration(totalWalk2)} yürü (${opt.endStopName ?? 'varışa'})",
-                    ),
-                  ] else ...[
-                    _buildStep(
-                      "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? 'durağa'})",
-                    ),
-                    _buildStep(
-                      "${_formatDuration(totalBus1, isBus: true)} otobüsle git",
-                    ),
-                    _buildStep(
-                      "${_formatDuration(totalWalk2)} yürü (${opt.endStopName ?? 'varışa'})",
+                  border: Border.all(color: Colors.white.withOpacity(0.4)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blueAccent.withOpacity(0.15),
+                      blurRadius: 30,
+                      offset: const Offset(0, -5),
                     ),
                   ],
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 50,
+                          height: 5,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
 
-const SizedBox(height: 12),
-Divider(color: Colors.blueAccent.withOpacity(0.3)),
-Text(
-  "Toplam mesafe: ${opt.totalDistance.toStringAsFixed(0)} m",
-  style: TextStyle(
-    color: Colors.indigo.shade700,
-    fontSize: 14,
-  ),
-),
-const SizedBox(height: 4),
-Text(
-  "Tahmini toplam süre: ${_formatDuration(opt.totalDistance, isBus: true)} - ${_formatDuration(opt.totalDistance, isBus: false)} arası",
-  style: TextStyle(
-    color: Colors.indigo.shade400,
-    fontSize: 13,
-  ),
-),
-if (opt.isTaxi && opt.taxiStand != null) ...[
-  const SizedBox(height: 20),
-  Container(
-    width: double.infinity,
-    height: 55,
-    decoration: BoxDecoration(
-      gradient: const LinearGradient(
-        colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.circular(15),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.orange.withOpacity(0.4),
-          blurRadius: 10,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    ),
-    child: ElevatedButton.icon(
-      onPressed: () {
-        Navigator.pop(context); 
-        _callTaxi(opt.taxiStand!); 
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      icon: const Icon(
-        Icons.phone_forwarded,
-        color: Colors.white,
-        size: 26,
-      ),
-      label: const Text(
-        "BU TAKSİYİ ÇAĞIR",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 0.5,
-        ),
-      ),
-    ),
-  ),
-],
-                ],
+                      Text(
+                        opt.isTaxi ? "🚕 $displayName" : "🚌 $displayName",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      if (opt.isTaxi && opt.estimatedFare != null)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.orange),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.account_balance_wallet,
+                                color: Colors.orange,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  "Tahmini Tutar: ${opt.estimatedFare!.toStringAsFixed(0)} TL",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      if (liveBusMsg != null)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.green),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.sensors, color: Colors.green),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  liveBusMsg,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      if (opt.isTaxi) ...[
+                        _buildStep(
+                          "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? 'taksi durağına'})",
+                        ),
+                        _buildStep(
+                          "${_formatDuration(totalBus1, isBus: true)} taksi ile git",
+                        ),
+                      ] else if (opt.isTransfer) ...[
+                        _buildStep(
+                          "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? 'durağa'})",
+                        ),
+                        _buildStep(
+                          "${_formatDuration(totalBus1, isBus: true)} otobüsle git (${displayName.split(' → ')[0]})",
+                        ),
+                        _buildStep(
+                          "🔁 ${_formatDuration(totalWalkTransfer)} aktarma (${opt.transferStopName ?? 'aktarma durağı'})",
+                        ),
+                        _buildStep(
+                          "${_formatDuration(totalBus2, isBus: true)} otobüsle git (${opt.transferLine?.split('_')[0] ?? '2. hat'})",
+                        ),
+                        _buildStep(
+                          "${_formatDuration(totalWalk2)} yürü (${opt.endStopName ?? 'varışa'})",
+                        ),
+                      ] else ...[
+                        _buildStep(
+                          "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? 'durağa'})",
+                        ),
+                        _buildStep(
+                          "${_formatDuration(totalBus1, isBus: true)} otobüsle git",
+                        ),
+                        _buildStep(
+                          "${_formatDuration(totalWalk2)} yürü (${opt.endStopName ?? 'varışa'})",
+                        ),
+                      ],
+
+                      const SizedBox(height: 12),
+                      Divider(color: Colors.blueAccent.withOpacity(0.3)),
+                      Text(
+                        "Toplam mesafe: ${opt.totalDistance.toStringAsFixed(0)} m",
+                        style: TextStyle(
+                          color: Colors.indigo.shade700,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        "Tahmini toplam süre: ${_formatDuration(opt.totalDistance, isBus: true)} - ${_formatDuration(opt.totalDistance, isBus: false)} arası",
+                        style: TextStyle(
+                          color: Colors.indigo.shade400,
+                          fontSize: 13,
+                        ),
+                      ),
+                      if (opt.isTaxi && opt.taxiStand != null) ...[
+                        const SizedBox(height: 20),
+                        Container(
+                          width: double.infinity,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFFFA726), Color(0xFFFF6F00)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.orange.withOpacity(0.4),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _callTaxi(opt.taxiStand!);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            icon: const Icon(
+                              Icons.phone_forwarded,
+                              color: Colors.white,
+                              size: 26,
+                            ),
+                            label: const Text(
+                              "BU TAKSİYİ ÇAĞIR",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
-  },
-);
-}
+  }
+
   Widget _buildStep(String text) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
@@ -1964,10 +2088,8 @@ if (opt.isTaxi && opt.taxiStand != null) ...[
 
   List<Polyline> polylines = [];
 
-
   String? suggestedLine;
   String? transferLine;
-
 
   List<RouteOption> suggestedOptions = [];
 
@@ -2029,7 +2151,7 @@ if (opt.isTaxi && opt.taxiStand != null) ...[
 
           if (diff > 90) continue;
 
-          final score = d + diff * 0.5; 
+          final score = d + diff * 0.5;
 
           if (score < bestScore) {
             bestScore = score;
@@ -2070,16 +2192,12 @@ if (opt.isTaxi && opt.taxiStand != null) ...[
       final avgDir = (dir1 + dir2) / 2;
       final diff = _angleDiff(userDir, avgDir);
 
-
       final directionPenalty = diff > 100 ? 9999 : diff;
-
 
       final proj = distance(target, next);
       final sameFlow = proj < distance(target, stop);
 
-
       final flowPenalty = sameFlow ? 0 : 300;
-
 
       final score = d + directionPenalty * 0.5 + flowPenalty;
 
@@ -2126,338 +2244,344 @@ if (opt.isTaxi && opt.taxiStand != null) ...[
     return fullLine.sublist(startIndex, endIndex + 1);
   }
 
-Future<void> _connectSignalR() async {
-  try {
-    _hubConnection = HubConnectionBuilder()
-        .withUrl("https://jannette-acrogynous-allene.ngrok-free.dev/taxiHub")
-        .withAutomaticReconnect()
-        .build();
-    _hubConnection!.off("TaxiAccepted");
-    _hubConnection!.off("TaxiRejected");
+  Future<void> _connectSignalR() async {
+    try {
+      _hubConnection = HubConnectionBuilder()
+          .withUrl("https://jannette-acrogynous-allene.ngrok-free.dev/taxiHub")
+          .withAutomaticReconnect()
+          .build();
+      _hubConnection!.off("TaxiAccepted");
+      _hubConnection!.off("TaxiRejected");
 
-_hubConnection!.on("TaxiAccepted", (args) {
-  final data = Map<String, dynamic>.from(args?[0] as Map);
-  if (data['requestId'] == _waitingRequestId && mounted) {
-    _waitingRequestId = null;
-    if (_waitingDialogCtx != null) {
-      Navigator.of(_waitingDialogCtx!).pop();
-      _waitingDialogCtx = null;
+      _hubConnection!.on("TaxiAccepted", (args) {
+        final data = Map<String, dynamic>.from(args?[0] as Map);
+        if (data['requestId'] == _waitingRequestId && mounted) {
+          _waitingRequestId = null;
+          if (_waitingDialogCtx != null) {
+            Navigator.of(_waitingDialogCtx!).pop();
+            _waitingDialogCtx = null;
+          }
+          _showResultDialog(
+            accepted: true,
+            driverName: data['driverName'],
+            plate: data['plate'],
+          );
+        }
+      });
+
+      _hubConnection!.on("TaxiRejected", (args) {
+        final data = Map<String, dynamic>.from(args?[0] as Map);
+        if (data['requestId'] == _waitingRequestId && mounted) {
+          _waitingRequestId = null;
+          if (_waitingDialogCtx != null) {
+            Navigator.of(_waitingDialogCtx!).pop();
+            _waitingDialogCtx = null;
+          }
+          _showResultDialog(accepted: false);
+        }
+      });
+
+      await _hubConnection!.start();
+      setState(() => _signalRConnected = true);
+      print("✅ SignalR bağlandı");
+    } catch (e) {
+      print("❌ SignalR bağlantı hatası: $e");
     }
-    _showResultDialog(
-      accepted: true,
-      driverName: data['driverName'],
-      plate: data['plate'],
-    );
   }
-});
 
-_hubConnection!.on("TaxiRejected", (args) {
-  final data = Map<String, dynamic>.from(args?[0] as Map);
-  if (data['requestId'] == _waitingRequestId && mounted) {
-    _waitingRequestId = null;
-    if (_waitingDialogCtx != null) {
-      Navigator.of(_waitingDialogCtx!).pop();
-      _waitingDialogCtx = null;
-    }
-    _showResultDialog(accepted: false);
-  }
-});
-
-    await _hubConnection!.start();
-    setState(() => _signalRConnected = true);
-    print("✅ SignalR bağlandı");
-  } catch (e) {
-    print("❌ SignalR bağlantı hatası: $e");
-  }
-}
-
-
-void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (ctx) {
-      return Padding(
-        padding: const EdgeInsets.all(12),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.25),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                ),
-                border: Border.all(color: Colors.white.withOpacity(0.3)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueAccent.withOpacity(0.2),
-                    blurRadius: 20,
-                    offset: const Offset(0, -4),
+  void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.all(12),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.25),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
                   ),
-                ],
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 5,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    const Text(
-                      "Alternatif Rota Önerileri",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(0, 1),
-                            blurRadius: 4,
-                            color: Colors.black38,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: ListView.builder(
-                        itemCount: options.length,
-                        itemBuilder: (context, index) {
-                          final opt = options[index];
-                          IconData icon;
-                          List<Color> gradient;
-                          String subtitle;
-
-                          if (opt.isTaxi) {
-                            icon = Icons.local_taxi;
-                            gradient = [
-                              const Color(0xFFFFA726),
-                              const Color(0xFFFF6F00),
-                            ];
-                            subtitle = opt.estimatedFare != null
-                                ? "Tahmini ücret: ${opt.estimatedFare!.toStringAsFixed(0)} TL • ${opt.totalDistance.toStringAsFixed(0)} m"
-                                : "Taksi ile ulaşım (${opt.totalDistance.toStringAsFixed(0)} m)";
-                          } else if (opt.lineName.contains("Yürüyüş")) {
-                            icon = Icons.directions_walk;
-                            gradient = [
-                              Colors.greenAccent,
-                              Colors.green.shade700,
-                            ];
-                            subtitle =
-                                "Kısa mesafe yürüyüş (${opt.totalDistance.toStringAsFixed(0)} m)";
-                          } else if (opt.lineName.contains("Araç")) {
-                            icon = Icons.directions_car;
-                            gradient = [Colors.redAccent, Colors.deepOrange];
-                            subtitle =
-                                "Araçla tahmini: ${opt.totalDistance.toStringAsFixed(0)} m";
-                          } else if (opt.isTransfer) {
-                            icon = Icons.swap_horiz;
-                            gradient = [
-                              Colors.orangeAccent,
-                              Colors.deepOrange,
-                            ];
-                            subtitle =
-                                "Aktarmalı rota (${opt.totalDistance.toStringAsFixed(0)} m)";
-                          } else {
-                            icon = Icons.directions_bus;
-                            gradient = [
-                              Colors.lightBlueAccent,
-                              Colors.blueAccent,
-                            ];
-                            subtitle =
-                                "Direkt hat (${opt.totalDistance.toStringAsFixed(0)} m)";
-                          }
-
-                          return TweenAnimationBuilder<double>(
-                            tween: Tween(begin: 0, end: 1),
-                            duration: Duration(
-                              milliseconds: 400 + (index * 80),
-                            ),
-                            builder: (context, value, child) {
-                              return Transform.scale(
-                                scale: value,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: gradient,
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(18),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: gradient.last.withOpacity(0.3),
-                                        blurRadius: 12,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: ListTile(
-                                    leading: Icon(
-                                      icon,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                    title: Text(
-                                      opt.isTransfer
-                                          ? "${opt.lineName.split('_')[0]} → ${opt.transferLine?.split('_')[0]}"
-                                          : opt.lineName.split('_')[0],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      subtitle,
-                                      style: const TextStyle(
-                                        color: Colors.white70,
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      FocusScope.of(context).unfocus(); 
-
-                                      if (opt.isTaxi) {
-                                        _renderTaxiRouteOnMap(opt);
-                                        _showSelectedRouteSummary(opt);
-                                        return; 
-                                      }
-
-                               
-                                      List<LatLng> fullLine1 = [];
-                                      if (busLines.containsKey(opt.lineName)) {
-                                        fullLine1 = busLines[opt.lineName]!;
-                                      }
-
-                                      List<LatLng> fullLine2 = [];
-                                      if (opt.transferLine != null &&
-                                          busLines.containsKey(opt.transferLine)) {
-                                        fullLine2 = busLines[opt.transferLine]!;
-                                      }
-
-                                     
-                                      _simulationManager?.startSimulation(opt.lineName);
-
-                                      
-                                      setState(() {
-                                        suggestedLine = opt.lineName;
-                                        transferLine = opt.transferLine;
-
-                                        polylines = [
-                                       
-                                          if (fullLine1.isNotEmpty)
-                                            Polyline(
-                                              points: fullLine1,
-                                              color: Colors.blueAccent.withOpacity(0.3),
-                                              strokeWidth: 6,
-                                            ),
-                                          if (fullLine2.isNotEmpty)
-                                            Polyline(
-                                              points: fullLine2,
-                                              color: Colors.purpleAccent.withOpacity(0.3),
-                                              strokeWidth: 6,
-                                            ),
-
-                                     
-                                          if (opt.walk1.isNotEmpty)
-                                            Polyline(
-                                              points: opt.walk1,
-                                              color: Colors.green,
-                                              strokeWidth: 5,
-                                            ),
-
-                                    
-                                          if (opt.bus1.isNotEmpty)
-                                            Polyline(
-                                              points: opt.bus1,
-                                              color: opt.lineName.contains("Araç")
-                                                  ? Colors.redAccent
-                                                  : Colors.blue,
-                                              strokeWidth: 6,
-                                            ),
-
-                                     
-                                          if (opt.walkTransfer.isNotEmpty)
-                                            Polyline(
-                                              points: opt.walkTransfer,
-                                              color: Colors.orange,
-                                              strokeWidth: 5,
-                                            ),
-                                          if (opt.bus2.isNotEmpty)
-                                            Polyline(
-                                              points: opt.bus2,
-                                              color: Colors.purple,
-                                              strokeWidth: 6,
-                                            ),
-
-                                    
-                                          if (opt.walk2.isNotEmpty)
-                                            Polyline(
-                                              points: opt.walk2,
-                                              color: Colors.green,
-                                              strokeWidth: 5,
-                                            ),
-                                        ];
-
-                                      
-                                        bus1Segment = fullLine1.isNotEmpty
-                                            ? fullLine1
-                                            : opt.bus1;
-                                        bus2Segment = fullLine2.isNotEmpty
-                                            ? fullLine2
-                                            : opt.bus2;
-                                        showBusStops = !opt.lineName.contains("Araç");
-                                      });
-
-                              
-                                      if (fullLine1.isNotEmpty) {
-                                        final bounds = LatLngBounds.fromPoints(fullLine1);
-                                        mapController.fitCamera(
-                                          CameraFit.bounds(
-                                            bounds: bounds,
-                                            padding: const EdgeInsets.all(50),
-                                          ),
-                                        );
-                                      }
-
-                                      _showSelectedRouteSummary(opt);
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blueAccent.withOpacity(0.2),
+                      blurRadius: 20,
+                      offset: const Offset(0, -4),
                     ),
                   ],
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 5,
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      const Text(
+                        "Alternatif Rota Önerileri",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(0, 1),
+                              blurRadius: 4,
+                              color: Colors.black38,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: ListView.builder(
+                          itemCount: options.length,
+                          itemBuilder: (context, index) {
+                            final opt = options[index];
+                            IconData icon;
+                            List<Color> gradient;
+                            String subtitle;
+
+                            if (opt.isTaxi) {
+                              icon = Icons.local_taxi;
+                              gradient = [
+                                const Color(0xFFFFA726),
+                                const Color(0xFFFF6F00),
+                              ];
+                              subtitle = opt.estimatedFare != null
+                                  ? "Tahmini ücret: ${opt.estimatedFare!.toStringAsFixed(0)} TL • ${opt.totalDistance.toStringAsFixed(0)} m"
+                                  : "Taksi ile ulaşım (${opt.totalDistance.toStringAsFixed(0)} m)";
+                            } else if (opt.lineName.contains("Yürüyüş")) {
+                              icon = Icons.directions_walk;
+                              gradient = [
+                                Colors.greenAccent,
+                                Colors.green.shade700,
+                              ];
+                              subtitle =
+                                  "Kısa mesafe yürüyüş (${opt.totalDistance.toStringAsFixed(0)} m)";
+                            } else if (opt.lineName.contains("Araç")) {
+                              icon = Icons.directions_car;
+                              gradient = [Colors.redAccent, Colors.deepOrange];
+                              subtitle =
+                                  "Araçla tahmini: ${opt.totalDistance.toStringAsFixed(0)} m";
+                            } else if (opt.isTransfer) {
+                              icon = Icons.swap_horiz;
+                              gradient = [
+                                Colors.orangeAccent,
+                                Colors.deepOrange,
+                              ];
+                              subtitle =
+                                  "Aktarmalı rota (${opt.totalDistance.toStringAsFixed(0)} m)";
+                            } else {
+                              icon = Icons.directions_bus;
+                              gradient = [
+                                Colors.lightBlueAccent,
+                                Colors.blueAccent,
+                              ];
+                              subtitle =
+                                  "Direkt hat (${opt.totalDistance.toStringAsFixed(0)} m)";
+                            }
+
+                            return TweenAnimationBuilder<double>(
+                              tween: Tween(begin: 0, end: 1),
+                              duration: Duration(
+                                milliseconds: 400 + (index * 80),
+                              ),
+                              builder: (context, value, child) {
+                                return Transform.scale(
+                                  scale: value,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: gradient,
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(18),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: gradient.last.withOpacity(0.3),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ListTile(
+                                      leading: Icon(
+                                        icon,
+                                        color: Colors.white,
+                                        size: 30,
+                                      ),
+                                      title: Text(
+                                        opt.isTransfer
+                                            ? "${opt.lineName.split('_')[0]} → ${opt.transferLine?.split('_')[0]}"
+                                            : opt.lineName.split('_')[0],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        subtitle,
+                                        style: const TextStyle(
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        FocusScope.of(context).unfocus();
+
+                                        if (opt.isTaxi) {
+                                          _renderTaxiRouteOnMap(opt);
+                                          _showSelectedRouteSummary(opt);
+                                          return;
+                                        }
+
+                                        List<LatLng> fullLine1 = [];
+                                        if (busLines.containsKey(
+                                          opt.lineName,
+                                        )) {
+                                          fullLine1 = busLines[opt.lineName]!;
+                                        }
+
+                                        List<LatLng> fullLine2 = [];
+                                        if (opt.transferLine != null &&
+                                            busLines.containsKey(
+                                              opt.transferLine,
+                                            )) {
+                                          fullLine2 =
+                                              busLines[opt.transferLine]!;
+                                        }
+
+                                        _simulationManager?.startSimulation(
+                                          opt.lineName,
+                                        );
+
+                                        setState(() {
+                                          suggestedLine = opt.lineName;
+                                          transferLine = opt.transferLine;
+
+                                          polylines = [
+                                            if (fullLine1.isNotEmpty)
+                                              Polyline(
+                                                points: fullLine1,
+                                                color: Colors.blueAccent
+                                                    .withOpacity(0.3),
+                                                strokeWidth: 6,
+                                              ),
+                                            if (fullLine2.isNotEmpty)
+                                              Polyline(
+                                                points: fullLine2,
+                                                color: Colors.purpleAccent
+                                                    .withOpacity(0.3),
+                                                strokeWidth: 6,
+                                              ),
+
+                                            if (opt.walk1.isNotEmpty)
+                                              Polyline(
+                                                points: opt.walk1,
+                                                color: Colors.green,
+                                                strokeWidth: 5,
+                                              ),
+
+                                            if (opt.bus1.isNotEmpty)
+                                              Polyline(
+                                                points: opt.bus1,
+                                                color:
+                                                    opt.lineName.contains(
+                                                      "Araç",
+                                                    )
+                                                    ? Colors.redAccent
+                                                    : Colors.blue,
+                                                strokeWidth: 6,
+                                              ),
+
+                                            if (opt.walkTransfer.isNotEmpty)
+                                              Polyline(
+                                                points: opt.walkTransfer,
+                                                color: Colors.orange,
+                                                strokeWidth: 5,
+                                              ),
+                                            if (opt.bus2.isNotEmpty)
+                                              Polyline(
+                                                points: opt.bus2,
+                                                color: Colors.purple,
+                                                strokeWidth: 6,
+                                              ),
+
+                                            if (opt.walk2.isNotEmpty)
+                                              Polyline(
+                                                points: opt.walk2,
+                                                color: Colors.green,
+                                                strokeWidth: 5,
+                                              ),
+                                          ];
+
+                                          bus1Segment = fullLine1.isNotEmpty
+                                              ? fullLine1
+                                              : opt.bus1;
+                                          bus2Segment = fullLine2.isNotEmpty
+                                              ? fullLine2
+                                              : opt.bus2;
+                                          showBusStops = !opt.lineName.contains(
+                                            "Araç",
+                                          );
+                                        });
+
+                                        if (fullLine1.isNotEmpty) {
+                                          final bounds =
+                                              LatLngBounds.fromPoints(
+                                                fullLine1,
+                                              );
+                                          mapController.fitCamera(
+                                            CameraFit.bounds(
+                                              bounds: bounds,
+                                              padding: const EdgeInsets.all(50),
+                                            ),
+                                          );
+                                        }
+
+                                        _showSelectedRouteSummary(opt);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 
   List<LatLng> walkingToStop = [];
   List<LatLng> busRoute = [];
@@ -2502,7 +2626,7 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
     try {
       final response = await http
           .get(Uri.parse(url))
-          .timeout(const Duration(seconds: 5)); 
+          .timeout(const Duration(seconds: 5));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -2511,52 +2635,51 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
         return coords.map((c) => LatLng(c[1], c[0])).toList();
       } else {
         print("⚠️ Rota alınamadı ($mode): ${response.statusCode}");
-        return []; 
+        return [];
       }
     } catch (e) {
       print("❌ Rota isteği başarısız ($mode): $e");
-      return []; 
+      return [];
     }
   }
 
   Future<Position> _getCurrentLocation() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-  
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return _fallbackErzurum();
-  }
-  
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return _fallbackErzurum();
+    }
+
+    permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      return _fallbackErzurum();
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return _fallbackErzurum();
+      }
     }
-  }
 
-  if (permission == LocationPermission.deniedForever) {
-    return _fallbackErzurum();
-  }
-
-  try {
-
-    Position pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-      timeLimit: const Duration(seconds: 10), 
-    );
-    
-    if (pos.latitude == 0.0 && pos.longitude == 0.0) {
+    if (permission == LocationPermission.deniedForever) {
       return _fallbackErzurum();
     }
 
-    return pos;
-  } catch (e) {
-    print('❌ Konum alınamadı: $e');
-    return _fallbackErzurum();
+    try {
+      Position pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 10),
+      );
+
+      if (pos.latitude == 0.0 && pos.longitude == 0.0) {
+        return _fallbackErzurum();
+      }
+
+      return pos;
+    } catch (e) {
+      print('❌ Konum alınamadı: $e');
+      return _fallbackErzurum();
+    }
   }
-}
 
   Position _fallbackErzurum() {
     return Position(
@@ -2574,10 +2697,10 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
   }
 
   List<Marker> getBusStopMarkers({
-    List<LatLng>? bus1Segment, 
-    List<LatLng>? bus2Segment, 
+    List<LatLng>? bus1Segment,
+    List<LatLng>? bus2Segment,
 
-    String? currentRouteName, 
+    String? currentRouteName,
   }) {
     final markers = <Marker>[];
 
@@ -2877,9 +3000,9 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
     setState(() => isLoading = true);
 
     double progress = 0.0;
-    const int MAX_SECONDS = 15; 
-    const int MAX_DIRECT = 2; 
-    const int MAX_TRANSFER = 4; 
+    const int MAX_SECONDS = 15;
+    const int MAX_DIRECT = 2;
+    const int MAX_TRANSFER = 4;
 
     final stopwatch = Stopwatch()..start();
     final timer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -2888,10 +3011,7 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
       } else {
         final elapsed = stopwatch.elapsed.inSeconds;
         setState(() {
-          progress = (elapsed / MAX_SECONDS).clamp(
-            0.0,
-            1.0,
-          ); 
+          progress = (elapsed / MAX_SECONDS).clamp(0.0, 1.0);
           randomTip = (loadingTips..shuffle()).first;
         });
       }
@@ -2908,48 +3028,79 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
 
     final List<MapEntry<String, List<LatLng>>> nearby = [];
     final allLineNames = [
-      "A1_Gidis", "A1_Donus",
-      "B1_Gidis", "B1_Donus",
-      "B2_Gidis", "B2_Donus",
-      "B2A_Gidis", "B2A_Donus",
-      "B3_Gidis", "B3_Donus",
-      "G1_Gidis", "G1_Donus",
+      "A1_Gidis",
+      "A1_Donus",
+      "B1_Gidis",
+      "B1_Donus",
+      "B2_Gidis",
+      "B2_Donus",
+      "B2A_Gidis",
+      "B2A_Donus",
+      "B3_Gidis",
+      "B3_Donus",
+      "G1_Gidis",
+      "G1_Donus",
       "G2_Gidis",
-      "G2_Donus", 
-      "G3_Gidis", "G3_Donus",
-      "G4_Gidis", "G4_Donus",
-      "G4A_Gidis", "G4A_Donus", 
-      "G4B_Gidis", "G4B_Donus", 
-      "G5_Gidis", "G5_Donus",
-      "G6_Gidis", "G6_Donus",
-      "G7_Gidis", "G7_Donus",
-      "G7A_Gidis", "G7A_Donus",
-      "G8_Gidis", "G8_Donus",
-      "G9_Gidis", "G9_Donus",
-      "G10_Gidis", "G10_Donus",
-      "G11_Gidis", "G11_Donus", 
-      "G14_Gidis", "G14_Donus", 
-      "K1_Gidis", "K1_Donus",
-      "K1A_Gidis", "K1A_Donus", 
-      "K2_Gidis", "K2_Donus",
-      "K3_Gidis", "K3_Donus",
-      "K4_Gidis", "K4_Donus",
-      "K5_Gidis", "K5_Donus",
-      "K6_Gidis", "K6_Donus",
-      "K7_Gidis", "K7_Donus",
-      "K7A_Gidis", "K7A_Donus",
-      "K10_Gidis", "K10_Donus",
-      "K11_Gidis", "K11_Donus",
-      "M11_Gidis", "M11_Donus",
+      "G2_Donus",
+      "G3_Gidis",
+      "G3_Donus",
+      "G4_Gidis",
+      "G4_Donus",
+      "G4A_Gidis",
+      "G4A_Donus",
+      "G4B_Gidis",
+      "G4B_Donus",
+      "G5_Gidis",
+      "G5_Donus",
+      "G6_Gidis",
+      "G6_Donus",
+      "G7_Gidis",
+      "G7_Donus",
+      "G7A_Gidis",
+      "G7A_Donus",
+      "G8_Gidis",
+      "G8_Donus",
+      "G9_Gidis",
+      "G9_Donus",
+      "G10_Gidis",
+      "G10_Donus",
+      "G11_Gidis",
+      "G11_Donus",
+      "G14_Gidis",
+      "G14_Donus",
+      "K1_Gidis",
+      "K1_Donus",
+      "K1A_Gidis",
+      "K1A_Donus",
+      "K2_Gidis",
+      "K2_Donus",
+      "K3_Gidis",
+      "K3_Donus",
+      "K4_Gidis",
+      "K4_Donus",
+      "K5_Gidis",
+      "K5_Donus",
+      "K6_Gidis",
+      "K6_Donus",
+      "K7_Gidis",
+      "K7_Donus",
+      "K7A_Gidis",
+      "K7A_Donus",
+      "K10_Gidis",
+      "K10_Donus",
+      "K11_Gidis",
+      "K11_Donus",
+      "M11_Gidis",
+      "M11_Donus",
     ];
 
     for (int i = 0; i < allLineNames.length; i++) {
-  final name = allLineNames[i];
-  ensureBusLineLoaded(name);
-   if (i % 2 == 0) {
-    await Future.delayed(Duration.zero);
-  }
-  final line = busLines[name];
+      final name = allLineNames[i];
+      ensureBusLineLoaded(name);
+      if (i % 2 == 0) {
+        await Future.delayed(Duration.zero);
+      }
+      final line = busLines[name];
       if (line == null || line.isEmpty) continue;
       final nearS = line.any((p) => dist(startPoint!, p) < NEAR_STOP);
       final nearE = line.any((p) => dist(endPoint!, p) < NEAR_STOP);
@@ -2978,7 +3129,7 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
           walk2: [],
           totalDistance: total,
           isTransfer: false,
-          startStopName: "Binilecek Durak", 
+          startStopName: "Binilecek Durak",
           endStopName: "İnilecek Durak",
         ),
       );
@@ -3115,9 +3266,9 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
               walk2: walks[2],
               totalDistance: total,
               isTransfer: true,
-              startStopName: nsName, 
-              transferStopName: "$nt1Name ↔ $nt2Name", 
-              endStopName: neName, 
+              startStopName: nsName,
+              transferStopName: "$nt1Name ↔ $nt2Name",
+              endStopName: neName,
             ),
           );
 
@@ -3159,32 +3310,32 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
     } catch (e) {
       print("Araç rotası alınamadı: $e");
     }
-  try {
-    print("🚕 Taksi seçenekleri hesaplanıyor...");
-    final taxiOptions = await _calculateTaxiOptions();
-    
-    if (taxiOptions.isNotEmpty) {
-      options.addAll(taxiOptions);
-      print("✅ ${taxiOptions.length} taksi seçeneği eklendi");
+    try {
+      print("🚕 Taksi seçenekleri hesaplanıyor...");
+      final taxiOptions = await _calculateTaxiOptions();
+
+      if (taxiOptions.isNotEmpty) {
+        options.addAll(taxiOptions);
+        print("✅ ${taxiOptions.length} taksi seçeneği eklendi");
+      }
+    } catch (e) {
+      print("Taksi rotaları hesaplanamadı: $e");
     }
-  } catch (e) {
-    print("Taksi rotaları hesaplanamadı: $e");
+
+    options.sort((a, b) => a.totalDistance.compareTo(b.totalDistance));
+    final limited = options.take(MAX_DIRECT + MAX_TRANSFER + 3).toList();
+
+    setState(() {
+      isLoading = false;
+      suggestedOptions = limited;
+    });
+
+    _showOptionsDialog(context, limited);
+
+    print(
+      "${options.length} rota bulundu (${stopwatch.elapsed.inSeconds}s sürdü)",
+    );
   }
-
-  options.sort((a, b) => a.totalDistance.compareTo(b.totalDistance));
-  final limited = options.take(MAX_DIRECT + MAX_TRANSFER + 3).toList(); 
-
-  setState(() {
-    isLoading = false;
-    suggestedOptions = limited;
-  });
-
-  _showOptionsDialog(context, limited);
-
-  print(
-    "${options.length} rota bulundu (${stopwatch.elapsed.inSeconds}s sürdü)",
-  );
-}
 
   Future<void> _renderOptionOnMap(RouteOption opt) async {
     final lines = <Polyline>[];
@@ -3228,7 +3379,6 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
       }
     });
 
-
     final allPts = <LatLng>[
       ...opt.walk1,
       ...opt.bus1,
@@ -3246,7 +3396,6 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
 
   @override
   Widget build(BuildContext context) {
-
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
     if (args != null && endPoint == null) {
       endPoint = LatLng(args["lat"], args["lng"]);
@@ -3254,9 +3403,7 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
     }
 
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF4F6FA,
-      ), 
+      backgroundColor: const Color(0xFFF4F6FA),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: ClipRRect(
@@ -3281,12 +3428,10 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
               child: AppBar(
                 backgroundColor: Colors.transparent,
                 centerTitle: true,
-                titleSpacing: 0, 
+                titleSpacing: 0,
 
                 title: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ), 
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: widget.destinationName != null
                       ? Text(
                           widget.destinationName!,
@@ -3296,7 +3441,6 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
                             fontSize: 20,
                           ),
                         )
-   
                       : const _BillboardTitle(),
                 ),
                 leading: IconButton(
@@ -3305,8 +3449,7 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
                     color: Colors.black87,
                   ),
                   onPressed: () {
-           
-                   Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                 ),
               ),
@@ -3317,7 +3460,6 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
 
       body: Column(
         children: [
-      
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ClipRRect(
@@ -3453,11 +3595,9 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
             ),
           ),
 
-       
           Expanded(
             child: Stack(
               children: [
-    
                 FlutterMap(
                   mapController: mapController,
                   options: MapOptions(
@@ -3474,7 +3614,6 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
                         }
                       });
 
-              
                       if (startPoint != null && endPoint != null) {
                         await _calculateRoutesAndShowDialog();
                       }
@@ -3482,39 +3621,40 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
                   ),
 
                   children: [
-             TileLayer(
-  urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-  userAgentPackageName: 'com.example.erzurum_rota',
-),
-            
+                    TileLayer(
+                      urlTemplate:
+                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      userAgentPackageName: 'com.example.erzurum_rota',
+                    ),
+
                     if (polylines.isNotEmpty)
                       PolylineLayer(polylines: polylines),
 
-             
                     if (bus1Segment != null)
                       StopsLayer(
                         routePoints: bus1Segment!,
                         currentRouteName: suggestedLine,
                         showBusStops: showBusStops,
                         simulationManager: _simulationManager,
+                        busLines: busLines,
+                        onEnsureLineLoaded: ensureBusLineLoaded,
                       ),
 
-       
                     if (bus2Segment != null && transferLine != null)
                       StopsLayer(
                         routePoints: bus2Segment!,
                         currentRouteName: transferLine,
                         showBusStops: showBusStops,
                         simulationManager: _simulationManager,
+                        busLines: busLines, // ← zaten vardı
+                        onEnsureLineLoaded: ensureBusLineLoaded, //
                       ),
 
-                       if (_taxiStandMarkers.isNotEmpty)
-    MarkerLayer(markers: _taxiStandMarkers),
+                    if (_taxiStandMarkers.isNotEmpty)
+                      MarkerLayer(markers: _taxiStandMarkers),
 
-      
                     MarkerLayer(markers: _busMarkers),
 
-  
                     if (startPoint != null)
                       MarkerLayer(
                         markers: [
@@ -3590,7 +3730,6 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                
                                     Stack(
                                       alignment: Alignment.center,
                                       children: [
@@ -3599,7 +3738,7 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
                                           width: 80,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 6,
-                                            value: progress, 
+                                            value: progress,
                                             backgroundColor: Colors.white24,
                                             color: Colors.lightBlueAccent,
                                           ),
@@ -3682,93 +3821,92 @@ void _showOptionsDialog(BuildContext context, List<RouteOption> options) {
           ),
         ],
       ),
-floatingActionButton: isRouteMode
-    ? null
-    : Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (suggestedLine == null && !showTaxiStands)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: FloatingActionButton.extended(
-                heroTag: "btn_taxi",
-                onPressed: () {
-                  setState(() => showTaxiStands = true);
-                  _updateTaxiStandMarkers();
-                  _showTaxiSelector();
-                },
-                backgroundColor: const Color(0xFFFF6F00),
-                icon: const Icon(Icons.local_taxi, color: Colors.white),
-                label: const Text(
-                  "Taksi Bul",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+      floatingActionButton: isRouteMode
+          ? null
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (suggestedLine == null && !showTaxiStands)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: FloatingActionButton.extended(
+                      heroTag: "btn_taxi",
+                      onPressed: () {
+                        setState(() => showTaxiStands = true);
+                        _updateTaxiStandMarkers();
+                        _showTaxiSelector();
+                      },
+                      backgroundColor: const Color(0xFFFF6F00),
+                      icon: const Icon(Icons.local_taxi, color: Colors.white),
+                      label: const Text(
+                        "Taksi Bul",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
 
- 
-          if (showTaxiStands && suggestedLine == null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: FloatingActionButton(
-                heroTag: "btn_close_taxi",
-                onPressed: () {
-                  setState(() {
-                    showTaxiStands = false;
-                    selectedTaxiStand = null;
-                    _taxiStandMarkers = [];
-                  });
-                },
-                backgroundColor: Colors.red,
-                child: const Icon(Icons.close, color: Colors.white),
-              ),
-            ),
+                if (showTaxiStands && suggestedLine == null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: FloatingActionButton(
+                      heroTag: "btn_close_taxi",
+                      onPressed: () {
+                        setState(() {
+                          showTaxiStands = false;
+                          selectedTaxiStand = null;
+                          _taxiStandMarkers = [];
+                        });
+                      },
+                      backgroundColor: Colors.red,
+                      child: const Icon(Icons.close, color: Colors.white),
+                    ),
+                  ),
 
-  
-          if (suggestedLine != null) ...[
-  
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: FloatingActionButton(
-                heroTag: "btn_swap",
-                onPressed: _toggleDirection,
-                backgroundColor: Colors.orangeAccent,
-                child: const Icon(
-                  Icons.swap_vert_rounded,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-            ),
+                if (suggestedLine != null) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: FloatingActionButton(
+                      heroTag: "btn_swap",
+                      onPressed: _toggleDirection,
+                      backgroundColor: Colors.orangeAccent,
+                      child: const Icon(
+                        Icons.swap_vert_rounded,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                    ),
+                  ),
 
-            FloatingActionButton(
-              heroTag: "btn_close",
-              onPressed: _clearSelectedLine,
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.close, color: Colors.white, size: 28),
+                  FloatingActionButton(
+                    heroTag: "btn_close",
+                    onPressed: _clearSelectedLine,
+                    backgroundColor: Colors.red,
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                ] else if (!showTaxiStands)
+                  FloatingActionButton.extended(
+                    heroTag: "btn_select",
+                    onPressed: _showLineSelector,
+                    backgroundColor: Colors.blueAccent,
+                    icon: const Icon(Icons.directions_bus, color: Colors.white),
+                    label: const Text(
+                      "Hat Seç",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ]
-
-          else if (!showTaxiStands)
-            FloatingActionButton.extended(
-              heroTag: "btn_select",
-              onPressed: _showLineSelector,
-              backgroundColor: Colors.blueAccent,
-              icon: const Icon(Icons.directions_bus, color: Colors.white),
-              label: const Text(
-                "Hat Seç",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-        ],
-      ),
     );
   }
 }
@@ -3836,7 +3974,7 @@ class SearchLocationField extends StatefulWidget {
   final VoidCallback onFocus;
   final void Function(double lat, double lng) onSelected;
   final bool showCurrentLocationOption;
-  final TextEditingController? controller; 
+  final TextEditingController? controller;
 
   const SearchLocationField({
     super.key,
@@ -3844,7 +3982,7 @@ class SearchLocationField extends StatefulWidget {
     required this.onSelected,
     required this.onFocus,
     this.showCurrentLocationOption = false,
-    this.controller, 
+    this.controller,
   });
 
   @override
@@ -3864,9 +4002,9 @@ class RouteOption {
   final String? startStopName;
   final String? endStopName;
   final String? transferStopName;
-  final bool isTaxi; 
-  final TaxiStand? taxiStand; 
-  final double? estimatedFare; 
+  final bool isTaxi;
+  final TaxiStand? taxiStand;
+  final double? estimatedFare;
 
   RouteOption({
     required this.lineName,
@@ -3881,9 +4019,9 @@ class RouteOption {
     this.startStopName,
     this.endStopName,
     this.transferStopName,
-    this.isTaxi = false, 
-    this.taxiStand, 
-    this.estimatedFare, 
+    this.isTaxi = false,
+    this.taxiStand,
+    this.estimatedFare,
   });
 }
 
@@ -3924,8 +4062,7 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
     setState(() => _loading = true);
 
     final encodedQuery = Uri.encodeComponent(query);
-    const apiKey =
-        "";
+    const apiKey = "";
     final url = Uri.parse(
       "https://maps.googleapis.com/maps/api/place/textsearch/json?query=$encodedQuery&key=$apiKey",
     );
@@ -3958,17 +4095,15 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
   final Distance _dist = const Distance();
   List<Map<String, dynamic>> _allStops = [];
 
-
   @override
   Widget build(BuildContext context) {
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: TextField(
-            controller: _localController, 
+            controller: _localController,
             decoration: InputDecoration(
               hintText: widget.hintText,
               prefixIcon: Icon(
@@ -3982,14 +4117,11 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
                 fontFamily: 'ProductSans',
               ),
 
-              border:
-                  InputBorder.none, 
+              border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               filled: true,
-              fillColor: Colors.white.withOpacity(
-                0.15,
-              ), 
+              fillColor: Colors.white.withOpacity(0.15),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 14,
                 vertical: 12,
@@ -3999,17 +4131,13 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
             onChanged: _searchPlaces,
             onTap: () {
               widget.onFocus();
-              _searchPlaces(
-                "",
-              ); 
+              _searchPlaces("");
             },
             onSubmitted: (value) async {
               if (value.isEmpty) return;
 
-       
               final encodedQuery = Uri.encodeComponent(value);
-              const apiKey =
-                  ""; 
+              const apiKey = "";
               final url = Uri.parse(
                 "https://maps.googleapis.com/maps/api/place/textsearch/json?query=$encodedQuery&key=$apiKey",
               );
@@ -4026,10 +4154,8 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
                   _localController.text = data["results"][0]["name"];
                   setState(() => _results.clear());
 
-      
                   if (widget.hintText.contains("Nereye")) {
                     Future.delayed(const Duration(milliseconds: 300), () async {
-                   
                       final state = context
                           .findAncestorStateOfType<_RoutePageState>();
                       if (state?.startPoint != null &&
@@ -4048,30 +4174,22 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(
-                0.15,
-              ), 
+              color: Colors.white.withOpacity(0.15),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: Colors.transparent,
-              ), 
+              border: Border.all(color: Colors.transparent),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.06), 
+                  color: Colors.black.withOpacity(0.06),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
                 BoxShadow(
-                  color: Colors.blue.withOpacity(
-                    0.03,
-                  ), 
+                  color: Colors.blue.withOpacity(0.03),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-
-            
 
             child: ListView.builder(
               shrinkWrap: true,
@@ -4079,35 +4197,34 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
               itemBuilder: (context, index) {
                 final item = _results[index];
 
+                if (item["isCurrentLocation"] == true) {
+                  return ListTile(
+                    leading: const Icon(Icons.my_location, color: Colors.blue),
+                    title: Text(item["display"]),
+                    onTap: () async {
+                      LocationPermission permission =
+                          await Geolocator.checkPermission();
 
-          if (item["isCurrentLocation"] == true) {
-  return ListTile(
-    leading: const Icon(Icons.my_location, color: Colors.blue),
-    title: Text(item["display"]),
-    onTap: () async {
+                      if (permission == LocationPermission.denied) {
+                        permission = await Geolocator.requestPermission();
+                      }
 
-      LocationPermission permission = await Geolocator.checkPermission();
+                      if (permission == LocationPermission.denied ||
+                          permission == LocationPermission.deniedForever) {
+                        return;
+                      }
 
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
+                      final pos = await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.high,
+                      );
 
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        return;
-      }
+                      widget.onSelected(pos.latitude, pos.longitude);
+                      _localController.text = "Mevcut konumunuz";
+                      setState(() => _results.clear());
+                    },
+                  );
+                }
 
-      final pos = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      widget.onSelected(pos.latitude, pos.longitude);
-      _localController.text = "Mevcut konumunuz";
-      setState(() => _results.clear());
-    },
-  );
-}
-              
                 return ListTile(
                   title: Text(
                     item["display"],
@@ -4189,26 +4306,23 @@ class _BillboardTitleState extends State<_BillboardTitle> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(
-          0.95,
-        ), 
-        borderRadius: BorderRadius.circular(12), 
+        color: Colors.white.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-       
           Image.asset(
             "assets/icons/erzbblogoformain.png",
             height: 28,
             fit: BoxFit.contain,
           ),
-          const SizedBox(width: 12), 
- 
+          const SizedBox(width: 12),
+
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 600),
-     
+
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return SlideTransition(
                   position:
@@ -4229,11 +4343,11 @@ class _BillboardTitleState extends State<_BillboardTitle> {
                 key: ValueKey<String>(_messages[_index]),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontFamily: 'ProductSans', 
-                  color: Color(0xFF1A237E), 
+                  fontFamily: 'ProductSans',
+                  color: Color(0xFF1A237E),
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  letterSpacing: 0.4, 
+                  letterSpacing: 0.4,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

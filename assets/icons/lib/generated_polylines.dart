@@ -2062,7 +2062,7 @@ final List<LatLng> K10_Donus = [
   LatLng(39.9431774, 41.2962453),
 ];
 
-final List<LatLng> G1ADogru = [
+final List<LatLng> G1A_Gidis = [
   LatLng(39.8803624, 41.2772016),
   LatLng(39.8804904, 41.2747874),
   LatLng(39.8835307, 41.2762683),

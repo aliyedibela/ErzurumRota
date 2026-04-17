@@ -280,7 +280,7 @@ final List<LatLng> B3Dogru = [
   LatLng(39.9024169, 41.1977747),
 ];
 
-final List<LatLng> B8Dogru = [
+final List<LatLng> B8_Gidis = [
   LatLng(39.8927462, 41.2008754),
   LatLng(39.893225, 41.199271),
   LatLng(39.893731, 41.196853),
@@ -1966,7 +1966,7 @@ final List<LatLng> K10Dogru = [
   LatLng(39.9431774, 41.2962453),
 ];
 
-final List<LatLng> G1ADogru = [
+final List<LatLng> G1A_Donus = [
   LatLng(39.8803624, 41.2772016),
   LatLng(39.8804904, 41.2747874),
   LatLng(39.8835307, 41.2762683),

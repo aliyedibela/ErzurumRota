@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'utils/stop_utils.dart';
-import 'bus_simulator.dart'; 
+import 'bus_simulator.dart';
 
 class StopsLayer extends StatelessWidget {
   final List<LatLng> routePoints;
   final String? currentRouteName;
   final bool showBusStops;
   final BusSimulationManager? simulationManager;
+  final Map<String, List<LatLng>> busLines;
+  final void Function(String lineKey)? onEnsureLineLoaded; // ← YENİ
 
   const StopsLayer({
     super.key,
@@ -16,6 +18,8 @@ class StopsLayer extends StatelessWidget {
     this.currentRouteName,
     this.showBusStops = true,
     this.simulationManager,
+    this.busLines = const {},
+    this.onEnsureLineLoaded, // ← YENİ
   });
 
   @override
@@ -24,6 +28,7 @@ class StopsLayer extends StatelessWidget {
 
     final markers = <Marker>[];
     final Distance distance = const Distance();
+
     if (StopUtils.allStops.isNotEmpty) {
       for (var stop in StopUtils.allStops) {
         double lat = double.tryParse(stop['lat'].toString()) ?? 0;
@@ -73,18 +78,36 @@ class StopsLayer extends StatelessWidget {
     return MarkerLayer(markers: markers);
   }
 
+  Widget _etaRow(IconData icon, String label, int etaMins) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 12, color: Colors.greenAccent),
+        const SizedBox(width: 4),
+        Text(
+          "$label: $etaMins dk",
+          style: const TextStyle(
+            color: Colors.greenAccent,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
   void _showStopInfo(
     BuildContext context,
     Map<String, dynamic> stopData,
     LatLng stopLoc,
   ) {
-
     String stopName =
         stopData['stopName'] ??
         stopData['display'] ??
         stopData['ad'] ??
         stopData['name'] ??
         "Durak";
+
     String linesStr = "";
     if (stopData.containsKey('lines')) {
       linesStr = stopData['lines'].toString();
@@ -105,7 +128,6 @@ class StopsLayer extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-
             color: const Color(0xFF1A237E).withOpacity(0.95),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
             border: Border.all(color: Colors.white24),
@@ -148,35 +170,45 @@ class StopsLayer extends StatelessWidget {
                     String cleanLine = line.trim();
                     if (cleanLine.isEmpty) return const SizedBox.shrink();
 
-                    String? etaInfo;
-                    Color boxColor = Colors.white.withOpacity(0.1);
-                    Color borderColor = Colors.white30;
-                    Color textColor = Colors.white;
 
-                    if (simulationManager != null) {
+                    cleanLine = cleanLine
+                        .replaceAll('/', '')
+                        .replaceAll('-', '');
 
-                      int? minGidis = simulationManager!.calculateEtaMinutes(
-                        "${cleanLine}_Gidis",
-                        stopLoc,
-                      );
+                    onEnsureLineLoaded?.call("${cleanLine}_Gidis");
+                    onEnsureLineLoaded?.call("${cleanLine}_Donus");
 
-                      int? minDonus = simulationManager!.calculateEtaMinutes(
-                        "${cleanLine}_Donus",
-                        stopLoc,
-                      );
+                    int? etaGidis =
+                        simulationManager?.calculateEtaMinutes(
+                          "${cleanLine}_Gidis",
+                          stopLoc,
+                        ) ??
+                        simulationManager?.getGhostEta(
+                          "${cleanLine}_Gidis",
+                          stopLoc,
+                          busLines,
+                        );
 
-                      if (minGidis != null) {
-                        etaInfo = "$minGidis dk (Gidiş)";
-                      } else if (minDonus != null) {
-                        etaInfo = "$minDonus dk (Dönüş)";
-                      }
+                    int? etaDonus =
+                        simulationManager?.calculateEtaMinutes(
+                          "${cleanLine}_Donus",
+                          stopLoc,
+                        ) ??
+                        simulationManager?.getGhostEta(
+                          "${cleanLine}_Donus",
+                          stopLoc,
+                          busLines,
+                        );
 
-                      if (etaInfo != null) {
-                        boxColor = Colors.green.withOpacity(0.2);
-                        borderColor = Colors.green;
-                        textColor = Colors.white; 
-                      }
+                    // En yakın otobüsü seç
+                    int? eta;
+                    if (etaGidis != null && etaDonus != null) {
+                      eta = etaGidis < etaDonus ? etaGidis : etaDonus;
+                    } else {
+                      eta = etaGidis ?? etaDonus;
                     }
+
+                    bool hasEta = eta != null;
 
                     return Container(
                       padding: const EdgeInsets.symmetric(
@@ -184,37 +216,61 @@ class StopsLayer extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: boxColor,
-                        border: Border.all(color: borderColor),
+                        color: hasEta
+                            ? Colors.green.withOpacity(0.15)
+                            : Colors.white.withOpacity(0.08),
+                        border: Border.all(
+                          color: hasEta ? Colors.green : Colors.white30,
+                        ),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            cleanLine,
-                            style: TextStyle(
-                              color: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.directions_bus,
+                                size: 14,
+                                color: Colors.white70,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                cleanLine,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              if (hasEta) ...[
+                                const SizedBox(width: 8),
+                                const Icon(
+                                  Icons.access_time,
+                                  size: 12,
+                                  color: Colors.greenAccent,
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  "$eta dk",
+                                  style: const TextStyle(
+                                    color: Colors.greenAccent,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
-                          if (etaInfo != null) ...[
-                            const SizedBox(width: 6),
-                            const Icon(
-                              Icons.sensors,
-                              size: 14,
-                              color: Colors.greenAccent,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              etaInfo!,
-                              style: const TextStyle(
-                                color: Colors.greenAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                          if (!hasEta)
+                            const Text(
+                              "Veri yok",
+                              style: TextStyle(
+                                color: Colors.white38,
+                                fontSize: 11,
                               ),
                             ),
-                          ],
                         ],
                       ),
                     );
