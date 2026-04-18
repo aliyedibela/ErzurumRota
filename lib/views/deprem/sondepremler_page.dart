@@ -111,7 +111,7 @@ class _SonDepremlerPageState extends State<SonDepremlerPage>
                 : quakes.isEmpty
                 ? const Center(
                     child: Text(
-                      "Son 50 deprem arasında Erzurum bulunamadı.",
+                      "Son depremler arasında Erzurum il sınırında gerçekleşen herhangi bir deprem bulunamadı.",
                       style: TextStyle(color: Colors.white70),
                     ),
                   )
