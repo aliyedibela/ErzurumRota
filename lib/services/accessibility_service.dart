@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:erzurum_rota/core/utils/stop_utils.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/services.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'bus_simulator.dart';
-import 'utils/stop_utils.dart';
+import 'package:erzurum_rota/services/bus_simulator.dart';
+
 
 class AccessibilityService {
   final FlutterTts _tts = FlutterTts();
@@ -21,8 +22,6 @@ class AccessibilityService {
   StreamSubscription<Position>? _locationSub;
   bool _isAnnouncing = false;
   int _listenRetryCount = 0;
-
-  // Son uyarı verilen durak — aynı durağı tekrar tekrar söylemesin
   String? _lastAnnouncedStop;
 
   AccessibilityService({
@@ -39,9 +38,7 @@ class AccessibilityService {
     print('✅ AccessibilityService başlatıldı.');
   }
 
-  // GPS takibini başlat
   Future<void> startLocationTracking() async {
-    // İzin kontrol
     LocationPermission perm = await Geolocator.checkPermission();
     if (perm == LocationPermission.denied) {
       perm = await Geolocator.requestPermission();
@@ -56,7 +53,7 @@ class AccessibilityService {
     _locationSub = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 10, // her 10 metre güncelle
+        distanceFilter: 10,
       ),
     ).listen((Position pos) {
       _checkNearbyStops(LatLng(pos.latitude, pos.longitude));
@@ -82,13 +79,11 @@ class AccessibilityService {
             stop['name'] ??
             'Durak';
 
-        // Aynı durağı tekrar söyleme
         if (_lastAnnouncedStop == stopName) continue;
 
         print('📍 Durağa yaklaşıldı: $stopName (${dist.toInt()}m)');
         _lastAnnouncedStop = stopName;
 
-        // Hat listesini al
         String linesStr = '';
         if (stop.containsKey('lines')) linesStr = stop['lines'].toString();
         else if (stop.containsKey('hatlar')) linesStr = stop['hatlar'].toString();
@@ -109,7 +104,6 @@ class AccessibilityService {
       }
     }
 
-    // Duraktan uzaklaşınca lastAnnouncedStop'u sıfırla
     if (_lastAnnouncedStop != null) {
       bool stillNear = StopUtils.allStops.any((stop) {
         final lat = double.tryParse(stop['lat'].toString()) ?? 0;
@@ -138,7 +132,6 @@ class AccessibilityService {
     return R * 2 * atan2(sqrt(x), sqrt(1 - x));
   }
 
-  // GPS takibini durdur
   void stopLocationTracking() {
     _locationSub?.cancel();
     _locationSub = null;

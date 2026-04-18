@@ -1,20 +1,6 @@
 import 'package:latlong2/latlong.dart';
+import 'package:erzurum_rota/models/taxi_stand.dart';
 
-class TaxiStand {
-  final String id;
-  final String name;
-  final LatLng location;
-  final String phone;
-  final String address;
-
-  TaxiStand({
-    required this.id,
-    required this.name,
-    required this.location,
-    required this.phone,
-    required this.address,
-  });
-}
 
 
 final List<TaxiStand> erzurumTaxiStands = [

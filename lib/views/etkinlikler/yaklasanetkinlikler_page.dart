@@ -1,7 +1,11 @@
 import 'dart:ui';
+import 'package:erzurum_rota/services/etkinlik_service.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'yaklasanetkinlikler.dart';
+
+import '../../models/etkinlik.dart';
+
+
 
 class YaklasanEtkinliklerPage extends StatefulWidget {
   const YaklasanEtkinliklerPage({super.key});

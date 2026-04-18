@@ -1,7 +1,7 @@
 import 'dart:ui';
-import 'package:erzurum_rota/accessibility_prefs.dart';
 import 'package:flutter/material.dart';
-import 'user_auth_service.dart';
+import '../../core/accessibility_prefs.dart';
+import '../../services/user_auth_service.dart';
 import 'user_auth_screens.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -847,7 +847,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
 
-          // ← YENİ: Erişilebilirlik toggle
           const SizedBox(height: 16),
           _AccessibilityToggle(),
 

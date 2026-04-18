@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'route_page.dart';
+import 'package:erzurum_rota/views/rota/route_page.dart';
 
 class OnemliYer {
   final String ad;

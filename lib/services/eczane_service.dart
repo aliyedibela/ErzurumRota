@@ -1,23 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
-
-class Eczane {
-  final String ad;
-  final String ilce;
-  final String adres;
-  final String telefon;
-  final double lat;
-  final double lng;
-
-  Eczane({
-    required this.ad,
-    required this.ilce,
-    required this.adres,
-    required this.telefon,
-    required this.lat,
-    required this.lng,
-  });
-}
+import 'package:erzurum_rota/models/eczane.dart';
 
 Future<List<Eczane>> fetchEczaneler() async {
   final url = Uri.parse("https://www.erzurumeo.org.tr/nobetci-eczaneler/25");
@@ -32,11 +15,10 @@ Future<List<Eczane>> fetchEczaneler() async {
   final List<Eczane> list = [];
 
   for (var card in eczaneCards) {
-
     String ad = card.querySelector("strong")?.text.trim() ?? "";
     String ilceRaw = card.querySelector("h4")?.text.trim() ?? "";
-    String ilce = "";
-    if (ilceRaw.contains("-")) ilce = ilceRaw.split("-").last.trim();
+    String ilce = ilceRaw.contains("-") ? ilceRaw.split("-").last.trim() : "";
+
     final adresNode = card.querySelector("p");
     String adres = "";
     if (adresNode != null) {
@@ -48,10 +30,11 @@ Future<List<Eczane>> fetchEczaneler() async {
           .replaceAll('"', '')
           .replaceAll(RegExp(r"\s+"), " ")
           .trim();
-      adres = "$adres";
     }
+
     String telefon =
         card.querySelector("a[href^='tel:']")?.text.trim() ?? "Bilinmiyor";
+
     double lat = 0.0;
     double lng = 0.0;
     final mapLink = card
@@ -64,18 +47,17 @@ Future<List<Eczane>> fetchEczaneler() async {
         lng = double.tryParse(coords[1]) ?? 0.0;
       }
     }
+
     final exists = list.any((e) => e.ad == ad && e.telefon == telefon);
     if (!exists && ad.isNotEmpty) {
-      list.add(
-        Eczane(
-          ad: ad,
-          ilce: ilce,
-          adres: adres,
-          telefon: telefon,
-          lat: lat,
-          lng: lng,
-        ),
-      );
+      list.add(Eczane(
+        ad: ad,
+        ilce: ilce,
+        adres: adres,
+        telefon: telefon,
+        lat: lat,
+        lng: lng,
+      ));
     }
   }
 

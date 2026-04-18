@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'utils/stop_utils.dart';
-import 'bus_simulator.dart';
+import 'package:erzurum_rota/services/bus_simulator.dart';
+import '../core/utils/stop_utils.dart';
 
 class StopsLayer extends StatelessWidget {
   final List<LatLng> routePoints;

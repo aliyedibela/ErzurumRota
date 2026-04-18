@@ -1,18 +1,19 @@
 import 'dart:ui';
+import 'package:erzurum_rota/views/baskanlar/baskanlar_page.dart';
+import 'package:erzurum_rota/views/deprem/sondepremler_page.dart';
+import 'package:erzurum_rota/views/eczane/eczane_page.dart';
+import 'package:erzurum_rota/views/etkinlikler/yaklasanetkinlikler_page.dart';
+import 'package:erzurum_rota/views/hava/havadurumu_page.dart';
+import 'package:erzurum_rota/views/profile/profile_screen.dart';
+import 'package:erzurum_rota/views/rota/route_page.dart';
+import 'package:erzurum_rota/views/tarih/erzurumtarihi_page.dart';
+import 'package:erzurum_rota/views/yerler/onemliyerler_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'route_page.dart';
-import 'eczane_page.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; 
-import 'onemliyerler_page.dart';
-import 'erzurumtarihi_page.dart';
-import 'baskanlar_page.dart';
-import 'yaklasanetkinlikler_page.dart';
-import 'havadurumu_page.dart';
-import 'sondepremler_page.dart';
-import 'profile_screen.dart';
-import 'user_auth_service.dart';
+
+import 'services/user_auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,8 +67,6 @@ void initState() {
 
   _loadSavedUser();
   
-
-  // ← BUNU EKLE
   WidgetsBinding.instance.addPostFrameCallback((_) {
     _showAccessibilityOnboarding();
   });

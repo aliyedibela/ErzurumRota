@@ -1,11 +1,15 @@
 import 'dart:ui';
+import 'package:erzurum_rota/services/eczane_service.dart';
+import 'package:erzurum_rota/views/rota/route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; 
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:url_launcher/url_launcher.dart'; 
-import 'eczane.dart';
-import 'route_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../models/eczane.dart'; 
+
+
 
 class EczanePage extends StatefulWidget {
   const EczanePage({super.key});

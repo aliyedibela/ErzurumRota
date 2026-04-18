@@ -1,26 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
-
-class Etkinlik {
-  final String ad;
-  final String mekan;
-  final String tarih;
-  final String fiyat;
-  final String link;
-  final String? afisUrl;
-  final String kaynak; 
-
-  Etkinlik({
-    required this.ad,
-    required this.mekan,
-    required this.tarih,
-    required this.fiyat,
-    required this.link,
-    this.afisUrl,
-    required this.kaynak,
-  });
-}
+import 'package:erzurum_rota/models/etkinlik.dart';
 
 Future<List<Etkinlik>> _fetchBubilet() async {
   try {
@@ -29,13 +10,11 @@ Future<List<Etkinlik>> _fetchBubilet() async {
       url,
       headers: {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"},
     );
-
     if (response.statusCode != 200) return [];
 
     final document = parser.parse(response.body);
     final kartlar = document.querySelectorAll("a.group.block");
-
-    List<Etkinlik> list = [];
+    final List<Etkinlik> list = [];
 
     for (var k in kartlar) {
       final ad = k.attributes["title"]?.trim() ?? "İsimsiz Etkinlik";
@@ -46,28 +25,26 @@ Future<List<Etkinlik>> _fetchBubilet() async {
       final pTags = k.querySelectorAll("div.px-1.pt-2 p");
       String mekan = pTags.isNotEmpty ? pTags[0].text.trim() : "Erzurum";
       String tarih = pTags.length > 1 ? pTags[1].text.trim() : "Tarih Yok";
+
       final fiyatSpan = k.querySelector("div.mt-1 span.text-left");
       final tlSpan = k.querySelector("div.mt-1 span.ml-0\\.5");
       String fiyat = "Bilinmiyor";
-
       if (fiyatSpan != null) {
         fiyat = fiyatSpan.text.trim();
         if (tlSpan != null && !fiyat.contains("₺")) {
-          fiyat += " " + tlSpan.text.trim();
+          fiyat += " ${tlSpan.text.trim()}";
         }
       }
 
-      list.add(
-        Etkinlik(
-          ad: ad,
-          mekan: mekan,
-          tarih: tarih,
-          fiyat: fiyat,
-          link: link,
-          afisUrl: img,
-          kaynak: "Bubilet",
-        ),
-      );
+      list.add(Etkinlik(
+        ad: ad,
+        mekan: mekan,
+        tarih: tarih,
+        fiyat: fiyat,
+        link: link,
+        afisUrl: img,
+        kaynak: "Bubilet",
+      ));
     }
     return list;
   } catch (e) {
@@ -80,10 +57,10 @@ Future<List<Etkinlik>> _fetchPasso() async {
   try {
     final url = Uri.parse("https://www.passo.com.tr/api/utils/search-v2");
     final body = jsonEncode({
-      "query": "erzurum", 
-      "size": 20, 
+      "query": "erzurum",
+      "size": 20,
       "from": 0,
-      "sort": "date", 
+      "sort": "date",
     });
 
     final response = await http.post(
@@ -94,42 +71,29 @@ Future<List<Etkinlik>> _fetchPasso() async {
       },
       body: body,
     );
-
     if (response.statusCode != 200) return [];
 
-    final jsonResponse = jsonDecode(response.body);
-    final data = jsonResponse['data'] as List?;
-
+    final data = jsonDecode(response.body)['data'] as List?;
     if (data == null) return [];
 
-    List<Etkinlik> list = [];
-
-    for (var item in data) {
-      String title = item['title'] ?? "Passo Etkinliği";
-      String venue = item['venueName'] ?? "Erzurum";
+    return data.map((item) {
       String rawDate = item['date'] ?? "";
       String tarih = rawDate.length > 10
           ? "${rawDate.substring(0, 10)} / Saat: ${rawDate.substring(11, 16)}"
           : rawDate;
-
       String seoUrl = item['seoUrl'] ?? "";
       String id = item['id'] ?? "";
-      String link = "https://www.passo.com.tr/tr/etkinlik/$seoUrl/$id";
-      String? image = item['imageUrl'];
 
-      list.add(
-        Etkinlik(
-          ad: title,
-          mekan: venue,
-          tarih: tarih,
-          fiyat: "Detayda", 
-          link: link,
-          afisUrl: image,
-          kaynak: "Passo",
-        ),
+      return Etkinlik(
+        ad: item['title'] ?? "Passo Etkinliği",
+        mekan: item['venueName'] ?? "Erzurum",
+        tarih: tarih,
+        fiyat: "Detayda",
+        link: "https://www.passo.com.tr/tr/etkinlik/$seoUrl/$id",
+        afisUrl: item['imageUrl'],
+        kaynak: "Passo",
       );
-    }
-    return list;
+    }).toList();
   } catch (e) {
     print("Passo Hatası: $e");
     return [];
@@ -137,13 +101,6 @@ Future<List<Etkinlik>> _fetchPasso() async {
 }
 
 Future<List<Etkinlik>> tumEtkinlikleriGetir() async {
-
   final results = await Future.wait([_fetchBubilet(), _fetchPasso()]);
-
-  List<Etkinlik> tumListe = [];
-  tumListe.addAll(results[0]); 
-  tumListe.addAll(results[1]); 
-
-
-  return tumListe;
+  return [...results[0], ...results[1]];
 }

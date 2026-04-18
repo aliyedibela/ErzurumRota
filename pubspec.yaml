@@ -83,6 +83,7 @@ flutter:
   assets:
     - .env
     - assets/data/all_stops.json
+    - assets/data/all_stops.json
     - assets/data/driving_lines.json
     - assets/data/stop_utils.dart
     - assets/bus_lines.json
