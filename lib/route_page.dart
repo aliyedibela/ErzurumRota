@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:erzurum_rota/accessibility_prefs.dart';
+import 'package:erzurum_rota/accessibility_service.dart';
+
 import 'taxi_stands.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -61,6 +64,7 @@ class _RoutePageState extends State<RoutePage> {
   bool _signalRConnected = false;
   final Distance _dist = const Distance();
   BusSimulationManager? _simulationManager;
+  late AccessibilityService _accessibilityService;
   List<Marker> _busMarkers = [];
   String? _waitingRequestId;
   BuildContext? _waitingDialogCtx;
@@ -1102,6 +1106,7 @@ class _RoutePageState extends State<RoutePage> {
 
   @override
   void dispose() {
+    _accessibilityService.dispose();
     _hubConnection?.stop();
     super.dispose();
   }
@@ -1466,6 +1471,7 @@ class _RoutePageState extends State<RoutePage> {
   @override
   void initState() {
     super.initState();
+
     _simulationManager = BusSimulationManager(
       onUpdate: (buses) {
         if (!mounted) return;
@@ -1522,6 +1528,19 @@ class _RoutePageState extends State<RoutePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Future.microtask(() => StopUtils.loadAllStops());
       _connectSignalR();
+      _accessibilityService = AccessibilityService(
+        simulationManager: _simulationManager,
+        busLines: busLines,
+        onEnsureLineLoaded: ensureBusLineLoaded,
+      );
+      await _accessibilityService.init();
+      final accessEnabled = await AccessibilityPrefs.isEnabled();
+      if (accessEnabled) {
+        await _accessibilityService.startLocationTracking();
+        print('♿ Erişilebilirlik modu aktif');
+      } else {
+        print('♿ Erişilebilirlik modu kapalı');
+      }
       if (widget.startPoint != null && widget.destination != null) {
         setState(() {
           startPoint = widget.startPoint!;
@@ -3443,15 +3462,15 @@ class _RoutePageState extends State<RoutePage> {
                         )
                       : const _BillboardTitle(),
                 ),
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.black87,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
+                leading: Navigator.canPop(context)
+                    ? IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: Colors.black87,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ),
           ),
@@ -3646,8 +3665,8 @@ class _RoutePageState extends State<RoutePage> {
                         currentRouteName: transferLine,
                         showBusStops: showBusStops,
                         simulationManager: _simulationManager,
-                        busLines: busLines, 
-                        onEnsureLineLoaded: ensureBusLineLoaded, 
+                        busLines: busLines,
+                        onEnsureLineLoaded: ensureBusLineLoaded,
                       ),
 
                     if (_taxiStandMarkers.isNotEmpty)

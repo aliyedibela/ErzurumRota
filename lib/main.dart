@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'route_page.dart';
 import 'eczane_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; 
@@ -47,23 +48,132 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int _currentTabIndex = 0;
   AppUser? _currentUser;
   final _userSvc = UserAuthService();
+  
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 9, vsync: this);
+ @override
+void initState() {
+  super.initState();
+  _tabController = TabController(length: 9, vsync: this);
 
-    _tabController.addListener(() {
-      if (!_tabController.indexIsChanging) {
-        setState(() {
-          _currentTabIndex = _tabController.index;
-          isRouteTab = _tabController.index == 4;
-        });
-      }
-    });
+  _tabController.addListener(() {
+    if (!_tabController.indexIsChanging) {
+      setState(() {
+        _currentTabIndex = _tabController.index;
+        isRouteTab = _tabController.index == 4;
+      });
+    }
+  });
 
-    _loadSavedUser();
-  }
+  _loadSavedUser();
+  
+
+  // ← BUNU EKLE
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _showAccessibilityOnboarding();
+  });
+}
+
+Future<void> _showAccessibilityOnboarding() async {
+  final prefs = await SharedPreferences.getInstance();
+  final shown = prefs.getBool('accessibility_onboarding_shown') ?? false;
+  if (shown) return;
+  await prefs.setBool('accessibility_onboarding_shown', true);
+
+  if (!mounted) return;
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (ctx) => Dialog(
+      backgroundColor: Colors.transparent,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF0D47A1), Color(0xFF1565C0)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlueAccent.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.accessibility_new_rounded,
+                    color: Colors.lightBlueAccent,
+                    size: 40,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Erişilebilirlik Modu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Text(
+                    'Bu uygulama görme engelli kullanıcılar için sesli yönlendirme özelliğine sahiptir.\n\n'
+                    'Durağa yaklaştığınızda otobüs bilgisi sesli olarak iletilir.\n\n'
+                    '♿ Sağ üstteki profil ikonuna girerek bu özelliği açıp kapatabilirsiniz.',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlueAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () => Navigator.pop(ctx),
+                    child: const Text(
+                      'Anladım',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 
   Future<void> _loadSavedUser() async {
     final u = await _userSvc.getSavedUser();
