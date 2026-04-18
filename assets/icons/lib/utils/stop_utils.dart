@@ -1,16 +1,11 @@
-// utils/stop_utils.dart
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:latlong2/latlong.dart';
 
 class StopUtils {
-  /// Tüm duraklar (JSON’dan yüklenir)
   static List<Map<String, dynamic>> allStops = [];
-
   static bool _loading = false;
-
-  /// JSON'u bir kez yükler (idempotent)
   static Future<void> loadAllStops() async {
     if (_loading || allStops.isNotEmpty) return;
     _loading = true;
@@ -26,7 +21,6 @@ class StopUtils {
     }
   }
 
-  /// LatLng'e en yakın durak adını döndür (150 m eşiği ile)
   static String stopNameFromLatLng(LatLng point, {double threshold = 150}) {
     if (allStops.isEmpty) return "Durak";
     final dist = const Distance();

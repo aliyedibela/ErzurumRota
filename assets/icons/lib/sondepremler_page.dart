@@ -85,7 +85,6 @@ class _SonDepremlerPageState extends State<SonDepremlerPage>
       ),
       body: Stack(
         children: [
-          // 🌈 Aurora arka plan
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -104,8 +103,7 @@ class _SonDepremlerPageState extends State<SonDepremlerPage>
             filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
             child: Container(color: Colors.white.withOpacity(0.05)),
           ),
-
-          // 📋 Deprem listesi
+          
           SafeArea(
             child: loading
                 ? const Center(
@@ -132,7 +130,6 @@ class _SonDepremlerPageState extends State<SonDepremlerPage>
     );
   }
 
-  // 💎 Cam efektli deprem kartı
   Widget _buildQuakeCard(dynamic q) {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -176,7 +173,6 @@ class _SonDepremlerPageState extends State<SonDepremlerPage>
   }
 }
 
-// 🌌 Aurora Painter (arka plan ışık dalgası)
 class _AuroraPainter extends CustomPainter {
   final double t;
   _AuroraPainter(this.t);

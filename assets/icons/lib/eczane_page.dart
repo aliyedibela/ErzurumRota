@@ -35,7 +35,6 @@ class _EczanePageState extends State<EczanePage>
     super.dispose();
   }
 
-  // 📍 Konum Alma Fonksiyonu
   Future<LatLng?> _getCurrentLocation() async {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -69,16 +68,11 @@ class _EczanePageState extends State<EczanePage>
     }
   }
 
-  // 📞 Telefon Arama Fonksiyonu (Düzeltildi)
   Future<void> _makePhoneCall(String phoneNumber) async {
-    // Numarayı temizle: (0442) 123 45 67 -> 04421234567
-    // Sadece rakamları bırakır
     final cleanNumber = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
-
     final Uri launchUri = Uri(scheme: 'tel', path: cleanNumber);
 
     try {
-      // canLaunchUrl bazı cihazlarda hatalı dönebiliyor, direkt deniyoruz
       await launchUrl(launchUri);
     } catch (e) {
       if (mounted) {

@@ -3646,8 +3646,8 @@ class _RoutePageState extends State<RoutePage> {
                         currentRouteName: transferLine,
                         showBusStops: showBusStops,
                         simulationManager: _simulationManager,
-                        busLines: busLines, // ← zaten vardı
-                        onEnsureLineLoaded: ensureBusLineLoaded, //
+                        busLines: busLines, 
+                        onEnsureLineLoaded: ensureBusLineLoaded, 
                       ),
 
                     if (_taxiStandMarkers.isNotEmpty)

@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 const String baseUrl = "https://superelastic-rylee-tetramerous.ngrok-free.dev";
 
 Future<List<LatLng>> getDrivingRoute(LatLng start, LatLng end) async {
-  const String mode = "driving"; // walking, cycling de olabilir
+  const String mode = "driving"; 
 
   final url =
       "$baseUrl/route/v1/$mode/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson";

@@ -2,14 +2,13 @@ import 'dart:async';
 import 'dart:math';
 import 'package:latlong2/latlong.dart';
 
-// 1. SADELEŞTİRİLMİŞ VE GÜÇLENDİRİLMİŞ OTOBÜS SINIFI
 class SimulatedBus {
   String id;
   String lineName;
   List<LatLng> routePath;
   double cachedTotalLength;
-  int durationMs; // Bu otobüsün seferi kaç milisaniye sürüyor
-  int timeOffsetMs; // Diğer otobüsle aralarındaki mesafe (Zaman farkı)
+  int durationMs; 
+  int timeOffsetMs; 
   LatLng currentLocation;
 
   SimulatedBus({
@@ -51,7 +50,6 @@ class BusSimulationManager {
   }
 
   void startSimulation(String lineKey, [List<LatLng>? initialPath]) {
-    // 1. Yeni gelen rotayı kaydet
     if (initialPath != null) {
       allRouteData[lineKey] = initialPath;
       double totalLen = 0;
@@ -61,12 +59,7 @@ class BusSimulationManager {
       _cachedRouteLengths[lineKey] = totalLen;
     }
 
-    // 2. Sadece ilgili yön için otobüs var mı kontrol et
-    // Eğer bu spesifik yön (örn: K10_Donus) zaten varsa ekleme yapma
     if (activeBuses.any((b) => b.lineName == lineKey)) return;
-
-    // 3. Sadece çağrılan yön için otobüs üret
-    // Bu sayede Gidis yüklendiğinde gidiş, Donus yüklendiğinde dönüş otobüsleri oluşur.
     _spawnBusesForDirection(lineKey);
 
     if (_timer == null || !_timer!.isActive) {
@@ -83,9 +76,8 @@ class BusSimulationManager {
     final path = allRouteData[key]!;
     final cachedLength = _cachedRouteLengths[key] ?? 0.1;
 
-    // Her yönün kendi "Random" seed'i olsun ki süreler gidiş-dönüşte farklı olsun
     Random random = Random(key.hashCode);
-    int durationMins = 75 + random.nextInt(31); // 20-40 dk
+    int durationMins = 75 + random.nextInt(31); 
     int durationMs = durationMins * 60 * 1000;
 
     for (int i = 0; i < 3; i++) {
@@ -109,8 +101,6 @@ class BusSimulationManager {
 
   void _startTimer() {
     _timer?.cancel();
-    // Animasyon akıcı olsun diye saniyede 1 güncelliyoruz.
-    // Artık TickMs hesaplamaya gerek yok, saat kaçsa ona göre çizilecek.
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (activeBuses.isEmpty) return;
 
@@ -124,20 +114,18 @@ class BusSimulationManager {
     });
   }
 
-  // 🧠 MATEMATİK BÜYÜSÜ: Zamanı mesafeye çeviren fonksiyon
   void _updateBusPosition(SimulatedBus bus, int nowMs) {
     if (bus.routePath.isEmpty) return;
 
-    // Şu anki zaman + Otobüsün başlangıç farkı
     int logicalTimeMs = nowMs + bus.timeOffsetMs;
 
-    // Yüzdelik İlerleme (0.0 ile 1.0 arası). Modulo (%) sayesinde başa döner.
+
     double progress = (logicalTimeMs % bus.durationMs) / bus.durationMs;
 
-    // Yüzdeyi metreye çevir
+
     double targetDist = progress * bus.cachedTotalLength;
 
-    // Haritadaki tam GPS koordinatını bul
+
     bus.currentLocation = _getPositionAtDistance(bus.routePath, targetDist);
   }
 
@@ -162,14 +150,13 @@ class BusSimulationManager {
     return path.last;
   }
 
-  // 👻 HAYALET ETA HESAPLAYICI (Sıfır RAM, Sadece Matematik)
   int? getGhostEta(
     String lineKey,
     LatLng stopLoc,
     Map<String, List<LatLng>> externalBusLines,
   ) {
     try {
-      // 1. Rota verisi bizde yoksa external map'ten (RoutePage'den) al
+
       if (!allRouteData.containsKey(lineKey) &&
           externalBusLines.containsKey(lineKey)) {
         allRouteData[lineKey] = externalBusLines[lineKey]!;
@@ -182,24 +169,20 @@ class BusSimulationManager {
         _cachedRouteLengths[lineKey] = totalLen;
       }
 
-      // Veri hala yoksa hesaplayamayız
       if (!allRouteData.containsKey(lineKey)) return null;
 
       final path = allRouteData[lineKey]!;
       final totalLength = _cachedRouteLengths[lineKey] ?? 0.1;
 
-      // 2. Hattın süresini bul (Simülasyondaki aynı mantık)
       Random random = Random(lineKey.hashCode);
-      int durationMins = 75 + random.nextInt(31); // 20-40 dk
+      int durationMins = 75 + random.nextInt(31); 
       int durationMs = durationMins * 60 * 1000;
 
-      // 3. Kullanıcının durağının başlangıca uzaklığı
       double userDist = _getDistanceToPoint(path, stopLoc);
       int minEta = 9999;
 
       int nowMs = DateTime.now().millisecondsSinceEpoch;
 
-      // 4. 2 adet otobüs için matematiksel konumu bul
       for (int i = 0; i < 3; i++) {
         int offsetMs = (durationMs ~/ 3) * i;
         int logicalTimeMs = nowMs + offsetMs;
@@ -209,10 +192,10 @@ class BusSimulationManager {
 
         double distRemaining;
         if (userDist >= currentDist) {
-          distRemaining = userDist - currentDist; // Otobüs henüz gelmedi
+          distRemaining = userDist - currentDist; 
         } else {
           distRemaining =
-              (totalLength - currentDist) + userDist; // Otobüs tur atıp gelecek
+              (totalLength - currentDist) + userDist; 
         }
 
         double speed = totalLength / durationMs;
@@ -229,7 +212,6 @@ class BusSimulationManager {
     }
   }
 
-  // 🕒 YENİ ETA (TAHMİNİ VARIŞ) HESAPLAYICI (Sana en yakın otobüsü bulur)
   int? calculateEtaMinutes(String lineName, LatLng userStopLocation) {
     try {
       final buses = activeBuses.where((b) => b.lineName == lineName).toList();
@@ -249,14 +231,14 @@ class BusSimulationManager {
 
         double distRemaining;
         if (userDist >= currentDist) {
-          distRemaining = userDist - currentDist; // Otobüs henüz gelmedi
+          distRemaining = userDist - currentDist; 
         } else {
           distRemaining =
               (bus.cachedTotalLength - currentDist) +
-              userDist; // Otobüs geçti, turlayıp gelecek
+              userDist; 
         }
 
-        double speed = bus.cachedTotalLength / bus.durationMs; // ms başına hız
+        double speed = bus.cachedTotalLength / bus.durationMs; 
         int etaMs = (distRemaining / speed).round();
         int etaMins = (etaMs / 1000 / 60).ceil();
 

@@ -10,7 +10,7 @@ class StopsLayer extends StatelessWidget {
   final bool showBusStops;
   final BusSimulationManager? simulationManager;
   final Map<String, List<LatLng>> busLines;
-  final void Function(String lineKey)? onEnsureLineLoaded; // ← YENİ
+  final void Function(String lineKey)? onEnsureLineLoaded; 
 
   const StopsLayer({
     super.key,
@@ -19,7 +19,7 @@ class StopsLayer extends StatelessWidget {
     this.showBusStops = true,
     this.simulationManager,
     this.busLines = const {},
-    this.onEnsureLineLoaded, // ← YENİ
+    this.onEnsureLineLoaded,
   });
 
   @override
@@ -200,7 +200,6 @@ class StopsLayer extends StatelessWidget {
                           busLines,
                         );
 
-                    // En yakın otobüsü seç
                     int? eta;
                     if (etaGidis != null && etaDonus != null) {
                       eta = etaGidis < etaDonus ? etaGidis : etaDonus;

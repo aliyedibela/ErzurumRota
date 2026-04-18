@@ -203,7 +203,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
       ),
       body: Stack(
         children: [
-          // Arka plan
+  
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -213,18 +213,18 @@ class _BaskanlarPageState extends State<BaskanlarPage>
               ),
             ),
           ),
-          // Aurora efekti
+    
           AnimatedBuilder(
             animation: _controller,
             builder: (context, _) =>
                 CustomPaint(painter: _AuroraPainter(_controller.value)),
           ),
-          // Blur filtresi
+         
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
             child: Container(color: Colors.white.withOpacity(0.05)),
           ),
-          // Liste
+      
           SafeArea(
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
@@ -237,7 +237,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
     );
   }
 
-  // 💎 GÜNCELLENMİŞ KART YAPISI
+
   Widget _buildBaskanCard(Map<String, String> b) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -253,7 +253,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => _showBaskanDetay(b), // Tıklanınca detay aç
+              onTap: () => _showBaskanDetay(b),
               splashColor: Colors.white24,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -262,7 +262,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                 ),
                 child: Row(
                   children: [
-                    // Fotoğraf (Hero ile büyüme efekti)
+               
                     Hero(
                       tag: b["ad"]!,
                       child: CircleAvatar(
@@ -273,7 +273,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                     ),
                     const SizedBox(width: 16),
 
-                    // Yazılar
+             
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +309,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       ),
                     ),
 
-                    // Bilgi ikonu
+             
                     const Icon(Icons.info_outline, color: Colors.white70),
                   ],
                 ),
@@ -321,16 +321,15 @@ class _BaskanlarPageState extends State<BaskanlarPage>
     );
   }
 
-  // 📜 DETAY PENCERESİ (YENİ EKLENDİ)
-  // 📜 GÜNCELLENMİŞ DETAY PENCERESİ (CAM EFEKTLİ)
+
   void _showBaskanDetay(Map<String, String> b) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent, // Arka plan şeffaf kalsın
+      backgroundColor: Colors.transparent, 
       isScrollControlled: true,
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.6, // Biraz daha yüksek açılsın
+          initialChildSize: 0.6,
           minChildSize: 0.4,
           maxChildSize: 0.85,
           builder: (_, scrollController) {
@@ -342,23 +341,23 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                 filter: ImageFilter.blur(
                   sigmaX: 25,
                   sigmaY: 25,
-                ), // Bulanıklık artırıldı
+                ), 
                 child: Container(
                   decoration: BoxDecoration(
-                    // 🌈 Cam Rengi: Hafif şeffaf lacivert geçiş
+        
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
                         const Color(
                           0xFF1A237E,
-                        ).withOpacity(0.5), // Üst taraf biraz daha koyu
+                        ).withOpacity(0.5), 
                         const Color(
                           0xFF283593,
-                        ).withOpacity(0.4), // Alt taraf daha şeffaf
+                        ).withOpacity(0.4), 
                       ],
                     ),
-                    // ✨ Camın üst kenarına ince beyaz çizgi (Parlama efekti)
+                
                     border: Border(
                       top: BorderSide(
                         color: Colors.white.withOpacity(0.3),
@@ -370,7 +369,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                   child: ListView(
                     controller: scrollController,
                     children: [
-                      // Üst Tutamaç
+                    
                       Center(
                         child: Container(
                           width: 50,
@@ -383,7 +382,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       ),
                       const SizedBox(height: 30),
 
-                      // Büyük Fotoğraf
+              
                       Center(
                         child: Hero(
                           tag: b["ad"]!,
@@ -407,7 +406,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       ),
                       const SizedBox(height: 20),
 
-                      // İsim
+                
                       Text(
                         b["ad"]!,
                         textAlign: TextAlign.center,
@@ -426,7 +425,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       ),
                       const SizedBox(height: 10),
 
-                      // Yıl Rozeti
+             
                       Center(
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -450,13 +449,13 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       ),
                       const SizedBox(height: 30),
 
-                      // Biyografi Metni
+                      
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Colors.black.withOpacity(
                             0.2,
-                          ), // Yazının arkasına hafif koyuluk
+                          ), 
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Text(
@@ -466,7 +465,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors
-                                .white, // Yazı rengini tam beyaz yaptım okunsun diye
+                                .white,
                             height: 1.6,
                           ),
                           textAlign: TextAlign.justify,
@@ -485,7 +484,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
   }
 }
 
-// 🌌 Aurora Painter (Aynı kalıyor)
+
 class _AuroraPainter extends CustomPainter {
   final double t;
   _AuroraPainter(this.t);

@@ -57,7 +57,6 @@ class _StopsLayerState extends State<StopsLayer> {
       }
     }
 
-    // 150 m üzerindeyse durak olarak alma
     if (bestDist > 150) return null;
     return bestStop;
   }

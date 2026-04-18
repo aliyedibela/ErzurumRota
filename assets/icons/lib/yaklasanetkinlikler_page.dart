@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// Önceki adımda oluşturduğumuz servis dosyasını import ediyoruz
 import 'yaklasanetkinlikler.dart';
 
 class YaklasanEtkinliklerPage extends StatefulWidget {
@@ -16,20 +14,15 @@ class YaklasanEtkinliklerPage extends StatefulWidget {
 class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-
-  // Servisimizden gelecek veriyi tutacak future
   late Future<List<Etkinlik>> futureEtkinlikler;
 
   @override
   void initState() {
     super.initState();
-    // Aurora animasyonu için controller
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 20),
     )..repeat(reverse: true);
-
-    // 🔥 BURASI DEĞİŞTİ: Artık yeni servisten tüm verileri çekiyoruz
     futureEtkinlikler = tumEtkinlikleriGetir();
   }
 
@@ -75,7 +68,6 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
       ),
       body: Stack(
         children: [
-          // 🌈 Arka plan (Aurora efekti)
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -95,7 +87,6 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
             child: Container(color: Colors.white.withOpacity(0.05)),
           ),
 
-          // 📋 Etkinlik listesi
           SafeArea(
             child: FutureBuilder<List<Etkinlik>>(
               future: futureEtkinlikler,
@@ -137,9 +128,7 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
     );
   }
 
-  // 💎 Cam efektli ve görselli kart
   Widget _buildEventCard(Etkinlik e) {
-    // Kaynağa göre renk belirle (Passo: Yeşil, Bubilet: Turuncu)
     final isPasso = e.kaynak == "Passo";
     final sourceColor = isPasso
         ? const Color.fromARGB(255, 255, 30, 0)
@@ -175,7 +164,6 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 🖼️ Afiş Varsa Göster (Üst Kısım)
                   if (e.afisUrl != null)
                     SizedBox(
                       height: 150,
@@ -193,13 +181,11 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
                       ),
                     ),
 
-                  // 📝 Bilgiler (Alt Kısım)
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Sol taraf (İkon veya Kaynak Badge)
                         Column(
                           children: [
                             const Icon(
@@ -233,7 +219,6 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
                         ),
                         const SizedBox(width: 16),
 
-                        // Orta kısım (Metinler)
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,8 +249,6 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
                             ],
                           ),
                         ),
-
-                        // Sağ Taraf (Link İkonu)
                         const Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.white54,
@@ -306,7 +289,6 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
   }
 }
 
-// 🌌 Aurora Painter (Senin orijinal efektin)
 class _AuroraPainter extends CustomPainter {
   final double t;
   _AuroraPainter(this.t);

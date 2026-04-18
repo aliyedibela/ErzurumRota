@@ -1282,11 +1282,10 @@ class _RoutePageState extends State<RoutePage> {
       "G8_Gidis", "G8_Donus",
       "G9_Gidis", "G9_Donus",
       "G10_Gidis", "G10_Donus",
-      "G11_Gidis", "G11_Donus", // Switch-case ile uyumlu olsun
-      "G14_Gidis", "G14_Donus", // Switch-case ile uyumlu olsun
-      // === K SERİSİ ===
+      "G11_Gidis", "G11_Donus",
+      "G14_Gidis", "G14_Donus",
       "K1_Gidis", "K1_Donus",
-      "K1A_Gidis", "K1A_Donus", // Switch-case ile uyumlu olsun
+      "K1A_Gidis", "K1A_Donus", 
       "K2_Gidis", "K2_Donus",
       "K3_Gidis", "K3_Donus",
       "K4_Gidis", "K4_Donus",
@@ -1296,7 +1295,6 @@ class _RoutePageState extends State<RoutePage> {
       "K7A_Gidis", "K7A_Donus",
       "K10_Gidis", "K10_Donus",
       "K11_Gidis", "K11_Donus",
-      // === M SERİSİ ===
       "M11_Gidis", "M11_Donus",
     ];
 
@@ -1331,12 +1329,10 @@ class _RoutePageState extends State<RoutePage> {
           walk2: [],
           totalDistance: total,
           isTransfer: false,
-          startStopName: "Binilecek Durak", // buraya durak adını koy
+          startStopName: "Binilecek Durak", 
           endStopName: "İnilecek Durak",
         ),
       );
-
-      // ✅ direkt yürüyüş rotası bulunduysa hemen göster
       setState(() {
         isLoading = false;
         suggestedOptions = options;
@@ -1347,21 +1343,15 @@ class _RoutePageState extends State<RoutePage> {
       );
     }
 
-    // 🚍 1️⃣ DİREKT seçenekler (max 2)
-    // 🚍 1️⃣ DİREKT seçenekler
-    // 🚍 1️⃣ DİREKT seçenekler
     final directCandidates = startNearby
         .intersection(endNearby)
         .take(MAX_DIRECT);
 
     for (final name in directCandidates) {
+
       if (stopwatch.elapsed.inSeconds > MAX_SECONDS) break;
-
       final line = busLines[name]!;
-
-      // 🔥 YENİ FONKSİYON ÇAĞRISI
       final bestSegment = findBestSegment(startPoint!, endPoint!, line, name);
-
       if (bestSegment == null) {
         print("⚠️ $name için uygun yönlü rota bulunamadı.");
         continue;
@@ -1384,8 +1374,6 @@ class _RoutePageState extends State<RoutePage> {
 
       final walk1 = results[0];
       final walk2 = results[1];
-
-      // Hesaplamada bus1 uzunluğunu kullanıyoruz
       final total =
           _polylineLength(walk1) +
           _polylineLength(bus1) +
@@ -1461,9 +1449,6 @@ class _RoutePageState extends State<RoutePage> {
           if (sName.contains("_")) {
             displaySName = sName.split("_")[0];
           }
-
-          // 🧹 2. Hattın (Transfer Hattı) İsmini Temizle
-          // Aktarma yapılan hat da bölünmüş bir hat olabilir.
           String displayEName = eName;
           if (eName.contains("_")) {
             displayEName = eName.split("_")[0];
@@ -1479,9 +1464,9 @@ class _RoutePageState extends State<RoutePage> {
               walk2: walks[2],
               totalDistance: total,
               isTransfer: true,
-              startStopName: nsName, // ✅ eklendi
-              transferStopName: "$nt1Name ↔ $nt2Name", // ✅ eklendi
-              endStopName: neName, // ✅ eklendi
+              startStopName: nsName, 
+              transferStopName: "$nt1Name ↔ $nt2Name", 
+              endStopName: neName, 
             ),
           );
 
@@ -1493,8 +1478,6 @@ class _RoutePageState extends State<RoutePage> {
     }
     stopwatch.stop();
     timer.cancel();
-
-    // ⏱ 15 saniye dolmadan hiçbir şey bulamadıysa mesaj burada gelsin
     if (options.isEmpty && stopwatch.elapsed.inSeconds >= MAX_SECONDS) {
       setState(() => isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1504,8 +1487,6 @@ class _RoutePageState extends State<RoutePage> {
       );
       return;
     }
-
-    // 🚗 Araç (car.lua) rotasını da her durumda öner
     try {
       final carRoute = await _getRoute(startPoint!, endPoint!, mode: "driving");
       final carDistance = _polylineLength(carRoute);
@@ -1567,7 +1548,7 @@ class _RoutePageState extends State<RoutePage> {
         Polyline(points: opt.walk2, color: Colors.green, strokeWidth: 3),
       );
 
-    // state
+
     setState(() {
       polylines = lines;
       suggestedLine = opt.lineName;
@@ -1602,7 +1583,6 @@ class _RoutePageState extends State<RoutePage> {
 
   @override
   Widget build(BuildContext context) {
-    // 📌 Navigator.pushNamed ile gelen parametreleri al
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
     if (args != null && endPoint == null) {
       endPoint = LatLng(args["lat"], args["lng"]);
@@ -1612,7 +1592,7 @@ class _RoutePageState extends State<RoutePage> {
     return Scaffold(
       backgroundColor: const Color(
         0xFFF4F6FA,
-      ), // 🔹 Hafif gri-mavi alt ton (cam efekti belirgin olur)
+      ), 
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: ClipRRect(
@@ -1646,12 +1626,12 @@ class _RoutePageState extends State<RoutePage> {
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(
                       0.8,
-                    ), // Arkası hafif beyaz olsun ki lacivert logo görünsün
+                    ), 
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Image.asset(
                     "assets/icons/erzurumrotaoneri.png",
-                    height: 30, // Yüksekliği bara sığacak şekilde ayarladım
+                    height: 30, 
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -1661,7 +1641,6 @@ class _RoutePageState extends State<RoutePage> {
                     color: Colors.black87,
                   ),
                   onPressed: () {
-                    // ✅ Artık sekme mantığında çalıştığı için HomePage'e dön
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (_) => const HomePage()),
@@ -1676,7 +1655,6 @@ class _RoutePageState extends State<RoutePage> {
 
       body: Column(
         children: [
-          // 🔹 Başlangıç input
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ClipRRect(
@@ -1812,11 +1790,9 @@ class _RoutePageState extends State<RoutePage> {
             ),
           ),
 
-          // Harita
           Expanded(
             child: Stack(
               children: [
-                // === 1️⃣ Harita ===
                 FlutterMap(
                   mapController: mapController,
                   options: MapOptions(
@@ -1832,15 +1808,12 @@ class _RoutePageState extends State<RoutePage> {
                           endPoint = point;
                         }
                       });
-
-                      // 🔥 elle tıklamayla başlangıç ve bitiş seçilince aynı hesaplama çalışsın
                       if (startPoint != null && endPoint != null) {
                         await _calculateRoutesAndShowDialog();
                       }
                     },
                   ),
 
-                  // === ÇİZİM KATMANLARI ===
                   children: [
                     TileLayer(
                       urlTemplate:
@@ -1931,7 +1904,6 @@ class _RoutePageState extends State<RoutePage> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // 🔵 % ilerlemeli progress çemberi
                                     Stack(
                                       alignment: Alignment.center,
                                       children: [
@@ -1940,7 +1912,7 @@ class _RoutePageState extends State<RoutePage> {
                                           width: 80,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 6,
-                                            value: progress, // 💡 % ilerleme
+                                            value: progress, 
                                             backgroundColor: Colors.white24,
                                             color: Colors.lightBlueAccent,
                                           ),
@@ -2088,13 +2060,12 @@ Widget _buildGlassButton({
   );
 }
 
-// 🔎 Adres arama widgeti
 class SearchLocationField extends StatefulWidget {
   final String hintText;
   final VoidCallback onFocus;
   final void Function(double lat, double lng) onSelected;
   final bool showCurrentLocationOption;
-  final TextEditingController? controller; // ✅ Bunu ekle!
+  final TextEditingController? controller; 
 
   const SearchLocationField({
     super.key,
@@ -2102,7 +2073,7 @@ class SearchLocationField extends StatefulWidget {
     required this.onSelected,
     required this.onFocus,
     this.showCurrentLocationOption = false,
-    this.controller, // default kapalı
+    this.controller,
   });
 
   @override
@@ -2110,18 +2081,18 @@ class SearchLocationField extends StatefulWidget {
 }
 
 class RouteOption {
-  final String lineName; // 1. hat (zorunlu)
-  final String? transferLine; // 2. hat (opsiyonel: aktarma varsa)
-  final List<LatLng> walk1; // start -> 1.hat biniş
-  final List<LatLng> bus1; // 1.hat otobüs segmenti
+  final String lineName; 
+  final String? transferLine; 
+  final List<LatLng> walk1;
+  final List<LatLng> bus1; 
   final List<LatLng>
-  walkTransfer; // 1.hat iniş -> 2.hat biniş (aktarma yürüyüşü)
-  final List<LatLng> bus2; // 2.hat otobüs segmenti
-  final List<LatLng> walk2; // son iniş -> varış yürüyüş
-  final double totalDistance; // toplam (yürüme+otobürü
-  final bool isTransfer; // aktarmalı mı?
-  final String? startStopName; // 🆕 ekle
-  final String? endStopName; // 🆕 ekle
+  walkTransfer; 
+  final List<LatLng> bus2; 
+  final List<LatLng> walk2; 
+  final double totalDistance; 
+  final bool isTransfer; 
+  final String? startStopName; 
+  final String? endStopName;
   final String? transferStopName;
 
   RouteOption({
@@ -2145,12 +2116,10 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
   bool _loading = false;
 
   Future<void> _searchPlaces(String query) async {
-    // 🔥 Eğer kullanıcı kutuya tıkladı ama arama yapmadıysa:
     if (query.isEmpty) {
       setState(() {
         _results = [];
 
-        // 🔥 sadece showCurrentLocationOption = true ise göster
         if (widget.showCurrentLocationOption) {
           _results.add({
             "display": "Konumunuz",
@@ -2200,7 +2169,6 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
   final Distance _dist = const Distance();
   List<Map<String, dynamic>> _allStops = [];
 
-  // bu fonksiyonla LatLng’ten durak adı alıyoruz
   @override
   Widget build(BuildContext context) {
     final controller = widget.controller ?? TextEditingController();
@@ -2210,7 +2178,7 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: TextField(
-            controller: controller, // 👈 burası önemli!
+            controller: controller, 
             decoration: InputDecoration(
               hintText: widget.hintText,
               prefixIcon: Icon(
@@ -2225,13 +2193,13 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
               ),
 
               border:
-                  InputBorder.none, // 🔥 varsayılan çizgi tamamen kaldırıldı
+                  InputBorder.none, 
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               filled: true,
               fillColor: Colors.white.withOpacity(
                 0.15,
-              ), // 🔥 container ile aynı ton
+              ), 
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 14,
                 vertical: 12,
@@ -2243,15 +2211,14 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
               widget.onFocus();
               _searchPlaces(
                 "",
-              ); // 👈 kutuya tıklanınca “Konumunuzu kullan” gelsin
+              ); 
             },
             onSubmitted: (value) async {
               if (value.isEmpty) return;
 
-              // Google API ile arama yap
               final encodedQuery = Uri.encodeComponent(value);
               const apiKey =
-                  "AIzaSyA1vYAY0R_KTU8cqcyAECyj44dbvtHTEFA"; // kendi API key'in
+                  "AIzaSyA1vYAY0R_KTU8cqcyAECyj44dbvtHTEFA"; 
               final url = Uri.parse(
                 "https://maps.googleapis.com/maps/api/place/textsearch/json?query=$encodedQuery&key=$apiKey",
               );
@@ -2268,10 +2235,8 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
                   controller.text = data["results"][0]["name"];
                   setState(() => _results.clear());
 
-                  // 🔥 Elle yazıp Enter’a basınca da rota hesaplama çalışsın
                   if (widget.hintText.contains("Nereye")) {
                     Future.delayed(const Duration(milliseconds: 300), () async {
-                      // ignore: use_build_context_synchronously
                       final state = context
                           .findAncestorStateOfType<_RoutePageState>();
                       if (state?.startPoint != null &&
@@ -2292,21 +2257,21 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(
                 0.15,
-              ), // 🔥 Mat değil, yarı saydam beyaz
+              ), 
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: Colors.transparent,
-              ), // 🔥 kenar çizgisi yok
+              ), 
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.06), // hafif yumuşak gölge
+                  color: Colors.black.withOpacity(0.06), 
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
                 BoxShadow(
                   color: Colors.blue.withOpacity(
                     0.03,
-                  ), // çok hafif mavi yansıma
+                  ), 
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
@@ -2319,7 +2284,6 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
               itemBuilder: (context, index) {
                 final item = _results[index];
 
-                // 🔥 Eğer bu "Konumunuzu kullan" seçeneği ise:
                 if (item["isCurrentLocation"] == true) {
                   return ListTile(
                     leading: const Icon(Icons.my_location, color: Colors.blue),
@@ -2335,7 +2299,6 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
                   );
                 }
 
-                // 🔎 Normal arama sonucu
                 return ListTile(
                   title: Text(
                     item["display"],
@@ -2346,7 +2309,6 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
                     double lat = item["lat"];
                     double lon = item["lon"];
 
-                    // 🔹 OSRM nearest (walking graph üzerinde en yakın nokta)
                     final snapUrl = Uri.parse(
                       "https://ellyn-uncounteracted-semirebelliously.ngrok-free.dev/nearest/v1/walking/$lon,$lat",
                     );

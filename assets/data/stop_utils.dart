@@ -22,7 +22,7 @@ class Stop {
 List<Stop> allStops = [];
 
 Future<void> loadAllStops() async {
-  if (allStops.isNotEmpty) return; // zaten yüklüyse tekrar yükleme
+  if (allStops.isNotEmpty) return;
   final data = await rootBundle.loadString("assets/data/all_stops.json");
   final jsonList = json.decode(data) as List;
   allStops = jsonList.map((e) => Stop.fromJson(e)).toList();

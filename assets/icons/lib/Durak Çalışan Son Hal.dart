@@ -16,7 +16,7 @@ import 'utils/stop_utils.dart';
 
 void main() {
   runApp(const MyApp());
-  HttpOverrides.global = MyHttpOverrides(); // 🔥 eklendi
+  HttpOverrides.global = MyHttpOverrides(); 
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -72,36 +72,30 @@ class SegmentResult {
 }
 
 class _RoutePageState extends State<RoutePage> {
-  // === TÜM HATLAR ===
+
   List<LatLng>? bus1Segment;
   List<LatLng>? bus2Segment;
   bool showBusStops = true;
   List<dynamic>? _cachedStops;
   final Distance _dist = const Distance();
 
-  double progress = 0.0; // 🔹 Yükleme yüzdesi (0.0 - 1.0 arası)
+  double progress = 0.0;
 
   String getExactStopName(LatLng point) {
-    // _cachedStops verisine erişimimiz olmalı.
     if (_cachedStops == null || _cachedStops!.isEmpty) {
       return StopUtils.stopNameFromLatLng(point);
     }
 
     final Distance distance = const Distance();
 
-    // 10 metre hassasiyetle, tam o noktadaki durağın adını bul
     for (var stop in _cachedStops!) {
-      // stop yapına göre lat/lon/display key'lerini kontrol et
       double lat = double.tryParse(stop['lat'].toString()) ?? 0;
       double lng = double.tryParse(stop['lon'].toString()) ?? 0;
 
-      // Eğer nokta 10 metreden yakınsa, kesin o duraktır.
       if (distance(point, LatLng(lat, lng)) < 15) {
         return stop['display'];
       }
     }
-
-    // Bulamazsa eskiye dön
     return StopUtils.stopNameFromLatLng(point);
   }
 
@@ -112,13 +106,11 @@ class _RoutePageState extends State<RoutePage> {
     String lineName,
   ) {
     final Distance distance = const Distance();
-    // 🔍 YARIÇAP ARTIRILDI: Durak uzakta kalsa bile yakalasın (2km)
     const double searchRadius = 2000;
 
     final List<int> startCandidates = [];
     final List<int> endCandidates = [];
 
-    // 1. Adayları Topla
     for (int i = 0; i < linePoints.length; i++) {
       if (distance(userStart, linePoints[i]) < searchRadius)
         startCandidates.add(i);
@@ -130,27 +122,20 @@ class _RoutePageState extends State<RoutePage> {
     SegmentResult? bestResult;
     double minTotalScore = double.infinity;
 
-    // 2. Kombinasyonları Tara
+
     for (final sIdx in startCandidates) {
       for (final eIdx in endCandidates) {
-        // 🛑 KURAL: Biniş indexi, İniş indexinden büyükse bu rota GEÇERSİZDİR.
-        // Bu satır 46. durak (Index 68) -> Varış (Index 25) rotasını İMKANSIZ kılar.
+
         if (sIdx >= eIdx) continue;
 
-        // Skorlama: Yürüme mesafesi + Otobüs yolculuğu (kısa yolculuk tercihi)
         final walk1 = distance(userStart, linePoints[sIdx]);
         final walk2 = distance(userEnd, linePoints[eIdx]);
-
-        // Otobüsün gittiği mesafe de skora eklensin ki en mantıklı ikili seçilsin
-        // (Index farkı * 10 metre gibi basit bir maliyet)
         final busScore = (eIdx - sIdx) * 10.0;
-
         final totalScore = walk1 + walk2 + busScore;
 
         if (totalScore < minTotalScore) {
           minTotalScore = totalScore;
 
-          // KONSOLA BAK: Burası çalışıyorsa 46'yı seçmesi matematiksel olarak imkansız
           print(
             "🎯 $lineName Aday: Index $sIdx -> Index $eIdx (Skor: ${totalScore.toInt()})",
           );
@@ -185,7 +170,6 @@ class _RoutePageState extends State<RoutePage> {
 
   void _resetRouteState() {
     setState(() {
-      // tüm state temizlenir
       startPoint = null;
       endPoint = null;
       routePoints.clear();
@@ -198,12 +182,10 @@ class _RoutePageState extends State<RoutePage> {
       isLoading = false;
       progress = 0.0;
 
-      // controller’lar da boşaltılır
       _startController.clear();
       _endController.clear();
     });
 
-    // Haritayı tekrar merkeze getir
     mapController.move(LatLng(39.9042, 41.2670), 13);
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -214,7 +196,7 @@ class _RoutePageState extends State<RoutePage> {
   }
 
   String _formatDuration(double meters, {bool isBus = false}) {
-    final speed = isBus ? 6.9 : 1.4; // m/s
+    final speed = isBus ? 6.9 : 1.4; 
     final seconds = meters / speed;
     final minutes = (seconds / 60).round();
     return "$minutes dk";
@@ -247,7 +229,6 @@ class _RoutePageState extends State<RoutePage> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  // 🔹 Cam efekti beyaz-mavi ton
                   color: Colors.white.withOpacity(0.25),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(25),
@@ -284,12 +265,11 @@ class _RoutePageState extends State<RoutePage> {
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.indigo, // 💙 başlık rengi
+                        color: Colors.indigo, 
                       ),
                     ),
                     const SizedBox(height: 10),
 
-                    // Adımlar — her biri kutucukla
                     if (opt.isTransfer) ...[
                       _buildStep(
                         "${_formatDuration(totalWalk1)} yürü (${opt.startStopName ?? opt.lineName} durağına)",
@@ -373,14 +353,12 @@ class _RoutePageState extends State<RoutePage> {
     );
   }
 
-  // çizim
+
   List<Polyline> polylines = [];
 
-  // seçili hat adları (durak markerları için)
   String? suggestedLine;
   String? transferLine;
 
-  // seçenek listesi (diyalog için)
   List<RouteOption> suggestedOptions = [];
 
   LatLng? startPoint;
@@ -398,7 +376,6 @@ class _RoutePageState extends State<RoutePage> {
     if (startIndex < endIndex) {
       return line.sublist(startIndex, endIndex + 1);
     } else {
-      // 🔥 yön tersse, ters çevirip doğru akışı al
       final reversed = line.reversed.toList();
       final newStart = reversed.indexOf(start);
       final newEnd = reversed.indexOf(end);
@@ -440,10 +417,8 @@ class _RoutePageState extends State<RoutePage> {
           final dirB = _bearing(b[j], b[j + 1]);
           final diff = _angleDiff(dirA, dirB);
 
-          // 🔥 yön farkı büyükse (örneğin >90°) ters yön — at
           if (diff > 90) continue;
-
-          final score = d + diff * 0.5; // yön uyumu + yakınlık
+          final score = d + diff * 0.5; 
 
           if (score < bestScore) {
             bestScore = score;
@@ -470,7 +445,6 @@ class _RoutePageState extends State<RoutePage> {
     LatLng nearest = polyline.first;
     double bestScore = double.infinity;
 
-    // Kullanıcının hareket yönü
     final userDir = _bearing(current, target);
 
     for (int i = 0; i < polyline.length - 2; i++) {
@@ -479,24 +453,14 @@ class _RoutePageState extends State<RoutePage> {
       final next2 = polyline[i + 2];
 
       final d = distance(current, stop);
-
-      // bu segmentin yönü
       final dir1 = _bearing(stop, next);
       final dir2 = _bearing(next, next2);
-      final avgDir = (dir1 + dir2) / 2; // yumuşatılmış yön
+      final avgDir = (dir1 + dir2) / 2; 
       final diff = _angleDiff(userDir, avgDir);
-
-      // 🔹 yön farkı cezası
       final directionPenalty = diff > 100 ? 9999 : diff;
-
-      // 🔹 ileriye mi geriye mi gidiyoruz kontrolü
       final proj = distance(target, next);
       final sameFlow = proj < distance(target, stop);
-
-      // ters akıştaki segmentlere ekstra ceza
       final flowPenalty = sameFlow ? 0 : 300;
-
-      // nihai skor
       final score = d + directionPenalty * 0.5 + flowPenalty;
 
       if (score < bestScore) {
@@ -622,7 +586,6 @@ class _RoutePageState extends State<RoutePage> {
                         itemBuilder: (context, index) {
                           final opt = options[index];
 
-                          // 🎨 Rota türüne göre stil
                           IconData icon;
                           List<Color> gradient;
                           String subtitle;
@@ -776,7 +739,6 @@ class _RoutePageState extends State<RoutePage> {
   List<LatLng> busRoute = [];
   List<LatLng> walkingToDestination = [];
 
-  // === HATLAR ===
   void _selectLineBasedOnDirection() {
     if (startPoint == null || endPoint == null) return;
 
@@ -816,7 +778,7 @@ class _RoutePageState extends State<RoutePage> {
     try {
       final response = await http
           .get(Uri.parse(url))
-          .timeout(const Duration(seconds: 5)); // ⏳ timeout güvenliği
+          .timeout(const Duration(seconds: 5)); 
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -825,11 +787,11 @@ class _RoutePageState extends State<RoutePage> {
         return coords.map((c) => LatLng(c[1], c[0])).toList();
       } else {
         print("⚠️ Rota alınamadı ($mode): ${response.statusCode}");
-        return []; // ❗️ Artık crash yok
+        return []; 
       }
     } catch (e) {
       print("❌ Rota isteği başarısız ($mode): $e");
-      return []; // ❗️ Her durumda boş döner, app çökmez
+      return []; 
     }
   }
 
@@ -837,13 +799,11 @@ class _RoutePageState extends State<RoutePage> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Servis açık mı?
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return _fallbackErzurum();
     }
 
-    // İzinler
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -861,7 +821,6 @@ class _RoutePageState extends State<RoutePage> {
         desiredAccuracy: LocationAccuracy.high,
       );
 
-      // Eğer hala 0.0,0.0 dönerse Erzurum fallback
       if (pos.latitude == 0.0 && pos.longitude == 0.0) {
         return _fallbackErzurum();
       }
@@ -872,7 +831,6 @@ class _RoutePageState extends State<RoutePage> {
     }
   }
 
-  // Erzurum fallback
   Position _fallbackErzurum() {
     return Position(
       latitude: 39.9042,
@@ -889,10 +847,10 @@ class _RoutePageState extends State<RoutePage> {
   }
 
   List<Marker> getBusStopMarkers({
-    List<LatLng>? bus1Segment, // sadece bindiği–indiği arası
-    List<LatLng>? bus2Segment, // ikinci hattın bindiği–indiği arası
+    List<LatLng>? bus1Segment, 
+    List<LatLng>? bus2Segment, 
 
-    String? currentRouteName, //
+    String? currentRouteName, 
   }) {
     final markers = <Marker>[];
 
@@ -902,7 +860,6 @@ class _RoutePageState extends State<RoutePage> {
       return markers;
     }
 
-    // 🔵 1. hattın SADECE bindiği–indiği arası durakları
     if (bus1Segment != null && bus1Segment.isNotEmpty) {
       for (final p in bus1Segment) {
         markers.add(
@@ -921,7 +878,6 @@ class _RoutePageState extends State<RoutePage> {
       }
     }
 
-    // 🟣 2. hattın SADECE bindiği–indiği arası durakları (mor tonlu)
     if (bus2Segment != null && bus2Segment.isNotEmpty) {
       for (final p in bus2Segment) {
         markers.add(
@@ -953,7 +909,6 @@ class _RoutePageState extends State<RoutePage> {
     if (busLines.containsKey(lineName)) return;
 
     switch (lineName) {
-      // === B SERİSİ (Zaten Yapılmış Olanlar) ===
       case "B3_Gidis":
         busLines["B3_Gidis"] = B3_Gidis;
         break;
@@ -981,8 +936,6 @@ class _RoutePageState extends State<RoutePage> {
       case "B2A_Donus":
         busLines["B2A_Donus"] = B2A_Donus;
         break;
-
-      // === G SERİSİ (Yeni Eklenenler) ===
       case "G1_Gidis":
         busLines["G1_Gidis"] = G1_Gidis;
         break;
@@ -1087,8 +1040,6 @@ class _RoutePageState extends State<RoutePage> {
       case "G14_Donus":
         busLines["G14_Donus"] = G14_Donus;
         break;
-
-      // === K SERİSİ ===
       case "K1_Gidis":
         busLines["K1_Gidis"] = K1_Gidis;
         break;
@@ -1102,8 +1053,6 @@ class _RoutePageState extends State<RoutePage> {
       case "K1A_Donus":
         busLines["K1A_Donus"] = K1A_Donus;
         break;
-
-      // K2 zaten yapılmıştı
       case "K2_Gidis":
         busLines["K2_Gidis"] = K2_Gidis;
         break;
@@ -1166,15 +1115,12 @@ class _RoutePageState extends State<RoutePage> {
       case "K11_Donus":
         busLines["K11_Donus"] = K11_Donus;
         break;
-
-      // === M SERİSİ ===
       case "M11_Gidis":
         busLines["M11_Gidis"] = M11_Gidis;
         break;
       case "M11_Donus":
         busLines["M11_Donus"] = M11_Donus;
         break;
-      // === A SERİSİ ===
       case "A1_Gidis":
         busLines["A1_Gidis"] = A1_Gidis;
         break;
@@ -1197,7 +1143,6 @@ class _RoutePageState extends State<RoutePage> {
       final segment = await _getRoute(start, end, mode: "driving");
 
       if (segment.isNotEmpty) {
-        // 🔹 İlk segmentin ilk noktası hariç diğerlerini ekle (çift tekrar olmasın)
         if (fullPath.isNotEmpty) segment.removeAt(0);
         fullPath.addAll(segment);
       }
@@ -1219,9 +1164,9 @@ class _RoutePageState extends State<RoutePage> {
     setState(() => isLoading = true);
 
     double progress = 0.0;
-    const int MAX_SECONDS = 15; // ⏱ süremiz 15 saniye
-    const int MAX_DIRECT = 2; // 🚍 maksimum 2 direkt
-    const int MAX_TRANSFER = 4; // 🔁 maksimum 4 aktarma
+    const int MAX_SECONDS = 15; 
+    const int MAX_DIRECT = 2; 
+    const int MAX_TRANSFER = 4; 
 
     final stopwatch = Stopwatch()..start();
     final timer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -1233,7 +1178,7 @@ class _RoutePageState extends State<RoutePage> {
           progress = (elapsed / MAX_SECONDS).clamp(
             0.0,
             1.0,
-          ); // ✅ artık global değişken
+          ); 
           randomTip = (loadingTips..shuffle()).first;
         });
       }
@@ -1250,23 +1195,19 @@ class _RoutePageState extends State<RoutePage> {
 
     final List<MapEntry<String, List<LatLng>>> nearby = [];
     final allLineNames = [
-      // === A SERİSİ ===
-      "A1_Gidis", "A1_Donus",
 
-      // === B SERİSİ ===
+      "A1_Gidis", "A1_Donus",
       "B1_Gidis", "B1_Donus",
       "B2_Gidis", "B2_Donus",
       "B2A_Gidis", "B2A_Donus",
       "B3_Gidis", "B3_Donus",
-
-      // === G SERİSİ ===
       "G1_Gidis", "G1_Donus",
       "G2_Gidis",
-      "G2_Donus", // Snippet'ta yoktu ama switch-case'de vardı, ekledim
+      "G2_Donus",
       "G3_Gidis", "G3_Donus",
       "G4_Gidis", "G4_Donus",
-      "G4A_Gidis", "G4A_Donus", // Switch-case ile uyumlu olsun
-      "G4B_Gidis", "G4B_Donus", // Switch-case ile uyumlu olsun
+      "G4A_Gidis", "G4A_Donus", 
+      "G4B_Gidis", "G4B_Donus", 
       "G5_Gidis", "G5_Donus",
       "G6_Gidis", "G6_Donus",
       "G7_Gidis", "G7_Donus",
@@ -1274,11 +1215,10 @@ class _RoutePageState extends State<RoutePage> {
       "G8_Gidis", "G8_Donus",
       "G9_Gidis", "G9_Donus",
       "G10_Gidis", "G10_Donus",
-      "G11_Gidis", "G11_Donus", // Switch-case ile uyumlu olsun
-      "G14_Gidis", "G14_Donus", // Switch-case ile uyumlu olsun
-      // === K SERİSİ ===
+      "G11_Gidis", "G11_Donus", 
+      "G14_Gidis", "G14_Donus",
       "K1_Gidis", "K1_Donus",
-      "K1A_Gidis", "K1A_Donus", // Switch-case ile uyumlu olsun
+      "K1A_Gidis", "K1A_Donus", 
       "K2_Gidis", "K2_Donus",
       "K3_Gidis", "K3_Donus",
       "K4_Gidis", "K4_Donus",
@@ -1288,7 +1228,6 @@ class _RoutePageState extends State<RoutePage> {
       "K7A_Gidis", "K7A_Donus",
       "K10_Gidis", "K10_Donus",
       "K11_Gidis", "K11_Donus",
-      // === M SERİSİ ===
       "M11_Gidis", "M11_Donus",
     ];
 
@@ -1323,12 +1262,11 @@ class _RoutePageState extends State<RoutePage> {
           walk2: [],
           totalDistance: total,
           isTransfer: false,
-          startStopName: "Binilecek Durak", // buraya durak adını koy
+          startStopName: "Binilecek Durak", 
           endStopName: "İnilecek Durak",
         ),
       );
 
-      // ✅ direkt yürüyüş rotası bulunduysa hemen göster
       setState(() {
         isLoading = false;
         suggestedOptions = options;
@@ -1339,9 +1277,6 @@ class _RoutePageState extends State<RoutePage> {
       );
     }
 
-    // 🚍 1️⃣ DİREKT seçenekler (max 2)
-    // 🚍 1️⃣ DİREKT seçenekler
-    // 🚍 1️⃣ DİREKT seçenekler
     final directCandidates = startNearby
         .intersection(endNearby)
         .take(MAX_DIRECT);
@@ -1350,8 +1285,6 @@ class _RoutePageState extends State<RoutePage> {
       if (stopwatch.elapsed.inSeconds > MAX_SECONDS) break;
 
       final line = busLines[name]!;
-
-      // 🔥 YENİ FONKSİYON ÇAĞRISI
       final bestSegment = findBestSegment(startPoint!, endPoint!, line, name);
 
       if (bestSegment == null) {
@@ -1362,8 +1295,6 @@ class _RoutePageState extends State<RoutePage> {
       final ns = bestSegment.startPoint;
       final ne = bestSegment.endPoint;
       final bus1 = bestSegment.segment;
-
-      // 🔥 YENİ İSİM BULUCU (46-72 karışıklığını çözer)
       final nsName = getExactStopName(ns);
       final neName = getExactStopName(ne);
 
@@ -1376,8 +1307,6 @@ class _RoutePageState extends State<RoutePage> {
 
       final walk1 = results[0];
       final walk2 = results[1];
-
-      // Hesaplamada bus1 uzunluğunu kullanıyoruz
       final total =
           _polylineLength(walk1) +
           _polylineLength(bus1) +
@@ -1453,9 +1382,6 @@ class _RoutePageState extends State<RoutePage> {
           if (sName.contains("_")) {
             displaySName = sName.split("_")[0];
           }
-
-          // 🧹 2. Hattın (Transfer Hattı) İsmini Temizle
-          // Aktarma yapılan hat da bölünmüş bir hat olabilir.
           String displayEName = eName;
           if (eName.contains("_")) {
             displayEName = eName.split("_")[0];
@@ -1471,9 +1397,9 @@ class _RoutePageState extends State<RoutePage> {
               walk2: walks[2],
               totalDistance: total,
               isTransfer: true,
-              startStopName: nsName, // ✅ eklendi
-              transferStopName: "$nt1Name ↔ $nt2Name", // ✅ eklendi
-              endStopName: neName, // ✅ eklendi
+              startStopName: nsName, 
+              transferStopName: "$nt1Name ↔ $nt2Name", 
+              endStopName: neName, 
             ),
           );
 
@@ -1485,8 +1411,6 @@ class _RoutePageState extends State<RoutePage> {
     }
     stopwatch.stop();
     timer.cancel();
-
-    // ⏱ 15 saniye dolmadan hiçbir şey bulamadıysa mesaj burada gelsin
     if (options.isEmpty && stopwatch.elapsed.inSeconds >= MAX_SECONDS) {
       setState(() => isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -1497,7 +1421,6 @@ class _RoutePageState extends State<RoutePage> {
       return;
     }
 
-    // 🚗 Araç (car.lua) rotasını da her durumda öner
     try {
       final carRoute = await _getRoute(startPoint!, endPoint!, mode: "driving");
       final carDistance = _polylineLength(carRoute);
@@ -1559,7 +1482,6 @@ class _RoutePageState extends State<RoutePage> {
         Polyline(points: opt.walk2, color: Colors.green, strokeWidth: 3),
       );
 
-    // state
     setState(() {
       polylines = lines;
       suggestedLine = opt.lineName;
@@ -1576,7 +1498,6 @@ class _RoutePageState extends State<RoutePage> {
       }
     });
 
-    // haritayı kadrajla
     final allPts = <LatLng>[
       ...opt.walk1,
       ...opt.bus1,
@@ -1594,7 +1515,6 @@ class _RoutePageState extends State<RoutePage> {
 
   @override
   Widget build(BuildContext context) {
-    // 📌 Navigator.pushNamed ile gelen parametreleri al
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
     if (args != null && endPoint == null) {
       endPoint = LatLng(args["lat"], args["lng"]);
@@ -1604,7 +1524,7 @@ class _RoutePageState extends State<RoutePage> {
     return Scaffold(
       backgroundColor: const Color(
         0xFFF4F6FA,
-      ), // 🔹 Hafif gri-mavi alt ton (cam efekti belirgin olur)
+      ), 
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: ClipRRect(

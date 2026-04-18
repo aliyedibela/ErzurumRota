@@ -305,13 +305,11 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
       return;
     }
 
-    // Telefon zorunlu
     if (_phoneCtrl.text.isEmpty) {
       _snack('Telefon numarası zorunludur', Colors.red);
       return;
     }
 
-    // Sadece rakam kontrolü
     final digits = _phoneCtrl.text.replaceAll(RegExp(r'\D'), '');
     if (digits.length < 10) {
       _snack('Geçerli bir telefon numarası girin (min. 10 hane)', Colors.red);
@@ -395,11 +393,10 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
                           type: TextInputType.emailAddress),
                       const SizedBox(height: 14),
 
-                      // Telefon — ülke kodu + numara
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Ülke kodu butonu
+                    
                           GestureDetector(
                             onTap: _showCountryPicker,
                             child: Container(
@@ -430,7 +427,7 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          // Numara alanı
+                   
                           Expanded(
                             child: TextField(
                               controller: _phoneCtrl,

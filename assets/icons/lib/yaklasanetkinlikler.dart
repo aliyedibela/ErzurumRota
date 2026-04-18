@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 
-// --- VERİ MODELİ ---
 class Etkinlik {
   final String ad;
   final String mekan;
@@ -10,7 +9,7 @@ class Etkinlik {
   final String fiyat;
   final String link;
   final String? afisUrl;
-  final String kaynak; // "Bubilet" veya "Passo" olduğunu bilmek için
+  final String kaynak; 
 
   Etkinlik({
     required this.ad,
@@ -23,7 +22,6 @@ class Etkinlik {
   });
 }
 
-// --- BUBİLET'TEN VERİ ÇEKEN FONKSİYON ---
 Future<List<Etkinlik>> _fetchBubilet() async {
   try {
     final url = Uri.parse("https://www.bubilet.com.tr/erzurum");
@@ -49,7 +47,6 @@ Future<List<Etkinlik>> _fetchBubilet() async {
       String mekan = pTags.isNotEmpty ? pTags[0].text.trim() : "Erzurum";
       String tarih = pTags.length > 1 ? pTags[1].text.trim() : "Tarih Yok";
 
-      // Fiyat bulma mantığı
       final fiyatSpan = k.querySelector("div.mt-1 span.text-left");
       final tlSpan = k.querySelector("div.mt-1 span.ml-0\\.5");
       String fiyat = "Bilinmiyor";
@@ -80,15 +77,14 @@ Future<List<Etkinlik>> _fetchBubilet() async {
   }
 }
 
-// --- PASSO'DAN VERİ ÇEKEN FONKSİYON (API) ---
 Future<List<Etkinlik>> _fetchPasso() async {
   try {
     final url = Uri.parse("https://www.passo.com.tr/api/utils/search-v2");
     final body = jsonEncode({
-      "query": "erzurum", // Erzurum araması
-      "size": 20, // Kaç etkinlik gelsin
+      "query": "erzurum", 
+      "size": 20,
       "from": 0,
-      "sort": "date", // Tarihe göre sıralı gelsin
+      "sort": "date", 
     });
 
     final response = await http.post(
@@ -112,8 +108,6 @@ Future<List<Etkinlik>> _fetchPasso() async {
     for (var item in data) {
       String title = item['title'] ?? "Passo Etkinliği";
       String venue = item['venueName'] ?? "Erzurum";
-
-      // Tarih formatı: 2025-11-23T13:30:00
       String rawDate = item['date'] ?? "";
       String tarih = rawDate.length > 10
           ? "${rawDate.substring(0, 10)} / Saat: ${rawDate.substring(11, 16)}"
@@ -129,7 +123,7 @@ Future<List<Etkinlik>> _fetchPasso() async {
           ad: title,
           mekan: venue,
           tarih: tarih,
-          fiyat: "Detayda", // Passo aramada fiyat dönmez, detayda döner
+          fiyat: "Detayda", 
           link: link,
           afisUrl: image,
           kaynak: "Passo",
@@ -143,18 +137,13 @@ Future<List<Etkinlik>> _fetchPasso() async {
   }
 }
 
-// --- ANA KOMUTAN: İKİSİNİ BİRLEŞTİREN FONKSİYON ---
 Future<List<Etkinlik>> tumEtkinlikleriGetir() async {
-  // İki siteye aynı anda "koş getir" diyoruz (Paralel Çalışma)
+
   final results = await Future.wait([_fetchBubilet(), _fetchPasso()]);
 
-  // Gelen listeleri tek bir torbada birleştiriyoruz
   List<Etkinlik> tumListe = [];
-  tumListe.addAll(results[0]); // Bubilet'ten gelenler
-  tumListe.addAll(results[1]); // Passo'dan gelenler
-
-  // İsteğe bağlı: Karışık gelmesin, isme göre sıralayalım dersen:
-  // tumListe.sort((a, b) => a.ad.compareTo(b.ad));
+  tumListe.addAll(results[0]); 
+  tumListe.addAll(results[1]); 
 
   return tumListe;
 }
