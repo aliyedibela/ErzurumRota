@@ -5,7 +5,9 @@ import '../../services/user_auth_service.dart';
 class UserVerifyScreen extends StatefulWidget {
   final String userId;
   final String email;
-  const UserVerifyScreen({super.key, required this.userId, required this.email});
+  /// Backend'den dönen debug kodu — email gelmediğinde gösterilir
+  final String? debugCode;
+  const UserVerifyScreen({super.key, required this.userId, required this.email, this.debugCode});
   @override
   State<UserVerifyScreen> createState() => _UserVerifyScreenState();
 }
@@ -14,6 +16,7 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
   final _codeCtrl = TextEditingController();
   final _svc = UserAuthService();
   bool _loading = false;
+  bool _showDebugCode = false;
 
   Future<void> _verify() async {
     if (_codeCtrl.text.length != 6) { _snack('6 haneli kodu girin', Colors.red); return; }
@@ -22,12 +25,13 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
     if (!mounted) return;
     setState(() => _loading = false);
     if (res['success']) {
-      _snack('Hesap doğrulandı! Giriş yapılıyor...', Colors.green);
-      await Future.delayed(const Duration(milliseconds: 800));
+      _snack('Hesap doğrulandı! Giriş ekranına yönlendiriliyorsunuz...', Colors.green);
+      await Future.delayed(const Duration(milliseconds: 1000));
       if (!mounted) return;
-      Navigator.pop(context);
+      // true döndür → signup screen giriş ekranına yönlendirir
+      Navigator.pop(context, true);
     } else {
-      _snack(res['error'], Colors.red);
+      _snack(res['error'] ?? 'Doğrulama başarısız', Colors.red);
     }
   }
 
@@ -60,7 +64,30 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
               Text(widget.email, style: const TextStyle(color: Colors.white60, fontSize: 14)),
               const SizedBox(height: 6),
               const Text('adresine gönderilen 6 haneli kodu girin.', style: TextStyle(color: Colors.white54, fontSize: 13), textAlign: TextAlign.center),
-              const SizedBox(height: 32),
+              const SizedBox(height: 12),
+
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                child: const Row(mainAxisSize: MainAxisSize.min, children: [
+                  Icon(Icons.mark_email_read_outlined, color: Colors.white54, size: 16),
+                  SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      'Email gönderildi. Göremiyorsanız spam / önemsiz klasörünüzü kontrol edin.',
+                      style: TextStyle(color: Colors.white54, fontSize: 12),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ]),
+              ),
+              const SizedBox(height: 12),
+
+              const SizedBox(height: 20),
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: BackdropFilter(
