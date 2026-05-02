@@ -16,7 +16,6 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
   final _codeCtrl = TextEditingController();
   final _svc = UserAuthService();
   bool _loading = false;
-  bool _showDebugCode = false;
 
   Future<void> _verify() async {
     if (_codeCtrl.text.length != 6) { _snack('6 haneli kodu girin', Colors.red); return; }
