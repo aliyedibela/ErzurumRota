@@ -1,14 +1,16 @@
 import 'package:signalr_core/signalr_core.dart';
 import 'package:uuid/uuid.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
 import 'package:erzurum_rota/models/taxi_stand.dart';
 
 typedef TaxiAcceptedCallback = void Function(String driverName, String plate);
 typedef TaxiRejectedCallback = void Function();
 
 class SignalRService {
-  static const String _hubUrl =
-      "https://jannette-acrogynous-allene.ngrok-free.dev/taxiHub";
+  static const String _baseUrl =
+      "https://taksiappbackendnet-production.up.railway.app";
+  static const String _hubUrl = "$_baseUrl/taxiHub";
 
   HubConnection? _hubConnection;
   String? _waitingRequestId;
@@ -19,14 +21,35 @@ class SignalRService {
 
   bool get isConnected => _hubConnection?.state == HubConnectionState.connected;
 
+  /// Railway.app servisi uyku modundaysa uyandırmak için ping atar.
+  Future<void> _pingBackend() async {
+    try {
+      await http
+          .get(Uri.parse("$_baseUrl/health"))
+          .timeout(const Duration(seconds: 8));
+      print("✅ Backend ping başarılı");
+    } catch (e) {
+      print("⚠️ Backend ping timeout (uyku modunda olabilir): $e");
+    }
+  }
+
   Future<void> connect({
     required TaxiAcceptedCallback onAccepted,
     required TaxiRejectedCallback onRejected,
   }) async {
     try {
+      // Railway.app backend'i uyandır
+      await _pingBackend();
+
       _hubConnection = HubConnectionBuilder()
-          .withUrl(_hubUrl)
-          .withAutomaticReconnect()
+          .withUrl(
+            _hubUrl,
+            HttpConnectionOptions(
+              transport: HttpTransportType.webSockets,
+              skipNegotiation: true,
+            ),
+          )
+          .withAutomaticReconnect([0, 2000, 5000, 10000])
           .build();
 
       _hubConnection!.off("TaxiAccepted");
@@ -54,7 +77,53 @@ class SignalRService {
       await _hubConnection!.start();
       print("✅ SignalR bağlandı");
     } catch (e) {
-      print("❌ SignalR bağlantı hatası: $e");
+      print("❌ SignalR bağlantı hatası: $e — LongPolling ile deneniyor...");
+      await _connectWithLongPolling(onAccepted: onAccepted, onRejected: onRejected);
+    }
+  }
+
+  /// WebSocket başarısız olursa LongPolling ile dene.
+  Future<void> _connectWithLongPolling({
+    required TaxiAcceptedCallback onAccepted,
+    required TaxiRejectedCallback onRejected,
+  }) async {
+    try {
+      _hubConnection = HubConnectionBuilder()
+          .withUrl(
+            _hubUrl,
+            HttpConnectionOptions(
+              transport: HttpTransportType.longPolling,
+            ),
+          )
+          .withAutomaticReconnect([0, 2000, 5000, 10000])
+          .build();
+
+      _hubConnection!.off("TaxiAccepted");
+      _hubConnection!.off("TaxiRejected");
+
+      _hubConnection!.on("TaxiAccepted", (args) {
+        final data = Map<String, dynamic>.from(args?[0] as Map);
+        if (data['requestId'] == _waitingRequestId) {
+          _waitingRequestId = null;
+          onAccepted(
+            data['driverName']?.toString() ?? '-',
+            data['plate']?.toString() ?? '-',
+          );
+        }
+      });
+
+      _hubConnection!.on("TaxiRejected", (args) {
+        final data = Map<String, dynamic>.from(args?[0] as Map);
+        if (data['requestId'] == _waitingRequestId) {
+          _waitingRequestId = null;
+          onRejected();
+        }
+      });
+
+      await _hubConnection!.start();
+      print("✅ SignalR LongPolling ile bağlandı");
+    } catch (e) {
+      print("❌ SignalR LongPolling de başarısız: $e");
     }
   }
 

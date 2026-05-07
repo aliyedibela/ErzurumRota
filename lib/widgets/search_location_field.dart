@@ -26,8 +26,7 @@ class SearchLocationField extends StatefulWidget {
 
 class _SearchLocationFieldState extends State<SearchLocationField> {
   static const String _googleApiKey = ""; // API key buraya
-  static const String _osrmBase =
-      "https://ellyn-uncounteracted-semirebelliously.ngrok-free.dev";
+  static const String _osrmBase = "https://router.project-osrm.org";
 
   List<Map<String, dynamic>> _results = [];
   bool _loading = false;

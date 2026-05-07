@@ -9,15 +9,23 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/route_option.dart';
-import '../models/taxi_stand.dart'; 
-import '../models/segment_result.dart'; 
+import '../models/taxi_stand.dart';
+import '../models/segment_result.dart';
 import '../data/taxi_stands.dart';
 import '../data/generated_polylines.dart';
+import '../data/bus_stop_sequences.dart';
 import '../services/bus_simulator.dart';
 import '../core/utils/stop_utils.dart';
 
+// Railway.app backend base URL
+const String _kRailwayBaseUrl =
+    "https://taksiappbackendnet-production.up.railway.app";
+const String _kHubUrl = "$_kRailwayBaseUrl/taxiHub";
+
 class RouteViewModel extends ChangeNotifier {
   final Map<String, List<LatLng>> busLines = {};
+  // Durak seviyesinde veriler — routing hesaplamaları için
+  final Map<String, List<LatLng>> busStopLines = {};
   final BusSimulationManager? simulationManager;
 
   HubConnection? hubConnection;
@@ -32,12 +40,12 @@ class RouteViewModel extends ChangeNotifier {
   }) async {
     await Future.delayed(const Duration(milliseconds: 300));
 
-    final baseUrl = (mode == "walking")
-        ? "https://ellyn-uncounteracted-semirebelliously.ngrok-free.dev"
-        : "https://superelastic-rylee-tetramerous.ngrok-free.dev";
+    const String baseUrl = "https://router.project-osrm.org";
+    // OSRM public API: "walking" profili "foot" olarak geçer
+    final String osrmMode = mode == "walking" ? "foot" : mode;
 
     final url =
-        "$baseUrl/route/v1/$mode/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson";
+        "$baseUrl/route/v1/$osrmMode/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=full&geometries=geojson";
 
     try {
       final response = await http
@@ -109,10 +117,17 @@ class RouteViewModel extends ChangeNotifier {
       "B2_Donus": B2_Donus,
       "B2A_Gidis": B2A_Gidis,
       "B2A_Donus": B2A_Donus,
+      "B3Dogru": B3Dogru,
       "B3_Gidis": B3_Gidis,
       "B3_Donus": B3_Donus,
+      "B7_Gidis": B7_Gidis,
+      "B7_Donus": B7_Donus,
+      "B8Dogru": B8Dogru,
+      "D1Dogru": D1Dogru,
+      "D2Dogru": D2Dogru,
       "G1_Gidis": G1_Gidis,
       "G1_Donus": G1_Donus,
+      "G1A_Gidis": G1A_Gidis,
       "G2_Gidis": G2_Gidis,
       "G2_Donus": G2_Donus,
       "G3_Gidis": G3_Gidis,
@@ -163,14 +178,105 @@ class RouteViewModel extends ChangeNotifier {
       "K10_Donus": K10_Donus,
       "K11_Gidis": K11_Gidis,
       "K11_Donus": K11_Donus,
+      "M2Dogru": M2Dogru,
+      "M10Dogru": M10Dogru,
       "M11_Gidis": M11_Gidis,
       "M11_Donus": M11_Donus,
+      "M16Dogru": M16Dogru,
     };
 
     if (map.containsKey(lineName)) {
       busLines[lineName] = map[lineName]!;
     } else {
       print("⚠️ Hat bulunamadı: $lineName");
+    }
+  }
+
+  /// Routing hesaplamaları için durak seviyesinde verileri yükler.
+  void ensureBusStopLineLoaded(String lineName) {
+    if (busStopLines.containsKey(lineName)) return;
+
+    final map = {
+      "A1_Gidis": stops_A1_Gidis,
+      "A1_Donus": stops_A1_Donus,
+      "B1_Gidis": stops_B1_Gidis,
+      "B1_Donus": stops_B1_Donus,
+      "B2_Gidis": stops_B2_Gidis,
+      "B2_Donus": stops_B2_Donus,
+      "B2A_Gidis": stops_B2A_Gidis,
+      "B2A_Donus": stops_B2A_Donus,
+      "B3Dogru": stops_B3Dogru,
+      "B3_Gidis": stops_B3_Gidis,
+      "B3_Donus": stops_B3_Donus,
+      "B7_Gidis": stops_B7_Gidis,
+      "B7_Donus": stops_B7_Donus,
+      "B8Dogru": stops_B8Dogru,
+      "D1Dogru": stops_D1Dogru,
+      "D2Dogru": stops_D2Dogru,
+      "G1_Gidis": stops_G1_Gidis,
+      "G1_Donus": stops_G1_Donus,
+      "G1A_Gidis": stops_G1A_Gidis,
+      "G2_Gidis": stops_G2_Gidis,
+      "G2_Donus": stops_G2_Donus,
+      "G3_Gidis": stops_G3_Gidis,
+      "G3_Donus": stops_G3_Donus,
+      "G4_Gidis": stops_G4_Gidis,
+      "G4_Donus": stops_G4_Donus,
+      "G4A_Gidis": stops_G4A_Gidis,
+      "G4A_Donus": stops_G4A_Donus,
+      "G4B_Gidis": stops_G4B_Gidis,
+      "G4B_Donus": stops_G4B_Donus,
+      "G5_Gidis": stops_G5_Gidis,
+      "G5_Donus": stops_G5_Donus,
+      "G6_Gidis": stops_G6_Gidis,
+      "G6_Donus": stops_G6_Donus,
+      "G7_Gidis": stops_G7_Gidis,
+      "G7_Donus": stops_G7_Donus,
+      "G7A_Gidis": stops_G7A_Gidis,
+      "G7A_Donus": stops_G7A_Donus,
+      "G8_Gidis": stops_G8_Gidis,
+      "G8_Donus": stops_G8_Donus,
+      "G9_Gidis": stops_G9_Gidis,
+      "G9_Donus": stops_G9_Donus,
+      "G10_Gidis": stops_G10_Gidis,
+      "G10_Donus": stops_G10_Donus,
+      "G11_Gidis": stops_G11_Gidis,
+      "G11_Donus": stops_G11_Donus,
+      "G14_Gidis": stops_G14_Gidis,
+      "G14_Donus": stops_G14_Donus,
+      "K1_Gidis": stops_K1_Gidis,
+      "K1_Donus": stops_K1_Donus,
+      "K1A_Gidis": stops_K1A_Gidis,
+      "K1A_Donus": stops_K1A_Donus,
+      "K2_Gidis": stops_K2_Gidis,
+      "K2_Donus": stops_K2_Donus,
+      "K3_Gidis": stops_K3_Gidis,
+      "K3_Donus": stops_K3_Donus,
+      "K4_Gidis": stops_K4_Gidis,
+      "K4_Donus": stops_K4_Donus,
+      "K5_Gidis": stops_K5_Gidis,
+      "K5_Donus": stops_K5_Donus,
+      "K6_Gidis": stops_K6_Gidis,
+      "K6_Donus": stops_K6_Donus,
+      "K7_Gidis": stops_K7_Gidis,
+      "K7_Donus": stops_K7_Donus,
+      "K7A_Gidis": stops_K7A_Gidis,
+      "K7A_Donus": stops_K7A_Donus,
+      "K10_Gidis": stops_K10_Gidis,
+      "K10_Donus": stops_K10_Donus,
+      "K11_Gidis": stops_K11_Gidis,
+      "K11_Donus": stops_K11_Donus,
+      "M2Dogru": stops_M2Dogru,
+      "M10Dogru": stops_M10Dogru,
+      "M11_Gidis": stops_M11_Gidis,
+      "M11_Donus": stops_M11_Donus,
+      "M16Dogru": stops_M16Dogru,
+    };
+
+    if (map.containsKey(lineName)) {
+      busStopLines[lineName] = map[lineName]!;
+    } else {
+      print("⚠️ Durak verisi bulunamadı: $lineName");
     }
   }
 
@@ -299,20 +405,72 @@ class RouteViewModel extends ChangeNotifier {
     return nearest;
   }
 
+  /// Durak listesinde start→end arasındaki segmenti döndürür.
+  /// indexOf yerine en yakın nokta araması kullanır — daha sağlam.
   List<LatLng> segmentBetween(List<LatLng> line, LatLng start, LatLng end) {
-    final startIndex = line.indexOf(start);
-    final endIndex = line.indexOf(end);
-    if (startIndex < 0 || endIndex < 0) return [];
+    if (line.isEmpty) return [];
+    final distance = const Distance();
 
-    if (startIndex < endIndex) {
-      return line.sublist(startIndex, endIndex + 1);
-    } else {
-      final reversed = line.reversed.toList();
-      final newStart = reversed.indexOf(start);
-      final newEnd = reversed.indexOf(end);
-      if (newStart < 0 || newEnd < 0) return [];
-      return reversed.sublist(newStart, newEnd + 1);
+    int startIdx = 0;
+    double bestStart = double.infinity;
+    for (int i = 0; i < line.length; i++) {
+      final d = distance(start, line[i]);
+      if (d < bestStart) {
+        bestStart = d;
+        startIdx = i;
+      }
     }
+
+    int endIdx = line.length - 1;
+    double bestEnd = double.infinity;
+    for (int i = startIdx; i < line.length; i++) {
+      final d = distance(end, line[i]);
+      if (d < bestEnd) {
+        bestEnd = d;
+        endIdx = i;
+      }
+    }
+
+    if (startIdx >= endIdx) return [line[startIdx]];
+    return line.sublist(startIdx, endIdx + 1);
+  }
+
+  /// Yol geometrisinden (road polyline), iki durak koordinatına en yakın
+  /// noktalar arasındaki alt segmenti çıkarır (harita gösterimi için).
+  List<LatLng> extractRoadSegment(
+    List<LatLng> roadLine,
+    LatLng startStop,
+    LatLng endStop,
+  ) {
+    if (roadLine.isEmpty) return [];
+    if (roadLine.length <= 1) return roadLine;
+    final distance = const Distance();
+
+    int startIdx = 0;
+    double bestStart = double.infinity;
+    for (int i = 0; i < roadLine.length; i++) {
+      final d = distance(startStop, roadLine[i]);
+      if (d < bestStart) {
+        bestStart = d;
+        startIdx = i;
+      }
+    }
+
+    int endIdx = roadLine.length - 1;
+    double bestEnd = double.infinity;
+    for (int i = startIdx; i < roadLine.length; i++) {
+      final d = distance(endStop, roadLine[i]);
+      if (d < bestEnd) {
+        bestEnd = d;
+        endIdx = i;
+      }
+    }
+
+    if (startIdx >= endIdx) {
+      final safeEnd = (startIdx + 2).clamp(startIdx + 1, roadLine.length);
+      return roadLine.sublist(startIdx, safeEnd);
+    }
+    return roadLine.sublist(startIdx, endIdx + 1);
   }
 
   Future<List<RouteOption>> calculateTaxiOptions(
@@ -370,40 +528,85 @@ class RouteViewModel extends ChangeNotifier {
     return taxiOptions;
   }
 
+  /// Railway.app backend'i uyandırmak için önce ping atar.
+  Future<void> _pingBackend() async {
+    try {
+      await http
+          .get(Uri.parse("$_kRailwayBaseUrl/health"))
+          .timeout(const Duration(seconds: 8));
+      print("✅ Backend ping başarılı");
+    } catch (e) {
+      print("⚠️ Backend ping timeout (uyku modunda olabilir): $e");
+    }
+  }
+
+  void _registerHubHandlers({
+    required Function(String driverName, String plate) onAccepted,
+    required Function() onRejected,
+  }) {
+    hubConnection!.off("TaxiAccepted");
+    hubConnection!.off("TaxiRejected");
+    hubConnection!.on("TaxiAccepted", (args) {
+      final data = Map<String, dynamic>.from(args?[0] as Map);
+      if (data['requestId'] == waitingRequestId) {
+        waitingRequestId = null;
+        onAccepted(data['driverName']?.toString() ?? '-', data['plate']?.toString() ?? '-');
+      }
+    });
+    hubConnection!.on("TaxiRejected", (args) {
+      final data = Map<String, dynamic>.from(args?[0] as Map);
+      if (data['requestId'] == waitingRequestId) {
+        waitingRequestId = null;
+        onRejected();
+      }
+    });
+  }
+
   Future<void> connectSignalR({
     required Function(String driverName, String plate) onAccepted,
     required Function() onRejected,
   }) async {
+    // Önce Railway.app backend'i uyandır
+    await _pingBackend();
+
+    // WebSocket ile dene (skipNegotiation — Railway.app için gerekli)
     try {
       hubConnection = HubConnectionBuilder()
-          .withUrl("https://jannette-acrogynous-allene.ngrok-free.dev/taxiHub")
-          .withAutomaticReconnect()
+          .withUrl(
+            _kHubUrl,
+            HttpConnectionOptions(
+              transport: HttpTransportType.webSockets,
+              skipNegotiation: true,
+            ),
+          )
+          .withAutomaticReconnect([0, 2000, 5000, 10000])
           .build();
 
-      hubConnection!.off("TaxiAccepted");
-      hubConnection!.off("TaxiRejected");
-
-      hubConnection!.on("TaxiAccepted", (args) {
-        final data = Map<String, dynamic>.from(args?[0] as Map);
-        if (data['requestId'] == waitingRequestId) {
-          waitingRequestId = null;
-          onAccepted(data['driverName'] ?? '-', data['plate'] ?? '-');
-        }
-      });
-
-      hubConnection!.on("TaxiRejected", (args) {
-        final data = Map<String, dynamic>.from(args?[0] as Map);
-        if (data['requestId'] == waitingRequestId) {
-          waitingRequestId = null;
-          onRejected();
-        }
-      });
-
+      _registerHubHandlers(onAccepted: onAccepted, onRejected: onRejected);
       await hubConnection!.start();
       signalRConnected = true;
-      print("✅ SignalR bağlandı");
+      print("✅ SignalR (WebSocket) bağlandı");
     } catch (e) {
-      print("❌ SignalR bağlantı hatası: $e");
+      print("❌ SignalR WebSocket hatası: $e — LongPolling ile deneniyor...");
+      // Fallback: LongPolling
+      try {
+        hubConnection = HubConnectionBuilder()
+            .withUrl(
+              _kHubUrl,
+              HttpConnectionOptions(
+                transport: HttpTransportType.longPolling,
+              ),
+            )
+            .withAutomaticReconnect([0, 2000, 5000, 10000])
+            .build();
+
+        _registerHubHandlers(onAccepted: onAccepted, onRejected: onRejected);
+        await hubConnection!.start();
+        signalRConnected = true;
+        print("✅ SignalR (LongPolling) bağlandı");
+      } catch (e2) {
+        print("❌ SignalR LongPolling de başarısız: $e2");
+      }
     }
   }
 
@@ -443,11 +646,12 @@ class RouteViewModel extends ChangeNotifier {
     final dist = const Distance();
     final double directDistance = dist(startPoint, endPoint);
     const double NEAR_STOP = 400;
-    const double XFER_NEAR = 40;
+    // Aktarma noktası için iki hattın birbirine yakınlık eşiği (metre)
+    // 40m çok dar — gerçek durak yakınlığı 100-200m olabilir
+    const double XFER_NEAR = 120;
     const int MAX_DIRECT = 2;
     const int MAX_TRANSFER = 4;
 
-    final allLineNames = busLines.keys.toList();
     final allNames = [
       "A1_Gidis",
       "A1_Donus",
@@ -457,10 +661,17 @@ class RouteViewModel extends ChangeNotifier {
       "B2_Donus",
       "B2A_Gidis",
       "B2A_Donus",
+      "B3Dogru",
       "B3_Gidis",
       "B3_Donus",
+      "B7_Gidis",
+      "B7_Donus",
+      "B8Dogru",
+      "D1Dogru",
+      "D2Dogru",
       "G1_Gidis",
       "G1_Donus",
+      "G1A_Gidis",
       "G2_Gidis",
       "G2_Donus",
       "G3_Gidis",
@@ -511,34 +722,39 @@ class RouteViewModel extends ChangeNotifier {
       "K10_Donus",
       "K11_Gidis",
       "K11_Donus",
+      "M2Dogru",
+      "M10Dogru",
       "M11_Gidis",
       "M11_Donus",
+      "M16Dogru",
     ];
 
     final stopwatch = Stopwatch()..start();
-    final List<MapEntry<String, List<LatLng>>> nearby = [];
+
+    // ─── Hat yükleme + yakın hat filtreleme (durak verisi üzerinden) ───
+    final Set<String> startNearby = {};
+    final Set<String> endNearby = {};
 
     for (int i = 0; i < allNames.length; i++) {
       ensureBusLineLoaded(allNames[i]);
+      ensureBusStopLineLoaded(allNames[i]);
       if (i % 2 == 0) await Future.delayed(Duration.zero);
-      final line = busLines[allNames[i]];
-      if (line == null || line.isEmpty) continue;
-      final nearS = line.any((p) => dist(startPoint, p) < NEAR_STOP);
-      final nearE = line.any((p) => dist(endPoint, p) < NEAR_STOP);
-      if (nearS || nearE) nearby.add(MapEntry(allNames[i], line));
-    }
 
-    final startNearby = nearby
-        .where((e) => e.value.any((p) => dist(startPoint, p) < NEAR_STOP))
-        .map((e) => e.key)
-        .toSet();
-    final endNearby = nearby
-        .where((e) => e.value.any((p) => dist(endPoint, p) < NEAR_STOP))
-        .map((e) => e.key)
-        .toSet();
+      // Filtreleme için durak verisi kullanılır (10-80 nokta, hızlı)
+      final stopLine = busStopLines[allNames[i]];
+      if (stopLine == null || stopLine.isEmpty) continue;
+
+      if (stopLine.any((p) => dist(startPoint, p) < NEAR_STOP)) {
+        startNearby.add(allNames[i]);
+      }
+      if (stopLine.any((p) => dist(endPoint, p) < NEAR_STOP)) {
+        endNearby.add(allNames[i]);
+      }
+    }
 
     final List<RouteOption> options = [];
 
+    // ─── Yürüyüş seçeneği (1km altı) ───
     if (directDistance < 1000) {
       final walkOnly = await getRoute(startPoint, endPoint, mode: "walking");
       options.add(
@@ -555,28 +771,38 @@ class RouteViewModel extends ChangeNotifier {
       );
     }
 
+    // ─── Direkt otobüs rotaları ───
     for (final name in startNearby.intersection(endNearby).take(MAX_DIRECT)) {
       if (stopwatch.elapsed.inSeconds > maxSeconds) break;
-      final line = busLines[name]!;
-      final bestSegment = findBestSegment(startPoint, endPoint, line, name);
+
+      // Routing: durak verisi (az nokta, doğru skor)
+      final stopLine = busStopLines[name]!;
+      final bestSegment = findBestSegment(startPoint, endPoint, stopLine, name);
       if (bestSegment == null) continue;
 
-      final results = await Future.wait([
-        getRoute(startPoint, bestSegment.startPoint, mode: "walking"),
-        getRoute(bestSegment.endPoint, endPoint, mode: "walking"),
-      ]).timeout(const Duration(seconds: 5), onTimeout: () => [[], []]);
+      // Display: yol geometrisi (düzgün çizgi)
+      final roadLine = busLines[name]!;
+      final busDisplay = extractRoadSegment(
+        roadLine,
+        bestSegment.startPoint,
+        bestSegment.endPoint,
+      );
+
+      // Yürüyüş: kuşbakışı düz çizgi — OSRM'nin saçma detour'larını önler
+      final walk1 = [startPoint, bestSegment.startPoint];
+      final walk2 = [bestSegment.endPoint, endPoint];
 
       final total =
-          polylineLength(results[0]) +
-          polylineLength(bestSegment.segment) +
-          polylineLength(results[1]);
+          polylineLength(walk1) +
+          polylineLength(busDisplay) +
+          polylineLength(walk2);
 
       options.add(
         RouteOption(
           lineName: name,
-          walk1: results[0],
-          bus1: bestSegment.segment,
-          walk2: results[1],
+          walk1: walk1,
+          bus1: busDisplay,
+          walk2: walk2,
           totalDistance: total,
           isTransfer: false,
           startStopName: StopUtils.stopNameFromLatLng(bestSegment.startPoint),
@@ -586,68 +812,71 @@ class RouteViewModel extends ChangeNotifier {
       onProgress(0.25);
     }
 
+    // ─── Aktarmalı rotalar ───
     int transferCount = 0;
     for (final sName in startNearby) {
+      if (transferCount >= MAX_TRANSFER ||
+          stopwatch.elapsed.inSeconds > maxSeconds) break;
       for (final eName in endNearby) {
         if (transferCount >= MAX_TRANSFER ||
-            stopwatch.elapsed.inSeconds > maxSeconds)
-          break;
+            stopwatch.elapsed.inSeconds > maxSeconds) break;
         if (sName == eName) continue;
 
-        final sLine = busLines[sName]!;
-        final eLine = busLines[eName]!;
+        // Routing: durak verisi üzerinden kesişim bul
+        final sStopLine = busStopLines[sName]!;
+        final eStopLine = busStopLines[eName]!;
         final xPoint = findIntersectionPoint(
-          sLine,
-          eLine,
+          sStopLine,
+          eStopLine,
           distance: dist,
           threshold: XFER_NEAR,
         );
         if (xPoint == null) continue;
 
-        final ns = findNearestStop(startPoint, endPoint, sLine);
-        final nt1 = findNearestStop(xPoint, endPoint, sLine);
-        final nt2 = findNearestStop(xPoint, endPoint, eLine);
-        final ne = findNearestStop(endPoint, startPoint, eLine);
+        final ns = findNearestStop(startPoint, endPoint, sStopLine);
+        final nt1 = findNearestStop(xPoint, endPoint, sStopLine);
+        final nt2 = findNearestStop(xPoint, endPoint, eStopLine);
+        final ne = findNearestStop(endPoint, startPoint, eStopLine);
 
-        try {
-          final walks = await Future.wait([
-            getRoute(startPoint, ns, mode: "walking"),
-            getRoute(nt1, nt2, mode: "walking"),
-            getRoute(ne, endPoint, mode: "walking"),
-          ]).timeout(const Duration(seconds: 6));
+        // Yürüyüş segmentleri: kuşbakışı düz çizgi
+        final walkToBoard = [startPoint, ns];
+        final walkTransfer = [nt1, nt2];
+        final walkToEnd = [ne, endPoint];
 
-          final bus1 = segmentBetween(sLine, ns, nt1);
-          final bus2 = segmentBetween(eLine, nt2, ne);
-          final total =
-              polylineLength(walks[0]) +
-              polylineLength(bus1) +
-              polylineLength(walks[1]) +
-              polylineLength(bus2) +
-              polylineLength(walks[2]);
+        // Display: yol geometrisinden ilgili segmentleri çıkar
+        final bus1 = extractRoadSegment(busLines[sName]!, ns, nt1);
+        final bus2 = extractRoadSegment(busLines[eName]!, nt2, ne);
 
-          options.add(
-            RouteOption(
-              lineName: sName,
-              transferLine: eName,
-              walk1: walks[0],
-              bus1: bus1,
-              walkTransfer: walks[1],
-              bus2: bus2,
-              walk2: walks[2],
-              totalDistance: total,
-              isTransfer: true,
-              startStopName: StopUtils.stopNameFromLatLng(ns),
-              transferStopName:
-                  "${StopUtils.stopNameFromLatLng(nt1)} ↔ ${StopUtils.stopNameFromLatLng(nt2)}",
-              endStopName: StopUtils.stopNameFromLatLng(ne),
-            ),
-          );
-          transferCount++;
-          onProgress(0.3);
-        } catch (_) {}
+        final total =
+            polylineLength(walkToBoard) +
+            polylineLength(bus1) +
+            polylineLength(walkTransfer) +
+            polylineLength(bus2) +
+            polylineLength(walkToEnd);
+
+        options.add(
+          RouteOption(
+            lineName: sName,
+            transferLine: eName,
+            walk1: walkToBoard,
+            bus1: bus1,
+            walkTransfer: walkTransfer,
+            bus2: bus2,
+            walk2: walkToEnd,
+            totalDistance: total,
+            isTransfer: true,
+            startStopName: StopUtils.stopNameFromLatLng(ns),
+            transferStopName:
+                "${StopUtils.stopNameFromLatLng(nt1)} ↔ ${StopUtils.stopNameFromLatLng(nt2)}",
+            endStopName: StopUtils.stopNameFromLatLng(ne),
+          ),
+        );
+        transferCount++;
+        onProgress(0.3);
       }
     }
 
+    // ─── Araç rotası ───
     try {
       final carRoute = await getRoute(startPoint, endPoint, mode: "driving");
       options.add(
@@ -662,13 +891,25 @@ class RouteViewModel extends ChangeNotifier {
       );
     } catch (_) {}
 
+    // ─── Taksi seçenekleri ───
     try {
       final taxiOptions = await calculateTaxiOptions(startPoint, endPoint);
       options.addAll(taxiOptions);
     } catch (_) {}
 
     stopwatch.stop();
-    options.sort((a, b) => a.totalDistance.compareTo(b.totalDistance));
+
+    // Yürüyüş mesafesini 2.5x ağırlıklandır — az yürüyüş daha iyi
+    double _weightedScore(RouteOption o) {
+      final walkDist =
+          polylineLength(o.walk1) +
+          polylineLength(o.walk2) +
+          polylineLength(o.walkTransfer);
+      final busDist = polylineLength(o.bus1) + polylineLength(o.bus2);
+      return busDist + walkDist * 2.5;
+    }
+
+    options.sort((a, b) => _weightedScore(a).compareTo(_weightedScore(b)));
     return options.take(MAX_DIRECT + MAX_TRANSFER + 3).toList();
   }
 

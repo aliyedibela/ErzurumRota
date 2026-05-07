@@ -338,7 +338,7 @@ Future<void> _checkAccessibility() async {
     }
   }
 
-  void _callTaxi(TaxiStand stand) async {
+  void _callTaxi(TaxiStand stand, {double? preCalculatedFare}) async {
     if (startPoint == null) {
       showDialog(
         context: context, barrierDismissible: false,
@@ -397,9 +397,10 @@ Future<void> _checkAccessibility() async {
       );
     }
 
-    final fare = endPoint != null
-        ? TaxiStandUtils.calculateEstimatedFare(const Distance()(startPoint!, endPoint!))
-        : TaxiStandUtils.calculateEstimatedFare(const Distance()(startPoint!, stand.location) + 1000);
+    final fare = preCalculatedFare ??
+        (endPoint != null
+            ? TaxiStandUtils.calculateEstimatedFare(const Distance()(startPoint!, endPoint!))
+            : TaxiStandUtils.calculateEstimatedFare(const Distance()(startPoint!, stand.location) + 1000));
 
     try {
       await _vm.requestTaxi(stand: stand, startPoint: startPoint!, endPoint: endPoint, fare: fare);
@@ -763,17 +764,20 @@ Future<void> _checkAccessibility() async {
 
                                 _simulationManager?.startSimulation(opt.lineName);
 
-                                setState(() {
-                                  suggestedLine = opt.lineName; transferLine = opt.transferLine;
-                                  polylines = [
-                                    if (fullLine1.isNotEmpty) Polyline(points: fullLine1, color: Colors.blueAccent.withOpacity(0.3), strokeWidth: 6),
-                                    if (fullLine2.isNotEmpty) Polyline(points: fullLine2, color: Colors.purpleAccent.withOpacity(0.3), strokeWidth: 6),
-                                    if (opt.walk1.isNotEmpty) Polyline(points: opt.walk1, color: Colors.green, strokeWidth: 5),
-                                    if (opt.bus1.isNotEmpty) Polyline(points: opt.bus1, color: opt.lineName.contains("Araç") ? Colors.redAccent : Colors.blue, strokeWidth: 6),
-                                    if (opt.walkTransfer.isNotEmpty) Polyline(points: opt.walkTransfer, color: Colors.orange, strokeWidth: 5),
-                                    if (opt.bus2.isNotEmpty) Polyline(points: opt.bus2, color: Colors.purple, strokeWidth: 6),
-                                    if (opt.walk2.isNotEmpty) Polyline(points: opt.walk2, color: Colors.green, strokeWidth: 5),
-                                  ];
+                                 setState(() {
+                                   suggestedLine = opt.lineName; transferLine = opt.transferLine;
+                                   polylines = [
+                                     // Tüm hat güzergahları — ince, soluk gri (gidilmeyen kısımlar belli olsun)
+                                     if (fullLine1.isNotEmpty) Polyline(points: fullLine1, color: Colors.blueGrey.withOpacity(0.28), strokeWidth: 3),
+                                     if (fullLine2.isNotEmpty) Polyline(points: fullLine2, color: Colors.deepPurple.withOpacity(0.22), strokeWidth: 3),
+                                     // Yürüyüş segmentleri
+                                     if (opt.walk1.isNotEmpty) Polyline(points: opt.walk1, color: Colors.green.shade600, strokeWidth: 4, pattern: StrokePattern.dashed(segments: [12, 6])),
+                                     // Gidilen otobüs segmentleri — kalın, canlı renk
+                                     if (opt.bus1.isNotEmpty) Polyline(points: opt.bus1, color: opt.lineName.contains("Araç") ? Colors.redAccent : const Color(0xFF1565C0), strokeWidth: 7),
+                                     if (opt.walkTransfer.isNotEmpty) Polyline(points: opt.walkTransfer, color: Colors.orange.shade700, strokeWidth: 4, pattern: StrokePattern.dashed(segments: [12, 6])),
+                                     if (opt.bus2.isNotEmpty) Polyline(points: opt.bus2, color: const Color(0xFF6A1B9A), strokeWidth: 7),
+                                     if (opt.walk2.isNotEmpty) Polyline(points: opt.walk2, color: Colors.green.shade600, strokeWidth: 4, pattern: StrokePattern.dashed(segments: [12, 6])),
+                                   ];
                                   bus1Segment = fullLine1.isNotEmpty ? fullLine1 : opt.bus1;
                                   bus2Segment = fullLine2.isNotEmpty ? fullLine2 : opt.bus2;
                                   showBusStops = !opt.lineName.contains("Araç");
@@ -875,7 +879,7 @@ Future<void> _checkAccessibility() async {
                     width: double.infinity, height: 55,
                     decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFFFFA726), Color(0xFFFF6F00)]), borderRadius: BorderRadius.circular(15)),
                     child: ElevatedButton.icon(
-                      onPressed: () { Navigator.pop(context); _callTaxi(opt.taxiStand!); },
+                      onPressed: () { Navigator.pop(context); _callTaxi(opt.taxiStand!, preCalculatedFare: opt.estimatedFare); },
                       style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                       icon: const Icon(Icons.phone_forwarded, color: Colors.white, size: 26),
                       label: const Text("BU TAKSİYİ ÇAĞIR", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
@@ -1341,7 +1345,7 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
               onTap: () async {
                 double lat = item["lat"], lon = item["lon"];
                 try {
-                  final snapUrl = Uri.parse("https://ellyn-uncounteracted-semirebelliously.ngrok-free.dev/nearest/v1/walking/$lon,$lat");
+                  final snapUrl = Uri.parse("https://router.project-osrm.org/nearest/v1/foot/$lon,$lat");
                   final snapResponse = await http.get(snapUrl);
                   if (snapResponse.statusCode == 200) {
                     final data = jsonDecode(snapResponse.body);

@@ -4,7 +4,9 @@ import '../../services/user_auth_service.dart';
 import 'user_signup_screen.dart';
 
 class UserLoginScreen extends StatefulWidget {
-  const UserLoginScreen({super.key});
+  /// Kayıt sonrası doğrulama tamamlandıysa email otomatik doldurulur
+  final String? prefillEmail;
+  const UserLoginScreen({super.key, this.prefillEmail});
   @override
   State<UserLoginScreen> createState() => _UserLoginScreenState();
 }
@@ -15,6 +17,14 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
   final _svc = UserAuthService();
   bool _loading = false;
   bool _obscure = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.prefillEmail != null) {
+      _emailCtrl.text = widget.prefillEmail!;
+    }
+  }
 
   Future<void> _login() async {
     if (_emailCtrl.text.isEmpty || _passCtrl.text.isEmpty) {

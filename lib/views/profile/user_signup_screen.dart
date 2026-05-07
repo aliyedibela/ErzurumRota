@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../services/user_auth_service.dart';
 import 'user_verify_screen.dart';
+import 'user_login_screen.dart';
 
 class UserSignupScreen extends StatefulWidget {
   const UserSignupScreen({super.key});
@@ -107,14 +108,31 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
     );
     setState(() => _loading = false);
     if (!mounted) return;
-    if (res['success']) {
-      final user = await Navigator.push<AppUser>(
+    if (res['success'] == true) {
+      // Doğrulama ekranına geç — debugCode'u da ilet (email gelmezse gösterilir)
+      final verified = await Navigator.push<bool>(
         context,
-        MaterialPageRoute(builder: (_) => UserVerifyScreen(userId: res['userId'], email: _emailCtrl.text.trim())),
+        MaterialPageRoute(builder: (_) => UserVerifyScreen(
+          userId: res['userId'],
+          email: _emailCtrl.text.trim(),
+          debugCode: res['debugCode'],
+        )),
       );
-      if (user != null && mounted) Navigator.pop(context, user);
+      if (!mounted) return;
+      if (verified == true) {
+        // Doğrulama başarılı → login ekranına yönlendir (push, replacement değil)
+        if (!mounted) return;
+        final user = await Navigator.push<AppUser>(
+          context,
+          MaterialPageRoute(builder: (_) => UserLoginScreen(
+            prefillEmail: _emailCtrl.text.trim(),
+          )),
+        );
+        // LoginScreen'den dönen user → SignupScreen'i de kapat
+        if (user != null && mounted) Navigator.pop(context, user);
+      }
     } else {
-      _snack(res['error'], Colors.red);
+      _snack(res['error'] ?? 'Kayıt başarısız', Colors.red);
     }
   }
 

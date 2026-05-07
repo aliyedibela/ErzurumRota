@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
-const String baseUrl = "https://superelastic-rylee-tetramerous.ngrok-free.dev";
+const String baseUrl = "https://router.project-osrm.org";
 
 Future<List<LatLng>> getDrivingRoute(LatLng start, LatLng end) async {
   const String mode = "driving"; 

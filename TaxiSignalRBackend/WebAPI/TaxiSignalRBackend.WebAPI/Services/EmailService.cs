@@ -5,7 +5,7 @@ namespace TaxiSignalRBackend.WebAPI.Services
     public class EmailService
     {
         private const string GmailUser = "erzurumbbappetu@gmail.com";
-        private const string GmailAppPassword = "xtavlvcqsrljbfik"; // Google Uygulama Şifresi
+        private const string GmailAppPassword = "xtav lvcq srlj bfik"; // Google Uygulama Şifresi
 
         public async Task SendVerificationEmail(string toEmail, string code)
         {
