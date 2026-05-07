@@ -1,0 +1,6 @@
+@TaxiSignalRBackend.WebAPI_HostAddress = http://localhost:5001
+
+GET {{TaxiSignalRBackend.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

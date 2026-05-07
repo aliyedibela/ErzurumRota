@@ -1,0 +1,11 @@
+**/.git
+**/.gitignore
+**/bin
+**/obj
+**/*.user
+**/*.db
+**/*.db-journal
+**/ngroktoken.txt
+**/appsettings.Development.json
+Dockerfile
+.dockerignore

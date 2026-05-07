@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/WebAPI/">
+    <File Path="taksi_baslat.bat" />
+    <Project Path="WebAPI/TaxiSignalRBackend.WebAPI/TaxiSignalRBackend.WebAPI.csproj" />
+  </Folder>
+</Solution>
