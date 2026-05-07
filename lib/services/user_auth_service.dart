@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+const Duration _kShortTimeout = Duration(seconds: 10);
+const Duration _kPaymentTimeout = Duration(seconds: 20);
+
 class AppUser {
   final String id;
   final String email;
@@ -92,6 +95,19 @@ class UserAuthService {
   static final String _base = "${dotenv.env['API_BASE_URL']}/api/user";
   static final String _cardBase = "${dotenv.env['API_BASE_URL']}/api/card";
   static final String _paymentBase = "${dotenv.env['API_BASE_URL']}/api/payment";
+  static final String _apiBase = dotenv.env['API_BASE_URL'] ?? '';
+
+  /// Railway.app backend'i uyandırır (uyku modundan çıkarır).
+  Future<void> _pingBackend() async {
+    try {
+      await http
+          .get(Uri.parse("$_apiBase/health"))
+          .timeout(const Duration(seconds: 8));
+      print("✅ Backend ping başarılı");
+    } catch (_) {
+      print("⚠️ Backend ping timeout (uyku modunda olabilir)");
+    }
+  }
 
   Future<Map<String, dynamic>> signup({
     required String email,
@@ -109,7 +125,7 @@ class UserAuthService {
           'fullName': fullName,
           'phoneNumber': phoneNumber,
         }),
-      );
+      ).timeout(_kShortTimeout);
       final data = jsonDecode(res.body);
       if (res.statusCode == 200) {
         return {
@@ -120,10 +136,24 @@ class UserAuthService {
       }
       return {'success': false, 'error': data['error'] ?? 'Kayıt başarısız'};
     } catch (e) {
-      return {'success': false, 'error': 'Bağlantı hatası: $e'};
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.'};
     }
   }
 
+  Future<Map<String, dynamic>> resendCode({required String userId}) async {
+    try {
+      final res = await http.post(
+        Uri.parse("$_base/resend-code"),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'userId': userId}),
+      ).timeout(_kShortTimeout);
+      final data = jsonDecode(res.body);
+      if (res.statusCode == 200) return {'success': true};
+      return {'success': false, 'error': data['error'] ?? 'Kod gönderilemedi'};
+    } catch (e) {
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.'};
+    }
+  }
 
   Future<Map<String, dynamic>> verify({
     required String userId,
@@ -134,12 +164,12 @@ class UserAuthService {
         Uri.parse("$_base/verify"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'userId': userId, 'code': code}),
-      );
+      ).timeout(_kShortTimeout);
       final data = jsonDecode(res.body);
       if (res.statusCode == 200) return {'success': true};
       return {'success': false, 'error': data['error'] ?? 'Doğrulama başarısız'};
     } catch (e) {
-      return {'success': false, 'error': 'Bağlantı hatası: $e'};
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.'};
     }
   }
 
@@ -152,7 +182,7 @@ class UserAuthService {
         Uri.parse("$_base/login"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
-      );
+      ).timeout(_kShortTimeout);
       final data = jsonDecode(res.body);
       if (res.statusCode == 200) {
         final user = AppUser.fromJson(data);
@@ -161,17 +191,15 @@ class UserAuthService {
       }
       return {'success': false, 'error': data['error'] ?? 'Giriş başarısız'};
     } catch (e) {
-      return {'success': false, 'error': 'Bağlantı hatası: $e'};
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.'};
     }
   }
-
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_data');
     await prefs.remove('user_token');
   }
-
 
   Future<Map<String, dynamic>> addCard({
     required String userId,
@@ -187,15 +215,14 @@ class UserAuthService {
           'cardCode': cardCode,
           'cardNickname': cardNickname ?? 'Kartım',
         }),
-      );
+      ).timeout(_kShortTimeout);
       final data = jsonDecode(res.body);
-
       if (res.statusCode == 200) {
         return {'success': true, 'card': UserCard.fromJson(data['card'])};
       }
       return {'success': false, 'error': data['error'] ?? 'Kart eklenemedi'};
     } catch (e) {
-      return {'success': false, 'error': 'Bağlantı hatası: $e'};
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.'};
     }
   }
 
@@ -206,20 +233,20 @@ class UserAuthService {
     try {
       final res = await http.delete(
         Uri.parse("$_cardBase/$cardId?userId=$userId"),
-      );
+      ).timeout(_kShortTimeout);
       if (res.statusCode == 200) return {'success': true};
       final data = jsonDecode(res.body);
       return {'success': false, 'error': data['error'] ?? 'Kart silinemedi'};
     } catch (e) {
-      return {'success': false, 'error': 'Bağlantı hatası: $e'};
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.'};
     }
   }
 
   Future<List<dynamic>> getCardHistory(String cardCode) async {
     try {
-      final res = await http.get(
-        Uri.parse("$_paymentBase/history/$cardCode"),
-      );
+      final res = await http
+          .get(Uri.parse("$_paymentBase/history/$cardCode"))
+          .timeout(_kShortTimeout);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
         return data['transactions'] as List? ?? [];
@@ -235,11 +262,8 @@ class UserAuthService {
       final res = await http.post(
         Uri.parse("$_paymentBase/topup"),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'cardCode': cardCode,
-          'amount': amount,
-        }),
-      );
+        body: jsonEncode({'cardCode': cardCode, 'amount': amount}),
+      ).timeout(_kShortTimeout);
       return res.statusCode == 200;
     } catch (e) {
       print('Bakiye yükleme hatası: $e');
@@ -249,7 +273,9 @@ class UserAuthService {
 
   Future<AppUser?> refreshProfile(String userId) async {
     try {
-      final res = await http.get(Uri.parse("$_base/$userId"));
+      final res = await http
+          .get(Uri.parse("$_base/$userId"))
+          .timeout(_kShortTimeout);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
         return AppUser.fromJson(data);
@@ -274,6 +300,9 @@ class UserAuthService {
     try {
       print('🔵 Iyzico ödeme başlatılıyor: $amount TL');
 
+      // Railway.app backend'i uyandır (uyku modunda ise)
+      await _pingBackend();
+
       final response = await http.post(
         Uri.parse('$_paymentBase/iyzico'),
         headers: {'Content-Type': 'application/json'},
@@ -290,17 +319,14 @@ class UserAuthService {
             'cvv': cvv,
           }
         }),
-      );
+      ).timeout(_kPaymentTimeout);
 
       print('🔵 Backend yanıt kodu: ${response.statusCode}');
-      print('🔵 Backend yanıt: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
         if (data['success'] == true) {
           print('✅ Ödeme başarılı! PaymentId: ${data['paymentId']}');
-
           return {
             'success': true,
             'paymentId': data['paymentId'],
@@ -311,28 +337,25 @@ class UserAuthService {
         } else {
           final errorMsg = data['error'] ?? 'Ödeme başarısız';
           print('❌ Ödeme başarısız: $errorMsg');
-
-          return {
-            'success': false,
-            'error': errorMsg,
-          };
+          return {'success': false, 'error': errorMsg};
         }
       } else {
-        final data = jsonDecode(response.body);
-        final errorMsg = data['error'] ?? 'Ödeme başarısız oldu';
+        Map<String, dynamic> data = {};
+        try { data = jsonDecode(response.body); } catch (_) {}
+        final errorMsg = data['error'] ?? 'Sunucu hatası (${response.statusCode})';
         print('❌ HTTP Error: $errorMsg');
-
-        return {
-          'success': false,
-          'error': errorMsg,
-        };
+        return {'success': false, 'error': errorMsg};
       }
+    } on http.ClientException catch (e) {
+      print('❌ Ağ hatası: $e');
+      return {'success': false, 'error': 'İnternet bağlantısı kesildi. Lütfen tekrar deneyin.'};
     } catch (e) {
       print('❌ Ödeme hatası: $e');
-      return {
-        'success': false,
-        'error': 'Bağlantı hatası. Lütfen tekrar deneyin.',
-      };
+      // Timeout kontrolü
+      if (e.toString().contains('TimeoutException')) {
+        return {'success': false, 'error': 'Sunucu yanıt vermedi. Lütfen birkaç saniye bekleyip tekrar deneyin.'};
+      }
+      return {'success': false, 'error': 'Beklenmeyen hata. Lütfen tekrar deneyin.'};
     }
   }
 

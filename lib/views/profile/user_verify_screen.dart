@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../services/user_auth_service.dart';
@@ -16,6 +17,33 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
   final _codeCtrl = TextEditingController();
   final _svc = UserAuthService();
   bool _loading = false;
+  bool _resending = false;
+  int _resendCooldown = 0; // saniye cinsinden geri sayım
+
+  Timer? _timer;
+
+  Future<void> _resendCode() async {
+    if (_resendCooldown > 0) return;
+    setState(() => _resending = true);
+    final res = await _svc.resendCode(userId: widget.userId);
+    if (!mounted) return;
+    setState(() => _resending = false);
+    if (res['success'] == true) {
+      _snack('Yeni kod emailinize gönderildi', Colors.green);
+      // 60 saniye geri sayım
+      setState(() => _resendCooldown = 60);
+      _timer?.cancel();
+      _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+        if (!mounted) { t.cancel(); return; }
+        setState(() {
+          _resendCooldown--;
+          if (_resendCooldown <= 0) { _resendCooldown = 0; t.cancel(); }
+        });
+      });
+    } else {
+      _snack(res['error'] ?? 'Kod gönderilemedi', Colors.red);
+    }
+  }
 
   Future<void> _verify() async {
     if (_codeCtrl.text.length != 6) { _snack('6 haneli kodu girin', Colors.red); return; }
@@ -123,6 +151,17 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
                                 child: const Text('Doğrula', style: TextStyle(color: Color(0xFF1A237E), fontWeight: FontWeight.bold, fontSize: 16)),
                               ),
                             ),
+                      const SizedBox(height: 12),
+                      _resending
+                          ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white54, strokeWidth: 2))
+                          : TextButton.icon(
+                              onPressed: _resendCooldown > 0 ? null : _resendCode,
+                              icon: Icon(Icons.refresh_rounded, color: _resendCooldown > 0 ? Colors.white24 : Colors.white60, size: 16),
+                              label: Text(
+                                _resendCooldown > 0 ? 'Tekrar gönder (${_resendCooldown}s)' : 'Kodu tekrar gönder',
+                                style: TextStyle(color: _resendCooldown > 0 ? Colors.white24 : Colors.white60, fontSize: 13),
+                              ),
+                            ),
                     ]),
                   ),
                 ),
@@ -136,5 +175,5 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
   }
 
   @override
-  void dispose() { _codeCtrl.dispose(); super.dispose(); }
+  void dispose() { _timer?.cancel(); _codeCtrl.dispose(); super.dispose(); }
 }
