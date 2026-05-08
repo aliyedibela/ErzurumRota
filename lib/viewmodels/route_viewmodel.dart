@@ -359,7 +359,8 @@ class RouteViewModel extends ChangeNotifier {
         if (sIdx >= eIdx) continue;
         final walk1 = distance(userStart, linePoints[sIdx]);
         final walk2 = distance(userEnd, linePoints[eIdx]);
-        final busScore = (eIdx - sIdx) * 10;
+        // Küçük tie-breaker: durak sayısı yürüyüş mesafesini geçersiz kılmamalı
+        final busScore = (eIdx - sIdx).toDouble();
         final totalScore = walk1 + walk2 + busScore;
 
         if (totalScore < minTotalScore) {
@@ -467,8 +468,9 @@ class RouteViewModel extends ChangeNotifier {
     }
 
     if (startIdx >= endIdx) {
-      final safeEnd = (startIdx + 2).clamp(startIdx + 1, roadLine.length);
-      return roadLine.sublist(startIdx, safeEnd);
+      // Yol geometrisinde startStop, endStop'tan sonra görünüyor —
+      // bu olmamalı ama olduysa tüm kalan segmenti döndür
+      return roadLine.sublist(startIdx);
     }
     return roadLine.sublist(startIdx, endIdx + 1);
   }
@@ -833,10 +835,51 @@ class RouteViewModel extends ChangeNotifier {
         );
         if (xPoint == null) continue;
 
+        // 1. Hat üzerinde başlangıca en yakın durak (yön: endPoint'e doğru)
         final ns = findNearestStop(startPoint, endPoint, sStopLine);
-        final nt1 = findNearestStop(xPoint, endPoint, sStopLine);
+
+        // ns'nin hat listesindeki indexini bul
+        int nsIdx = 0;
+        {
+          double _best = double.infinity;
+          for (int i = 0; i < sStopLine.length; i++) {
+            final d = dist(ns, sStopLine[i]);
+            if (d < _best) { _best = d; nsIdx = i; }
+          }
+        }
+
+        // nt1: 1. hatta aktarma durağı — ns'den SONRA xPoint'e en yakın durak
+        LatLng nt1 = sStopLine[nsIdx];
+        {
+          double _best = double.infinity;
+          for (int i = nsIdx; i < sStopLine.length; i++) {
+            final d = dist(xPoint, sStopLine[i]);
+            if (d < _best) { _best = d; nt1 = sStopLine[i]; }
+          }
+        }
+
+        // nt2: 2. hatta aktarma noktasına en yakın durak (yön: endPoint'e doğru)
         final nt2 = findNearestStop(xPoint, endPoint, eStopLine);
-        final ne = findNearestStop(endPoint, startPoint, eStopLine);
+
+        // nt2'nin hat listesindeki indexini bul
+        int nt2Idx = 0;
+        {
+          double _best = double.infinity;
+          for (int i = 0; i < eStopLine.length; i++) {
+            final d = dist(nt2, eStopLine[i]);
+            if (d < _best) { _best = d; nt2Idx = i; }
+          }
+        }
+
+        // ne: 2. hatta varış durağı — nt2'den SONRA endPoint'e en yakın durak
+        LatLng ne = eStopLine[nt2Idx];
+        {
+          double _best = double.infinity;
+          for (int i = nt2Idx; i < eStopLine.length; i++) {
+            final d = dist(endPoint, eStopLine[i]);
+            if (d < _best) { _best = d; ne = eStopLine[i]; }
+          }
+        }
 
         // Yürüyüş segmentleri: kuşbakışı düz çizgi
         final walkToBoard = [startPoint, ns];

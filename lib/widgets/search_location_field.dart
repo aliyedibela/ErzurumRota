@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
@@ -25,7 +26,7 @@ class SearchLocationField extends StatefulWidget {
 }
 
 class _SearchLocationFieldState extends State<SearchLocationField> {
-  static const String _googleApiKey = ""; // API key buraya
+  static String get _googleApiKey => dotenv.env['GOOGLE_PLACES_API_KEY'] ?? '';
   static const String _osrmBase = "https://router.project-osrm.org";
 
   List<Map<String, dynamic>> _results = [];
