@@ -8,12 +8,15 @@ import 'package:erzurum_rota/views/profile/profile_screen.dart';
 import 'package:erzurum_rota/views/rota/route_page.dart';
 import 'package:erzurum_rota/views/tarih/erzurumtarihi_page.dart';
 import 'package:erzurum_rota/views/yerler/onemliyerler_page.dart';
+import 'package:erzurum_rota/views/favorites/favorites_page.dart';
+import 'package:erzurum_rota/views/notifications/notifications_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/user_auth_service.dart';
+import 'services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,7 +100,7 @@ Future<void> _showAccessibilityOnboarding() async {
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -105,7 +108,7 @@ Future<void> _showAccessibilityOnboarding() async {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.lightBlueAccent.withOpacity(0.2),
+                    color: Colors.lightBlueAccent.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -127,7 +130,7 @@ Future<void> _showAccessibilityOnboarding() async {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Text(
@@ -231,6 +234,51 @@ Widget build(BuildContext context) {
         child: const Text("Erzurum Şehir Rehberi"),
       ),
       actions: [
+        FutureBuilder<int>(
+          future: NotificationService().getUnreadCount(),
+          builder: (context, snapshot) {
+            final count = snapshot.data ?? 0;
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.notifications_none_rounded,
+                    color: isRouteTab ? const Color(0xFF1A237E) : Colors.white70,
+                  ),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const NotificationsPage()),
+                    );
+                    setState(() {});
+                  },
+                ),
+                if (count > 0)
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                          color: Colors.red, shape: BoxShape.circle),
+                      constraints:
+                          const BoxConstraints(minWidth: 16, minHeight: 16),
+                      child: Text(
+                        '$count',
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
         Padding(
           padding: const EdgeInsets.only(right: 12),
           child: GestureDetector(
@@ -248,15 +296,15 @@ Widget build(BuildContext context) {
                         end: Alignment.bottomRight,
                       )
                     : null,
-                color: _currentUser == null ? Colors.white.withOpacity(0.15) : null,
+                color: _currentUser == null ? Colors.white.withValues(alpha: 0.15) : null,
                 border: Border.all(
-                  color: Colors.white.withOpacity(_currentUser != null ? 0.8 : 0.3),
+                  color: Colors.white.withValues(alpha: _currentUser != null ? 0.8 : 0.3),
                   width: 2,
                 ),
                 boxShadow: _currentUser != null
                     ? [
                         BoxShadow(
-                          color: const Color(0xFF42A5F5).withOpacity(0.4),
+                          color: const Color(0xFF42A5F5).withValues(alpha: 0.4),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         )
@@ -291,9 +339,9 @@ Widget build(BuildContext context) {
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           height: 50,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
+            color: Colors.white.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(16), 
-            border: Border.all(color: Colors.white.withOpacity(0.25)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16), 
@@ -380,12 +428,12 @@ Widget _buildMainTab(Size size) {
               height: size.width * 0.42,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(28),
-                border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -401,7 +449,7 @@ Widget _buildMainTab(Size size) {
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: Colors.white.withOpacity(0.95),
+            color: Colors.white.withValues(alpha: 0.95),
             letterSpacing: 0.5,
             shadows: const [
               Shadow(offset: Offset(0, 2), blurRadius: 8, color: Colors.black26)
@@ -414,12 +462,25 @@ Widget _buildMainTab(Size size) {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.white.withOpacity(0.85),
+            color: Colors.white.withValues(alpha: 0.85),
             fontWeight: FontWeight.w500,
             letterSpacing: 0.3,
           ),
         ),
         const SizedBox(height: 35),
+        _buildGlassMenuCard(
+          icon: Icons.star_rounded,
+          title: "Favori Duraklarım",
+          subtitle: "Sık kullandığın duraklara hızlıca ulaş",
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFF9800), Color(0xFFF57C00)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => const FavoritesPage())),
+        ),
+        const SizedBox(height: 14),
         _buildGlassMenuCard(
           icon: Icons.local_hospital_rounded,
           title: "Nöbetçi Eczaneler",
@@ -487,12 +548,12 @@ Widget _buildMainTab(Size size) {
           child: Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.12),
+              color: Colors.white.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.25)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -508,7 +569,7 @@ Widget _buildMainTab(Size size) {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: gradient.colors.first.withOpacity(0.4),
+                        color: gradient.colors.first.withValues(alpha: 0.4),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -534,7 +595,7 @@ Widget _buildMainTab(Size size) {
                       Text(
                         subtitle,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.75),
+                          color: Colors.white.withValues(alpha: 0.75),
                           fontSize: 13,
                         ),
                       ),
@@ -544,7 +605,7 @@ Widget _buildMainTab(Size size) {
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(

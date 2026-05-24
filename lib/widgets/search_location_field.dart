@@ -63,31 +63,58 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
 
     setState(() => _loading = true);
 
+    // API key kontrolü
+    final apiKey = _googleApiKey;
+    if (apiKey.isEmpty) {
+      debugPrint("❌ GOOGLE_PLACES_API_KEY .env dosyasından okunamadı!");
+      setState(() => _loading = false);
+      return;
+    }
+
     try {
-      final url = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/textsearch/json"
-        "?query=${Uri.encodeComponent(query)}&key=$_googleApiKey",
+      // Yeni Places API (v1) — Text Search
+      final url = Uri.parse("https://places.googleapis.com/v1/places:searchText");
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask":
+              "places.displayName,places.location,places.formattedAddress",
+        },
+        body: json.encode({
+          "textQuery": query,
+          "languageCode": "tr",
+          "locationBias": {
+            "circle": {
+              "center": {"latitude": 39.9042, "longitude": 41.2670},
+              "radius": 50000.0,
+            }
+          },
+        }),
       );
-      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data["status"] == "OK") {
-          setState(() {
-            _results = (data["results"] as List)
-                .map((e) => {
-                      "display": e["name"],
-                      "lat": e["geometry"]["location"]["lat"],
-                      "lon": e["geometry"]["location"]["lng"],
-                    })
-                .toList();
-          });
-        } else {
-          setState(() => _results = []);
-        }
+        final places = data["places"] as List? ?? [];
+        setState(() {
+          _results = places
+              .map((e) => {
+                    "display": e["displayName"]?["text"] ??
+                        e["formattedAddress"] ??
+                        "Bilinmeyen",
+                    "lat": e["location"]["latitude"],
+                    "lon": e["location"]["longitude"],
+                  })
+              .toList();
+        });
+      } else {
+        debugPrint("❌ Places API hatası: ${response.statusCode}");
+        debugPrint("❌ Yanıt: ${response.body}");
+        setState(() => _results = []);
       }
     } catch (e) {
-      print("❌ Arama hatası: $e");
+      debugPrint("❌ Arama hatası: $e");
     } finally {
       setState(() => _loading = false);
     }
@@ -132,7 +159,7 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               filled: true,
-              fillColor: Colors.white.withOpacity(0.15),
+              fillColor: Colors.white.withValues(alpha: 0.15),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             ),
@@ -157,59 +184,61 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
         ),
         if (_loading) const LinearProgressIndicator(),
         if (_results.isNotEmpty)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4)),
-              ],
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _results.length,
-              itemBuilder: (context, index) {
-                final item = _results[index];
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 220),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4)),
+                ],
+              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemCount: _results.length,
+                itemBuilder: (context, index) {
+                  final item = _results[index];
 
-                if (item["isCurrentLocation"] == true) {
+                  if (item["isCurrentLocation"] == true) {
+                    return ListTile(
+                      leading: const Icon(Icons.my_location, color: Colors.blue),
+                      title: Text(item["display"]),
+                      onTap: () async {
+                        LocationPermission perm = await Geolocator.checkPermission();
+                        if (perm == LocationPermission.denied) {
+                          perm = await Geolocator.requestPermission();
+                        }
+                        if (perm == LocationPermission.denied ||
+                            perm == LocationPermission.deniedForever) return;
+
+                        final pos = await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.high);
+                        widget.onSelected(pos.latitude, pos.longitude);
+                        _localController.text = "Mevcut konumunuz";
+                        setState(() => _results.clear());
+                      },
+                    );
+                  }
+
                   return ListTile(
-                    leading:
-                        const Icon(Icons.my_location, color: Colors.blue),
-                    title: Text(item["display"]),
+                    title: Text(item["display"],
+                        maxLines: 1, overflow: TextOverflow.ellipsis),
                     onTap: () async {
-                      LocationPermission perm =
-                          await Geolocator.checkPermission();
-                      if (perm == LocationPermission.denied) {
-                        perm = await Geolocator.requestPermission();
-                      }
-                      if (perm == LocationPermission.denied ||
-                          perm == LocationPermission.deniedForever) return;
-
-                      final pos = await Geolocator.getCurrentPosition(
-                          desiredAccuracy: LocationAccuracy.high);
-                      widget.onSelected(pos.latitude, pos.longitude);
-                      _localController.text = "Mevcut konumunuz";
+                      final (lat, lon) =
+                          await _snapToRoad(item["lat"], item["lon"]);
+                      widget.onSelected(lat, lon);
+                      _localController.text = item["display"];
                       setState(() => _results.clear());
                     },
                   );
-                }
-
-                return ListTile(
-                  title: Text(item["display"],
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
-                  onTap: () async {
-                    final (lat, lon) =
-                        await _snapToRoad(item["lat"], item["lon"]);
-                    widget.onSelected(lat, lon);
-                    _localController.text = item["display"];
-                    setState(() => _results.clear());
-                  },
-                );
-              },
+                },
+              ),
             ),
           ),
       ],

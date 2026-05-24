@@ -96,9 +96,9 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.08),
+                  color: Colors.white.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
                 ),
                 child: const Row(mainAxisSize: MainAxisSize.min, children: [
                   Icon(Icons.mark_email_read_outlined, color: Colors.white54, size: 16),
@@ -114,6 +114,7 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
               ),
               const SizedBox(height: 12),
 
+
               const SizedBox(height: 20),
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -122,8 +123,8 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1), borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.2)),
+                      color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
                     ),
                     child: Column(children: [
                       TextField(
@@ -132,11 +133,11 @@ class _UserVerifyScreenState extends State<UserVerifyScreen> {
                         style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold, letterSpacing: 8),
                         decoration: InputDecoration(
                           hintText: '------',
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 28, letterSpacing: 8),
+                          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 28, letterSpacing: 8),
                           counterText: '',
-                          filled: true, fillColor: Colors.white.withOpacity(0.08),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.2))),
-                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.2))),
+                          filled: true, fillColor: Colors.white.withValues(alpha: 0.08),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2))),
+                          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2))),
                           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: Colors.white, width: 1.5)),
                         ),
                       ),

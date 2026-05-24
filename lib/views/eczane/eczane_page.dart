@@ -141,7 +141,7 @@ class _EczanePageState extends State<EczanePage>
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-            child: Container(color: Colors.white.withOpacity(0.05)),
+            child: Container(color: Colors.white.withValues(alpha: 0.05)),
           ),
 
     
@@ -201,12 +201,12 @@ class _EczanePageState extends State<EczanePage>
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.12),
+        color: Colors.white.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -229,7 +229,7 @@ class _EczanePageState extends State<EczanePage>
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Image.asset(
@@ -263,10 +263,10 @@ class _EczanePageState extends State<EczanePage>
                               vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.blueAccent.withOpacity(0.3),
+                              color: Colors.blueAccent.withValues(alpha: 0.3),
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.white.withValues(alpha: 0.2),
                               ),
                             ),
                             child: Text(
@@ -298,7 +298,7 @@ class _EczanePageState extends State<EczanePage>
                     horizontal: 16,
                     vertical: 10,
                   ),
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -339,7 +339,7 @@ class _EczanePageState extends State<EczanePage>
                             style: TextStyle(fontSize: 13),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.withOpacity(0.8),
+                            backgroundColor: Colors.green.withValues(alpha: 0.8),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -411,9 +411,9 @@ class _AuroraPainter extends CustomPainter {
     final paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          Colors.cyanAccent.withOpacity(0.15),
-          Colors.blueAccent.withOpacity(0.1),
-          Colors.purpleAccent.withOpacity(0.12),
+          Colors.cyanAccent.withValues(alpha: 0.15),
+          Colors.blueAccent.withValues(alpha: 0.1),
+          Colors.purpleAccent.withValues(alpha: 0.12),
         ],
         begin: Alignment(-1 + t * 2, -1),
         end: Alignment(1 - t * 2, 1),

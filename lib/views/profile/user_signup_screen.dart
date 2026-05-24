@@ -52,9 +52,9 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
         initialChildSize: 0.6, minChildSize: 0.4, maxChildSize: 0.85,
         builder: (_, scrollCtrl) => Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF1A237E).withOpacity(0.97),
+            color: const Color(0xFF1A237E).withValues(alpha: 0.97),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            border: Border.all(color: Colors.white.withOpacity(0.15)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
           ),
           child: Column(children: [
             const SizedBox(height: 12),
@@ -169,9 +169,9 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.12),
+                      color: Colors.white.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white.withOpacity(0.25)),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
                     ),
                     child: Column(children: [
                       _field(_nameCtrl, 'Ad Soyad', Icons.badge_outlined),
@@ -184,9 +184,9 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
                           child: Container(
                             height: 52, padding: const EdgeInsets.symmetric(horizontal: 12),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.08),
+                              color: Colors.white.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: Colors.white.withOpacity(0.25)),
+                              border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
                             ),
                             child: Row(mainAxisSize: MainAxisSize.min, children: [
                               Text(_countryFlag, style: const TextStyle(fontSize: 20)),
@@ -204,11 +204,11 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               hintText: '5XX XXX XX XX',
-                              hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+                              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
                               prefixIcon: const Icon(Icons.phone_outlined, color: Colors.white60),
-                              filled: true, fillColor: Colors.white.withOpacity(0.08),
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.25))),
-                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.25))),
+                              filled: true, fillColor: Colors.white.withValues(alpha: 0.08),
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.25))),
+                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.25))),
                               focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: Colors.white, width: 1.5)),
                               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                             ),
@@ -251,12 +251,12 @@ class _UserSignupScreenState extends State<UserSignupScreen> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
         prefixIcon: Icon(icon, color: Colors.white60),
         suffixIcon: suffix,
-        filled: true, fillColor: Colors.white.withOpacity(0.08),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.25))),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.25))),
+        filled: true, fillColor: Colors.white.withValues(alpha: 0.08),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.25))),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.25))),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: Colors.white, width: 1.5)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),

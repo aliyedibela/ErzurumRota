@@ -96,10 +96,10 @@ class ErzurumTarihiPage extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black.withOpacity(
+                        Colors.black.withValues(alpha: 
                           0.3,
                         ), 
-                        Colors.black.withOpacity(
+                        Colors.black.withValues(alpha: 
                           0.7,
                         ), 
                       ],
@@ -143,7 +143,7 @@ class ErzurumTarihiPage extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: Colors.white30),
                         ),
@@ -190,7 +190,7 @@ class ErzurumTarihiPage extends StatelessWidget {
                       ),
                       Icon(
                         Icons.keyboard_arrow_down_rounded,
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         size: 32,
                       ),
                     ],

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../services/user_auth_service.dart';
 import 'user_signup_screen.dart';
+import 'user_forgot_password_screen.dart';
 
 class UserLoginScreen extends StatefulWidget {
   /// Kayıt sonrası doğrulama tamamlandıysa email otomatik doldurulur
@@ -71,7 +72,7 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.person_rounded, size: 60, color: Colors.white),
@@ -85,7 +86,7 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
               const SizedBox(height: 6),
               Center(
                 child: Text('Erzurum Şehir Rehberi',
-                    style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14)),
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 14)),
               ),
               const SizedBox(height: 36),
               ClipRRect(
@@ -95,9 +96,9 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.12),
+                      color: Colors.white.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white.withOpacity(0.25)),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
                     ),
                     child: Column(children: [
                       _field(_emailCtrl, 'Email', Icons.email_outlined, type: TextInputType.emailAddress),
@@ -129,6 +130,25 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const UserForgotPasswordScreen()),
+                ),
+                child: Center(
+                  child: Text(
+                    'Şifremi Unuttum?',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.75),
+                      fontSize: 14,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white54,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
@@ -141,12 +161,12 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                   ),
                   child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.white.withOpacity(0.85))),
+                    Text('Hesabınız yok mu? ', style: TextStyle(color: Colors.white.withValues(alpha: 0.85))),
                     const Text('Kayıt Olun',
                         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline, decorationColor: Colors.white)),
@@ -167,12 +187,12 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
         prefixIcon: Icon(icon, color: Colors.white60),
         suffixIcon: suffix,
-        filled: true, fillColor: Colors.white.withOpacity(0.08),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.25))),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withOpacity(0.25))),
+        filled: true, fillColor: Colors.white.withValues(alpha: 0.08),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.25))),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.25))),
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: Colors.white, width: 1.5)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),

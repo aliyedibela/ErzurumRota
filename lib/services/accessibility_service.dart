@@ -18,6 +18,7 @@ class AccessibilityService {
 
   List<String> favoriteLines = [];
   String? _watchingLine;
+  String? get watchingLine => _watchingLine;
   Timer? _etaWatchTimer;
   StreamSubscription<Position>? _locationSub;
   bool _isAnnouncing = false;

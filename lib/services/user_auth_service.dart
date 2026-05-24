@@ -201,6 +201,44 @@ class UserAuthService {
     await prefs.remove('user_token');
   }
 
+  Future<Map<String, dynamic>> forgotPassword({required String email}) async {
+    try {
+      final res = await http.post(
+        Uri.parse("$_base/forgot-password"),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email}),
+      ).timeout(_kShortTimeout);
+      final data = jsonDecode(res.body);
+      if (res.statusCode == 200) return {'success': true, 'debugCode': data['debugCode']};
+      return {'success': false, 'error': data['error'] ?? 'İşlem başarısız'};
+    } catch (e) {
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı'};
+    }
+  }
+
+  Future<Map<String, dynamic>> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    try {
+      final res = await http.post(
+        Uri.parse("$_base/reset-password"),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'code': code,
+          'newPassword': newPassword,
+        }),
+      ).timeout(_kShortTimeout);
+      final data = jsonDecode(res.body);
+      if (res.statusCode == 200) return {'success': true};
+      return {'success': false, 'error': data['error'] ?? 'Şifre güncellenemedi'};
+    } catch (e) {
+      return {'success': false, 'error': 'Sunucuya ulaşılamadı'};
+    }
+  }
+
   Future<Map<String, dynamic>> addCard({
     required String userId,
     required String cardCode,

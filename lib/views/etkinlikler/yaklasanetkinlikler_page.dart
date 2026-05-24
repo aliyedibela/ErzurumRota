@@ -91,7 +91,7 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-            child: Container(color: Colors.white.withOpacity(0.05)),
+            child: Container(color: Colors.white.withValues(alpha: 0.05)),
           ),
 
           SafeArea(
@@ -144,12 +144,12 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.35)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.35)),
         boxShadow: [
           BoxShadow(
-            color: Colors.blueAccent.withOpacity(0.15),
+            color: Colors.blueAccent.withValues(alpha: 0.15),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -207,10 +207,10 @@ class _YaklasanEtkinliklerPageState extends State<YaklasanEtkinliklerPage>
                               ),
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: sourceColor.withOpacity(0.7),
+                                  color: sourceColor.withValues(alpha: 0.7),
                                 ),
                                 borderRadius: BorderRadius.circular(6),
-                                color: sourceColor.withOpacity(0.1),
+                                color: sourceColor.withValues(alpha: 0.1),
                               ),
                               child: Text(
                                 e.kaynak.toUpperCase(),
@@ -302,9 +302,9 @@ class _AuroraPainter extends CustomPainter {
     final paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          Colors.cyanAccent.withOpacity(0.15),
-          Colors.blueAccent.withOpacity(0.1),
-          Colors.purpleAccent.withOpacity(0.12),
+          Colors.cyanAccent.withValues(alpha: 0.15),
+          Colors.blueAccent.withValues(alpha: 0.1),
+          Colors.purpleAccent.withValues(alpha: 0.12),
         ],
         begin: Alignment(-1 + t * 2, -1),
         end: Alignment(1 - t * 2, 1),

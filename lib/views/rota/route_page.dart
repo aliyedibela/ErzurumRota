@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:erzurum_rota/models/route_option.dart';
 import 'package:erzurum_rota/models/taxi_stand.dart';      
 import 'package:erzurum_rota/viewmodels/route_viewmodel.dart';
@@ -19,6 +20,7 @@ import 'package:signalr_core/signalr_core.dart';
 
 import '../../core/accessibility_prefs.dart';
 import '../../services/accessibility_service.dart';
+import '../../services/favorite_stop_service.dart';
 
 class RoutePage extends StatefulWidget {
   final LatLng? startPoint;
@@ -51,6 +53,7 @@ class _RoutePageState extends State<RoutePage> with WidgetsBindingObserver {
   late AccessibilityService _accessibilityService;
   List<Marker> _busMarkers = [];
   BuildContext? _waitingDialogCtx;
+  Set<String> _favoriteStopIds = {};
 
   List<Polyline> polylines = [];
   String? suggestedLine;
@@ -119,6 +122,7 @@ WidgetsBinding.instance.addObserver(this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Future.microtask(() => StopUtils.loadAllStops());
+      _loadFavoriteStopIds();
       await _vm.connectSignalR(
         onAccepted: (driverName, plate) {
           if (!mounted) return;
@@ -187,6 +191,17 @@ Future<void> _checkAccessibility() async {
     _accessibilityService.stopLocationTracking();
     print('♿ Erişilebilirlik modu kapalı');
   }
+}
+
+Future<void> _loadFavoriteStopIds() async {
+  final favs = await FavoriteStopService().getFavorites();
+  if (!mounted) return;
+  setState(() {
+    _favoriteStopIds = favs
+        .map((f) => f['stopId']?.toString() ?? '')
+        .where((id) => id.isNotEmpty)
+        .toSet();
+  });
 }
 
   @override
@@ -353,20 +368,20 @@ Future<void> _checkAccessibility() async {
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(colors: [Color(0xFF0D47A1), Color(0xFF1565C0)]),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
                 ),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Stack(alignment: Alignment.center, children: [
-                    Container(width: 70, height: 70, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.1))),
+                    Container(width: 70, height: 70, decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.1))),
                     const SizedBox(width: 60, height: 60, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 4)),
                     Container(width: 40, height: 40,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.15)),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.15)),
                       child: const Icon(Icons.my_location, color: Colors.white, size: 24)),
                   ]),
                   const SizedBox(height: 20),
                   const Text('Konumunuz Alınıyor', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text('Lütfen bekleyin...', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14)),
+                  Text('Lütfen bekleyin...', style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 14)),
                 ]),
               ),
             ),
@@ -434,7 +449,7 @@ Future<void> _checkAccessibility() async {
             },
             child: Stack(alignment: Alignment.center, children: [
               Container(width: isSelected ? 50 : 40, height: isSelected ? 50 : 40,
-                decoration: BoxDecoration(color: Colors.orange.withOpacity(0.3), shape: BoxShape.circle)),
+                decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.3), shape: BoxShape.circle)),
               Container(
                 width: isSelected ? 45 : 35, height: isSelected ? 45 : 35,
                 decoration: const BoxDecoration(
@@ -474,7 +489,7 @@ Future<void> _checkAccessibility() async {
               decoration: BoxDecoration(
                 color: const Color(0xFF1A1A1A),
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-                border: Border.all(color: const Color(0xFFFF6F00).withOpacity(0.3)),
+                border: Border.all(color: const Color(0xFFFF6F00).withValues(alpha: 0.3)),
               ),
               child: Column(children: [
                 const SizedBox(height: 12),
@@ -494,7 +509,7 @@ Future<void> _checkAccessibility() async {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(color: const Color(0xFFFF6F00).withOpacity(0.15), borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFFF6F00).withOpacity(0.4))),
+                        decoration: BoxDecoration(color: const Color(0xFFFF6F00).withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFFF6F00).withValues(alpha: 0.4))),
                         child: isLocating
                           ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Color(0xFFFF6F00), strokeWidth: 2))
                           : const Row(mainAxisSize: MainAxisSize.min, children: [
@@ -514,13 +529,13 @@ Future<void> _checkAccessibility() async {
                     final distanceText = distance < 1000 ? '${distance.toStringAsFixed(0)} m' : '${(distance / 1000).toStringAsFixed(1)} km';
                     return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(color: const Color(0xFF2C2C2E), borderRadius: BorderRadius.circular(15), border: Border.all(color: const Color(0xFFFF6F00).withOpacity(0.25))),
+                      decoration: BoxDecoration(color: const Color(0xFF2C2C2E), borderRadius: BorderRadius.circular(15), border: Border.all(color: const Color(0xFFFF6F00).withValues(alpha: 0.25))),
                       child: ListTile(
-                        leading: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: const Color(0xFFFF6F00).withOpacity(0.15), shape: BoxShape.circle), child: const Icon(Icons.local_taxi, color: Color(0xFFFF6F00), size: 24)),
+                        leading: Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: const Color(0xFFFF6F00).withValues(alpha: 0.15), shape: BoxShape.circle), child: const Icon(Icons.local_taxi, color: Color(0xFFFF6F00), size: 24)),
                         title: Row(children: [
                           Expanded(child: Text(stand.name, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold))),
                           Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(color: const Color(0xFFFF6F00).withOpacity(0.2), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFFF6F00).withOpacity(0.5))),
+                            decoration: BoxDecoration(color: const Color(0xFFFF6F00).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFFF6F00).withValues(alpha: 0.5))),
                             child: Text(distanceText, style: const TextStyle(color: Color(0xFFFF6F00), fontSize: 11, fontWeight: FontWeight.bold))),
                         ]),
                         subtitle: Text(stand.address, style: const TextStyle(color: Colors.white54, fontSize: 12)),
@@ -568,19 +583,19 @@ Future<void> _checkAccessibility() async {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
                 gradient: const LinearGradient(colors: [Color(0xFFFF8F00), Color(0xFFE65100)]),
-                boxShadow: [BoxShadow(color: Colors.orange.withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 8))],
+                boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.4), blurRadius: 20, offset: const Offset(0, 8))],
               ),
               padding: const EdgeInsets.all(24),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Row(children: [
-                  Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: Colors.black.withOpacity(0.15), shape: BoxShape.circle), child: const Icon(Icons.local_taxi, color: Colors.white, size: 28)),
+                  Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.15), shape: BoxShape.circle), child: const Icon(Icons.local_taxi, color: Colors.white, size: 28)),
                   const SizedBox(width: 12),
                   const Expanded(child: Text("Taksi Aranıyor", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))),
                 ]),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity, padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.15), borderRadius: BorderRadius.circular(16)),
+                  decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(16)),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(stand.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
                     const SizedBox(height: 8),
@@ -596,7 +611,7 @@ Future<void> _checkAccessibility() async {
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(20)),
+                  decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     const Icon(Icons.timer_outlined, color: Colors.white70, size: 16),
                     const SizedBox(width: 6),
@@ -630,12 +645,12 @@ Future<void> _checkAccessibility() async {
             borderRadius: BorderRadius.circular(24),
             gradient: LinearGradient(
               colors: accepted ? [const Color(0xFF2E7D32), const Color(0xFF1B5E20)] : [const Color(0xFFC62828), const Color(0xFF7F0000)]),
-            boxShadow: [BoxShadow(color: (accepted ? Colors.green : Colors.red).withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 8))],
+            boxShadow: [BoxShadow(color: (accepted ? Colors.green : Colors.red).withValues(alpha: 0.4), blurRadius: 20, offset: const Offset(0, 8))],
           ),
           padding: const EdgeInsets.all(24),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Container(width: 72, height: 72,
-              decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), shape: BoxShape.circle),
+              decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), shape: BoxShape.circle),
               child: Icon(accepted ? Icons.check_rounded : Icons.close_rounded, color: Colors.white, size: 40)),
             const SizedBox(height: 16),
             Text(accepted ? "Taksi Yolda!" : "İstek Reddedildi", style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
@@ -643,7 +658,7 @@ Future<void> _checkAccessibility() async {
             if (accepted) ...[
               Container(
                 width: double.infinity, padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.15), borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(16)),
                 child: Column(children: [
                   _infoRow(Icons.person, "Sürücü", driverName ?? '-'),
                   const SizedBox(height: 8),
@@ -653,7 +668,7 @@ Future<void> _checkAccessibility() async {
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(12)),
                 child: const Row(children: [
                   Icon(Icons.info_outline, color: Colors.white70, size: 18), SizedBox(width: 8),
                   Expanded(child: Text("Sürücünüz yola çıktı. Konumunuzda bekleyin.", style: TextStyle(color: Colors.white70, fontSize: 13))),
@@ -662,7 +677,7 @@ Future<void> _checkAccessibility() async {
             ] else
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.15), borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(16)),
                 child: const Text("Bu duraktaki sürücüler şu an müsait değil.\nBaşka bir durak deneyebilirsiniz.", style: TextStyle(color: Colors.white70, fontSize: 14), textAlign: TextAlign.center),
               ),
             const SizedBox(height: 20),
@@ -699,12 +714,12 @@ Future<void> _checkAccessibility() async {
             child: Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.25),
+                color: Colors.white.withValues(alpha: 0.25),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-                border: Border.all(color: Colors.white.withOpacity(0.3)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
               ),
               child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Container(width: 50, height: 5, margin: const EdgeInsets.only(bottom: 16), decoration: BoxDecoration(color: Colors.white.withOpacity(0.5), borderRadius: BorderRadius.circular(10))),
+                Container(width: 50, height: 5, margin: const EdgeInsets.only(bottom: 16), decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(10))),
                 const Text("Alternatif Rota Önerileri", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white, shadows: [Shadow(offset: Offset(0, 1), blurRadius: 4, color: Colors.black38)])),
                 const SizedBox(height: 14),
                 SizedBox(
@@ -744,7 +759,7 @@ Future<void> _checkAccessibility() async {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(colors: gradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
                               borderRadius: BorderRadius.circular(18),
-                              boxShadow: [BoxShadow(color: gradient.last.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4))],
+                              boxShadow: [BoxShadow(color: gradient.last.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4))],
                             ),
                             child: ListTile(
                               leading: Icon(icon, color: Colors.white, size: 30),
@@ -768,8 +783,8 @@ Future<void> _checkAccessibility() async {
                                    suggestedLine = opt.lineName; transferLine = opt.transferLine;
                                    polylines = [
                                      // Tüm hat güzergahları — ince, soluk gri (gidilmeyen kısımlar belli olsun)
-                                     if (fullLine1.isNotEmpty) Polyline(points: fullLine1, color: Colors.blueGrey.withOpacity(0.28), strokeWidth: 3),
-                                     if (fullLine2.isNotEmpty) Polyline(points: fullLine2, color: Colors.deepPurple.withOpacity(0.22), strokeWidth: 3),
+                                     if (fullLine1.isNotEmpty) Polyline(points: fullLine1, color: Colors.blueGrey.withValues(alpha: 0.28), strokeWidth: 3),
+                                     if (fullLine2.isNotEmpty) Polyline(points: fullLine2, color: Colors.deepPurple.withValues(alpha: 0.22), strokeWidth: 3),
                                      // Yürüyüş segmentleri
                                      if (opt.walk1.isNotEmpty) Polyline(points: opt.walk1, color: Colors.green.shade600, strokeWidth: 4, pattern: StrokePattern.dashed(segments: [12, 6])),
                                      // Gidilen otobüs segmentleri — kalın, canlı renk
@@ -834,24 +849,24 @@ Future<void> _checkAccessibility() async {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.25),
+                color: Colors.white.withValues(alpha: 0.25),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-                border: Border.all(color: Colors.white.withOpacity(0.4)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
               ),
               child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Center(child: Container(width: 50, height: 5, margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: Colors.blueAccent.withOpacity(0.3), borderRadius: BorderRadius.circular(10)))),
+                Center(child: Container(width: 50, height: 5, margin: const EdgeInsets.only(bottom: 12), decoration: BoxDecoration(color: Colors.blueAccent.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(10)))),
                 Text(opt.isTaxi ? "🚕 $displayName" : "🚌 $displayName", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo)),
                 const SizedBox(height: 10),
                 if (opt.isTaxi && opt.estimatedFare != null)
                   Container(
                     margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.orange.withOpacity(0.2), borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.orange)),
+                    decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.orange)),
                     child: Row(children: [const Icon(Icons.account_balance_wallet, color: Colors.orange), const SizedBox(width: 8), Expanded(child: Text("Tahmini Tutar: ${opt.estimatedFare!.toStringAsFixed(0)} TL", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)))]),
                   ),
                 if (liveBusMsg != null)
                   Container(
                     margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.green.withOpacity(0.2), borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.green)),
+                    decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.green)),
                     child: Row(children: [const Icon(Icons.sensors, color: Colors.green), const SizedBox(width: 8), Expanded(child: Text(liveBusMsg, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))]),
                   ),
                 if (opt.isTaxi) ...[
@@ -869,7 +884,7 @@ Future<void> _checkAccessibility() async {
                   _buildStep("${_formatDuration(totalWalk2)} yürü (${opt.endStopName ?? 'varışa'})"),
                 ],
                 const SizedBox(height: 12),
-                Divider(color: Colors.blueAccent.withOpacity(0.3)),
+                Divider(color: Colors.blueAccent.withValues(alpha: 0.3)),
                 Text("Toplam mesafe: ${opt.totalDistance.toStringAsFixed(0)} m", style: TextStyle(color: Colors.indigo.shade700, fontSize: 14)),
                 const SizedBox(height: 4),
                 Text("Tahmini toplam süre: ${_formatDuration(opt.totalDistance, isBus: true)} - ${_formatDuration(opt.totalDistance)} arası", style: TextStyle(color: Colors.indigo.shade400, fontSize: 13)),
@@ -903,7 +918,7 @@ Future<void> _checkAccessibility() async {
       builder: (ctx) => DraggableScrollableSheet(
         initialChildSize: 0.5, minChildSize: 0.4, maxChildSize: 0.9,
         builder: (_, scrollController) => Container(
-          decoration: BoxDecoration(color: const Color(0xFF1A237E).withOpacity(0.95), borderRadius: const BorderRadius.vertical(top: Radius.circular(25))),
+          decoration: BoxDecoration(color: const Color(0xFF1A237E).withValues(alpha: 0.95), borderRadius: const BorderRadius.vertical(top: Radius.circular(25))),
           child: Column(children: [
             const SizedBox(height: 15),
             Container(width: 50, height: 5, color: Colors.white30),
@@ -928,9 +943,9 @@ Future<void> _checkAccessibility() async {
       margin: const EdgeInsets.symmetric(vertical: 3),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.35), borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.4)),
-        boxShadow: [BoxShadow(color: Colors.blueAccent.withOpacity(0.08), blurRadius: 10, offset: const Offset(0, 3))],
+        color: Colors.white.withValues(alpha: 0.35), borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
+        boxShadow: [BoxShadow(color: Colors.blueAccent.withValues(alpha: 0.08), blurRadius: 10, offset: const Offset(0, 3))],
       ),
       child: Text(text, style: const TextStyle(color: Colors.indigo, fontSize: 15, fontWeight: FontWeight.w500)),
     );
@@ -953,7 +968,7 @@ Future<void> _checkAccessibility() async {
           decoration: BoxDecoration(
             gradient: const LinearGradient(colors: [Color(0xFFFFA726), Color(0xFFFF6F00)]),
             shape: BoxShape.circle,
-            boxShadow: [BoxShadow(color: Colors.orange.withOpacity(0.5), blurRadius: 12, spreadRadius: 2)],
+            boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.5), blurRadius: 12, spreadRadius: 2)],
           ),
           child: const Icon(Icons.local_taxi, color: Colors.white, size: 28),
         ),
@@ -971,14 +986,14 @@ Future<void> _checkAccessibility() async {
         decoration: BoxDecoration(
           gradient: const LinearGradient(colors: [Color(0xFFFFA726), Color(0xFFFF6F00)], begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.orange.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 5))],
+          boxShadow: [BoxShadow(color: Colors.orange.withValues(alpha: 0.4), blurRadius: 15, offset: const Offset(0, 5))],
         ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           const Row(children: [Icon(Icons.local_taxi, color: Colors.white, size: 32), SizedBox(width: 12), Expanded(child: Text("Taksi Durağı", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)))]),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(stand.name, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
@@ -991,7 +1006,7 @@ Future<void> _checkAccessibility() async {
           Row(children: [
             Expanded(child: TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              style: TextButton.styleFrom(backgroundColor: Colors.white.withOpacity(0.2), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              style: TextButton.styleFrom(backgroundColor: Colors.white.withValues(alpha: 0.2), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
               child: const Text("Kapat", style: TextStyle(color: Colors.white)),
             )),
             const SizedBox(width: 12),
@@ -1024,9 +1039,9 @@ Future<void> _checkAccessibility() async {
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                border: Border.all(color: Colors.white.withOpacity(0.3)),
-                boxShadow: [BoxShadow(color: Colors.blueAccent.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 8))],
+                color: Colors.white.withValues(alpha: 0.15),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+                boxShadow: [BoxShadow(color: Colors.blueAccent.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, 8))],
               ),
               child: AppBar(
                 backgroundColor: Colors.transparent,
@@ -1054,8 +1069,8 @@ Future<void> _checkAccessibility() async {
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.25), borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  color: Colors.white.withValues(alpha: 0.25), borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                 ),
                 child: Row(children: [
                   Expanded(child: SearchLocationField(
@@ -1066,7 +1081,7 @@ Future<void> _checkAccessibility() async {
                   const SizedBox(width: 6),
                   Container(
                     margin: const EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(gradient: const LinearGradient(colors: [Colors.blueAccent, Colors.lightBlueAccent]), shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.blueAccent.withOpacity(0.4), blurRadius: 10, offset: const Offset(0, 4))]),
+                    decoration: BoxDecoration(gradient: const LinearGradient(colors: [Colors.blueAccent, Colors.lightBlueAccent]), shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.blueAccent.withValues(alpha: 0.4), blurRadius: 10, offset: const Offset(0, 4))]),
                     child: IconButton(
                       icon: const Icon(Icons.swap_vert_rounded, color: Colors.white, size: 28),
                       onPressed: () async {
@@ -1095,8 +1110,8 @@ Future<void> _checkAccessibility() async {
               filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                 ),
                 child: SingleChildScrollView(child: SearchLocationField(
                   controller: _endController, hintText: "Nereye", showCurrentLocationOption: false,
@@ -1128,10 +1143,12 @@ Future<void> _checkAccessibility() async {
               if (bus1Segment != null) StopsLayer(
                 routePoints: bus1Segment!, currentRouteName: suggestedLine, showBusStops: showBusStops,
                 simulationManager: _simulationManager, busLines: _vm.busLines, onEnsureLineLoaded: _vm.ensureBusLineLoaded,
+                favoriteStopIds: _favoriteStopIds,
               ),
               if (bus2Segment != null && transferLine != null) StopsLayer(
                 routePoints: bus2Segment!, currentRouteName: transferLine, showBusStops: showBusStops,
                 simulationManager: _simulationManager, busLines: _vm.busLines, onEnsureLineLoaded: _vm.ensureBusLineLoaded,
+                favoriteStopIds: _favoriteStopIds,
               ),
               if (_taxiStandMarkers.isNotEmpty) MarkerLayer(markers: _taxiStandMarkers),
               MarkerLayer(markers: _busMarkers),
@@ -1144,10 +1161,10 @@ Future<void> _checkAccessibility() async {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
-                decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.blueAccent.withOpacity(0.15), Colors.indigo.withOpacity(0.25), Colors.black.withOpacity(0.45)], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+                decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.blueAccent.withValues(alpha: 0.15), Colors.indigo.withValues(alpha: 0.25), Colors.black.withValues(alpha: 0.45)], begin: Alignment.topLeft, end: Alignment.bottomRight)),
                 child: Center(child: Container(
                   padding: const EdgeInsets.all(24), margin: const EdgeInsets.symmetric(horizontal: 32),
-                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.08), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withOpacity(0.25)), boxShadow: [BoxShadow(color: Colors.blueAccent.withOpacity(0.2), blurRadius: 25, spreadRadius: 5)]),
+                  decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.white.withValues(alpha: 0.25)), boxShadow: [BoxShadow(color: Colors.blueAccent.withValues(alpha: 0.2), blurRadius: 25, spreadRadius: 5)]),
                   child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
                     Stack(alignment: Alignment.center, children: [
                       SizedBox(height: 80, width: 80, child: CircularProgressIndicator(strokeWidth: 6, value: progress, backgroundColor: Colors.white24, color: Colors.lightBlueAccent)),
@@ -1215,9 +1232,9 @@ Widget _buildGlassButton({required IconData icon, required String text, required
       filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
       child: Container(
         decoration: BoxDecoration(
-          color: color.withOpacity(0.50), borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: Colors.white.withOpacity(0.7)),
-          boxShadow: [BoxShadow(color: color.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 5))],
+          color: color.withValues(alpha: 0.50), borderRadius: BorderRadius.circular(25),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.7)),
+          boxShadow: [BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 5))],
         ),
         child: InkWell(
           onTap: onTap, borderRadius: BorderRadius.circular(25), splashColor: Colors.white24,
@@ -1273,14 +1290,53 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
       return;
     }
     setState(() => _loading = true);
-    final url = Uri.parse("https://maps.googleapis.com/maps/api/place/textsearch/json?query=${Uri.encodeComponent(query)}&key=");
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data["status"] == "OK") {
-        setState(() { _results = (data["results"] as List).map((e) => {"display": e["name"], "lat": e["geometry"]["location"]["lat"], "lon": e["geometry"]["location"]["lng"]}).toList(); });
-      } else { setState(() => _results = []); }
+
+    final apiKey = dotenv.env['GOOGLE_PLACES_API_KEY'] ?? '';
+    if (apiKey.isEmpty) {
+      debugPrint("❌ GOOGLE_PLACES_API_KEY .env dosyasında bulunamadı!");
+      setState(() => _loading = false);
+      return;
     }
+
+    try {
+      final url = Uri.parse("https://places.googleapis.com/v1/places:searchText");
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": apiKey,
+          "X-Goog-FieldMask": "places.displayName,places.location,places.formattedAddress",
+        },
+        body: json.encode({
+          "textQuery": query,
+          "languageCode": "tr",
+          "locationBias": {
+            "circle": {
+              "center": {"latitude": 39.9042, "longitude": 41.2670},
+              "radius": 50000.0,
+            }
+          },
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final places = data["places"] as List? ?? [];
+        setState(() {
+          _results = places.map((e) => {
+            "display": e["displayName"]?["text"] ?? e["formattedAddress"] ?? "Bilinmeyen",
+            "lat": e["location"]["latitude"],
+            "lon": e["location"]["longitude"],
+          }).toList();
+        });
+      } else {
+        debugPrint("❌ Places API hatası: ${response.statusCode} - ${response.body}");
+        setState(() => _results = []);
+      }
+    } catch (e) {
+      debugPrint("❌ Arama hatası: $e");
+    }
+
     setState(() => _loading = false);
   }
 
@@ -1296,71 +1352,72 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
             prefixIcon: Icon(Icons.search, color: Colors.grey.shade500, size: 22),
             hintStyle: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.w400),
             border: InputBorder.none, enabledBorder: InputBorder.none, focusedBorder: InputBorder.none,
-            filled: true, fillColor: Colors.white.withOpacity(0.15),
+            filled: true, fillColor: Colors.white.withValues(alpha: 0.15),
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           ),
           onChanged: _searchPlaces,
           onTap: () { widget.onFocus(); _searchPlaces(""); },
           onSubmitted: (value) async {
             if (value.isEmpty) return;
-            final url = Uri.parse("https://maps.googleapis.com/maps/api/place/textsearch/json?query=${Uri.encodeComponent(value)}&key=");
-            final response = await http.get(url);
-            if (response.statusCode == 200) {
-              final data = jsonDecode(response.body);
-              if (data["results"] != null && data["results"].isNotEmpty) {
-                final loc = data["results"][0]["geometry"]["location"];
-                widget.onSelected(loc["lat"], loc["lng"]);
-                _localController.text = data["results"][0]["name"];
-                setState(() => _results.clear());
-              }
+            await _searchPlaces(value);
+            if (_results.isNotEmpty && _results.first["isCurrentLocation"] != true) {
+              final item = _results.first;
+              widget.onSelected(item["lat"], item["lon"]);
+              _localController.text = item["display"];
+              setState(() => _results.clear());
             }
           },
         ),
       ),
       if (_loading) const LinearProgressIndicator(),
-      if (_results.isNotEmpty) Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(14)),
-        child: ListView.builder(
-          shrinkWrap: true, itemCount: _results.length,
-          itemBuilder: (context, index) {
-            final item = _results[index];
-            if (item["isCurrentLocation"] == true) {
+      if (_results.isNotEmpty) ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 220),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(14)),
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemCount: _results.length,
+            itemBuilder: (context, index) {
+              final item = _results[index];
+              if (item["isCurrentLocation"] == true) {
+                return ListTile(
+                  leading: const Icon(Icons.my_location, color: Colors.blue),
+                  title: Text(item["display"]),
+                  onTap: () async {
+                    LocationPermission perm = await Geolocator.checkPermission();
+                    if (perm == LocationPermission.denied) perm = await Geolocator.requestPermission();
+                    if (perm == LocationPermission.denied || perm == LocationPermission.deniedForever) return;
+                    final pos = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                    widget.onSelected(pos.latitude, pos.longitude);
+                    _localController.text = "Mevcut konumunuz";
+                    setState(() => _results.clear());
+                  },
+                );
+              }
               return ListTile(
-                leading: const Icon(Icons.my_location, color: Colors.blue),
-                title: Text(item["display"]),
+                title: Text(item["display"], maxLines: 1, overflow: TextOverflow.ellipsis),
                 onTap: () async {
-                  LocationPermission perm = await Geolocator.checkPermission();
-                  if (perm == LocationPermission.denied) perm = await Geolocator.requestPermission();
-                  if (perm == LocationPermission.denied || perm == LocationPermission.deniedForever) return;
-                  final pos = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-                  widget.onSelected(pos.latitude, pos.longitude);
-                  _localController.text = "Mevcut konumunuz";
+                  double lat = item["lat"], lon = item["lon"];
+                  try {
+                    final snapUrl = Uri.parse("https://router.project-osrm.org/nearest/v1/foot/$lon,$lat");
+                    final snapResponse = await http.get(snapUrl);
+                    if (snapResponse.statusCode == 200) {
+                      final data = jsonDecode(snapResponse.body);
+                      if (data["waypoints"] != null && data["waypoints"].isNotEmpty) {
+                        final snapped = data["waypoints"][0]["location"];
+                        lon = snapped[0]; lat = snapped[1];
+                      }
+                    }
+                  } catch (_) {}
+                  widget.onSelected(lat, lon);
+                  _localController.text = item["display"];
                   setState(() => _results.clear());
                 },
               );
-            }
-            return ListTile(
-              title: Text(item["display"], maxLines: 1, overflow: TextOverflow.ellipsis),
-              onTap: () async {
-                double lat = item["lat"], lon = item["lon"];
-                try {
-                  final snapUrl = Uri.parse("https://router.project-osrm.org/nearest/v1/foot/$lon,$lat");
-                  final snapResponse = await http.get(snapUrl);
-                  if (snapResponse.statusCode == 200) {
-                    final data = jsonDecode(snapResponse.body);
-                    if (data["waypoints"] != null && data["waypoints"].isNotEmpty) {
-                      final snapped = data["waypoints"][0]["location"];
-                      lon = snapped[0]; lat = snapped[1];
-                    }
-                  }
-                } catch (_) {}
-                widget.onSelected(lat, lon);
-                _localController.text = item["display"];
-                setState(() => _results.clear());
-              },
-            );
-          },
+            },
+          ),
         ),
       ),
     ]);
@@ -1393,7 +1450,7 @@ class _BillboardTitleState extends State<_BillboardTitle> {
     return Container(
       height: 44, width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(color: Colors.white.withOpacity(0.95), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.95), borderRadius: BorderRadius.circular(12)),
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Image.asset("assets/icons/erzbblogoformain.png", height: 28, fit: BoxFit.contain),
         const SizedBox(width: 12),

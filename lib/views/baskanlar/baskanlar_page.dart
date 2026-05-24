@@ -222,7 +222,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
    
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-            child: Container(color: Colors.white.withOpacity(0.05)),
+            child: Container(color: Colors.white.withValues(alpha: 0.05)),
           ),
      
           SafeArea(
@@ -241,9 +241,9 @@ class _BaskanlarPageState extends State<BaskanlarPage>
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.35)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.35)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -344,16 +344,16 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       colors: [
                         const Color(
                           0xFF1A237E,
-                        ).withOpacity(0.5), 
+                        ).withValues(alpha: 0.5), 
                         const Color(
                           0xFF283593,
-                        ).withOpacity(0.4),
+                        ).withValues(alpha: 0.4),
                       ],
                     ),
  
                     border: Border(
                       top: BorderSide(
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white.withValues(alpha: 0.3),
                         width: 1.5,
                       ),
                     ),
@@ -368,7 +368,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                           width: 50,
                           height: 5,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.4),
+                            color: Colors.white.withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -384,7 +384,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.3),
+                                  color: Colors.black.withValues(alpha: 0.3),
                                   blurRadius: 20,
                                   spreadRadius: 5,
                                 ),
@@ -426,7 +426,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(color: Colors.white24),
                           ),
@@ -444,7 +444,7 @@ class _BaskanlarPageState extends State<BaskanlarPage>
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(
+                          color: Colors.black.withValues(alpha: 
                             0.2,
                           ),
                           borderRadius: BorderRadius.circular(16),
@@ -484,9 +484,9 @@ class _AuroraPainter extends CustomPainter {
     final paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          Colors.cyanAccent.withOpacity(0.15),
-          Colors.blueAccent.withOpacity(0.1),
-          Colors.purpleAccent.withOpacity(0.12),
+          Colors.cyanAccent.withValues(alpha: 0.15),
+          Colors.blueAccent.withValues(alpha: 0.1),
+          Colors.purpleAccent.withValues(alpha: 0.12),
         ],
         begin: Alignment(-1 + t * 2, -1),
         end: Alignment(1 - t * 2, 1),
