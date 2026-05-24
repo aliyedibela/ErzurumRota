@@ -22,3 +22,9 @@ Thumbs.db
 # Node
 node_modules/
 package-lock.json
+
+# Firebase — API anahtarları içerir, commit'lenmemeli
+# (flutterfire configure ile otomatik oluşturulur)
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist

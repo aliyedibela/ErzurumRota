@@ -10,17 +10,33 @@ import 'package:erzurum_rota/views/tarih/erzurumtarihi_page.dart';
 import 'package:erzurum_rota/views/yerler/onemliyerler_page.dart';
 import 'package:erzurum_rota/views/favorites/favorites_page.dart';
 import 'package:erzurum_rota/views/notifications/notifications_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'firebase_options.dart';
+import 'services/fcm_service.dart';
 import 'services/user_auth_service.dart';
 import 'services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+
+  // Firebase başlatma — stub değerler gerçek proje ile değiştirilene kadar
+  // try-catch ile sarılmıştır, Firebase olmasa da uygulama çalışır.
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FcmService().initialize();
+    debugPrint('✅ Firebase başlatıldı');
+  } catch (e) {
+    debugPrint('⚠️ Firebase başlatılamadı (flutterfire configure gerekli): $e');
+  }
+
   runApp(const MyApp());
 }
 
