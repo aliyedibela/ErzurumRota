@@ -26,12 +26,14 @@ class RoutePage extends StatefulWidget {
   final LatLng? startPoint;
   final LatLng? destination;
   final String? destinationName;
+  final ValueNotifier<String?>? lineNotifier;
 
   const RoutePage({
     super.key,
     this.startPoint,
     this.destination,
     this.destinationName,
+    this.lineNotifier,
   });
 
   @override
@@ -80,9 +82,18 @@ class _RoutePageState extends State<RoutePage> with WidgetsBindingObserver {
     "OSRM motoru rota geometrilerini çıkarıyor...",
   ];
 
+  void _onLineNotified() {
+    final line = widget.lineNotifier?.value;
+    if (line != null && mounted) {
+      _smartSelectLine(line);
+      widget.lineNotifier!.value = null; // sıfırla
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    widget.lineNotifier?.addListener(_onLineNotified);
 WidgetsBinding.instance.addObserver(this);
     _simulationManager = BusSimulationManager(
       onUpdate: (buses) {
@@ -172,6 +183,13 @@ WidgetsBinding.instance.addObserver(this);
           ));
         }
       }
+
+      // İlk kez build edildiğinde lineNotifier değeri zaten set edilmiş olabilir
+      final pendingLine = widget.lineNotifier?.value;
+      if (pendingLine != null && mounted) {
+        _smartSelectLine(pendingLine);
+        widget.lineNotifier!.value = null;
+      }
     });
   }
 
@@ -206,6 +224,7 @@ Future<void> _loadFavoriteStopIds() async {
 
   @override
   void dispose() {
+    widget.lineNotifier?.removeListener(_onLineNotified);
     _accessibilityService.dispose();
     WidgetsBinding.instance.removeObserver(this);
     _vm.dispose();

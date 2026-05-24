@@ -4,7 +4,9 @@ import '../../services/favorite_stop_service.dart';
 import '../../core/utils/stop_utils.dart';
 
 class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({super.key});
+  final void Function(String lineName)? onLineSelected;
+
+  const FavoritesPage({super.key, this.onLineSelected});
 
   @override
   State<FavoritesPage> createState() => _FavoritesPageState();
@@ -446,48 +448,78 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ],
                 ),
                 const SizedBox(height: 14),
-                // Route chips
-                if (routes.isNotEmpty)
+                // Route chips — tıklanınca rota sayfasında o hat açılır
+                if (routes.isNotEmpty) ...[
+                  if (widget.onLineSelected != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Hatta tıklayarak haritada görebilirsin',
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent.withValues(alpha: 0.7),
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: routes.map((line) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF1976D2), Color(0xFF0D47A1)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: Colors.lightBlueAccent.withValues(alpha: 0.35)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF1565C0).withValues(alpha: 0.4),
-                              blurRadius: 10,
-                              offset: const Offset(0, 3),
+                      return GestureDetector(
+                        onTap: widget.onLineSelected == null ? null : () {
+                          Navigator.pop(ctx);   // bottom sheet kapat
+                          Navigator.pop(context); // favoriler sayfasını kapat
+                          widget.onLineSelected!(line);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: widget.onLineSelected != null
+                                  ? [const Color(0xFF1565C0), const Color(0xFF0D47A1)]
+                                  : [const Color(0xFF1976D2), const Color(0xFF0D47A1)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.directions_bus_rounded, size: 13, color: Colors.lightBlueAccent),
-                            const SizedBox(width: 6),
-                            Text(
-                              line,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(
+                              color: widget.onLineSelected != null
+                                  ? Colors.lightBlueAccent.withValues(alpha: 0.7)
+                                  : Colors.lightBlueAccent.withValues(alpha: 0.35),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF1565C0).withValues(alpha: 0.4),
+                                blurRadius: 10,
+                                offset: const Offset(0, 3),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.directions_bus_rounded, size: 13, color: Colors.lightBlueAccent),
+                              const SizedBox(width: 6),
+                              Text(
+                                line,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              if (widget.onLineSelected != null) ...[
+                                const SizedBox(width: 4),
+                                const Icon(Icons.arrow_forward_ios_rounded, size: 10, color: Colors.lightBlueAccent),
+                              ],
+                            ],
+                          ),
                         ),
                       );
                     }).toList(),
-                  )
+                  ),
+                ]
                 else
                   Text(
                     'Hat bilgisi bulunamadı',

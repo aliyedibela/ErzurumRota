@@ -72,6 +72,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int _currentTabIndex = 0;
   AppUser? _currentUser;
   final _userSvc = UserAuthService();
+  final _routeLineNotifier = ValueNotifier<String?>(null);
   
 
  @override
@@ -421,7 +422,7 @@ Widget build(BuildContext context) {
             _LazyTab(index: 1, currentIndex: _currentTabIndex, child: const EczanePage()),
             _LazyTab(index: 2, currentIndex: _currentTabIndex, child: const YaklasanEtkinliklerPage()),
             _LazyTab(index: 3, currentIndex: _currentTabIndex, child: const ErzurumTarihiPage()),
-            _LazyTab(index: 4, currentIndex: _currentTabIndex, child: const RoutePage()),
+            _LazyTab(index: 4, currentIndex: _currentTabIndex, child: RoutePage(lineNotifier: _routeLineNotifier)),
             _LazyTab(index: 5, currentIndex: _currentTabIndex, child: const OnemliYerlerPage()),
             _LazyTab(index: 6, currentIndex: _currentTabIndex, child: const SonDepremlerPage()),
             _LazyTab(index: 7, currentIndex: _currentTabIndex, child: const HavaDurumuPage()),
@@ -498,7 +499,12 @@ Widget _buildMainTab(Size size) {
             end: Alignment.bottomRight,
           ),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const FavoritesPage())),
+              context, MaterialPageRoute(builder: (_) => FavoritesPage(
+                onLineSelected: (line) {
+                  _routeLineNotifier.value = line;
+                  _tabController.animateTo(4);
+                },
+              ))),
         ),
         const SizedBox(height: 14),
         _buildGlassMenuCard(
