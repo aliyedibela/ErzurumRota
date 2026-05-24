@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-const Duration _kShortTimeout = Duration(seconds: 10);
+const Duration _kShortTimeout = Duration(seconds: 30);
 const Duration _kPaymentTimeout = Duration(seconds: 20);
 
 class AppUser {
@@ -115,6 +115,7 @@ class UserAuthService {
     required String fullName,
     String? phoneNumber,
   }) async {
+    await _pingBackend(); // Railway cold start önlemi
     try {
       final res = await http.post(
         Uri.parse("$_base/signup"),
