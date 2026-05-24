@@ -198,6 +198,39 @@ Future<void> _showAccessibilityOnboarding() async {
     if (mounted) setState(() => _currentUser = u);
   }
 
+  Future<void> _showFcmTokenDialog() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('fcm_token') ?? 'Token henüz alınamadı.\nUygulamayı yeniden başlatın.';
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('🔑 FCM Token', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Bildirim testleri için bu token\'ı Firebase Console\'a yapıştır:', style: TextStyle(fontSize: 13)),
+            const SizedBox(height: 12),
+            SelectableText(token, style: const TextStyle(fontSize: 11, color: Colors.blueGrey)),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: token));
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('✅ FCM Token panoya kopyalandı!'), backgroundColor: Colors.green),
+              );
+            },
+            child: const Text('Kopyala'),
+          ),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Kapat')),
+        ],
+      ),
+    );
+  }
+
   Future<void> _openProfile() async {
     await Navigator.push(
       context,
@@ -435,27 +468,30 @@ Widget _buildMainTab(Size size) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(28),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              width: size.width * 0.42,
-              height: size.width * 0.42,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(28),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+        GestureDetector(
+          onLongPress: _showFcmTokenDialog,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(28),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: size.width * 0.42,
+                height: size.width * 0.42,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Image.asset("assets/icons/erzbblogoformain.png", fit: BoxFit.contain),
               ),
-              child: Image.asset("assets/icons/erzbblogoformain.png", fit: BoxFit.contain),
             ),
           ),
         ),

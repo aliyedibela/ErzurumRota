@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/notification_model.dart';
 import 'notification_service.dart';
 
@@ -80,9 +81,23 @@ class FcmService {
     final initial = await _messaging.getInitialMessage();
     if (initial != null) _handleTap(initial);
 
-    // FCM token'ı logla (test için)
+    // FCM token'ı kaydet
     final token = await _messaging.getToken();
-    debugPrint('🔑 FCM Token: $token');
+    if (token != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('fcm_token', token);
+      debugPrint('🔑 FCM Token: $token');
+    }
+
+    // Token yenilenince güncelle
+    _messaging.onTokenRefresh.listen((newToken) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('fcm_token', newToken);
+    });
+
+    // Tüm kullanıcılara toplu bildirim için konuya abone ol
+    await _messaging.subscribeToTopic('erzurum_rehber');
+    debugPrint('✅ FCM "erzurum_rehber" konusuna abone olundu');
   }
 
   Future<void> _handleForeground(RemoteMessage message) async {
