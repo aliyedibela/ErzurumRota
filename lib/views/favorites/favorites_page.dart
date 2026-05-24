@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import '../../services/favorite_stop_service.dart';
 import '../../core/utils/stop_utils.dart';
-import '../rota/route_page.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -497,56 +495,24 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ),
                 const SizedBox(height: 28),
                 // Action buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.redAccent.withValues(alpha: 0.6)),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          backgroundColor: Colors.redAccent.withValues(alpha: 0.06),
-                        ),
-                        onPressed: () async {
-                          await _favSvc.toggleFavorite(stop);
-                          Navigator.pop(ctx);
-                          _loadFavorites();
-                        },
-                        icon: const Icon(Icons.bookmark_remove_rounded, color: Colors.redAccent, size: 18),
-                        label: const Text('Kaldır',
-                            style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w600)),
-                      ),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.redAccent.withValues(alpha: 0.6)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      backgroundColor: Colors.redAccent.withValues(alpha: 0.06),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      flex: 2,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1565C0),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          elevation: 0,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(ctx);
-                          final lat = double.tryParse(stop['lat'].toString()) ?? 0;
-                          final lng = double.tryParse(stop['lng'].toString()) ?? 0;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RoutePage(
-                                destination: LatLng(lat, lng),
-                                destinationName: stop['stopName'],
-                              ),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.map_rounded, color: Colors.white, size: 18),
-                        label: const Text('Rotada Göster',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ],
+                    onPressed: () async {
+                      await _favSvc.toggleFavorite(stop);
+                      Navigator.pop(ctx);
+                      _loadFavorites();
+                    },
+                    icon: const Icon(Icons.bookmark_remove_rounded, color: Colors.redAccent, size: 18),
+                    label: const Text('Favoriden Kaldır',
+                        style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.w600)),
+                  ),
                 ),
               ],
             ),
