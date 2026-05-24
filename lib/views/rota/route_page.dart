@@ -1363,7 +1363,7 @@ class _SearchLocationFieldState extends State<SearchLocationField> {
             if (_results.isNotEmpty && _results.first["isCurrentLocation"] != true) {
               final item = _results.first;
               widget.onSelected(item["lat"], item["lon"]);
-              _localController.text = item["display"];
+            _localController.text = item["display"];
               setState(() => _results.clear());
             }
           },
