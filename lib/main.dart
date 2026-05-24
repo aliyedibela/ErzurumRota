@@ -25,8 +25,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
-  // Firebase başlatma — stub değerler gerçek proje ile değiştirilene kadar
-  // try-catch ile sarılmıştır, Firebase olmasa da uygulama çalışır.
+  // Uygulamayı hemen başlat, Firebase arka planda yüklensin
+  runApp(const MyApp());
+
+  // Firebase arka planda başlat — UI'yi bloklamaz
+  _initFirebaseInBackground();
+}
+
+void _initFirebaseInBackground() async {
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -34,10 +40,8 @@ Future<void> main() async {
     await FcmService().initialize();
     debugPrint('✅ Firebase başlatıldı');
   } catch (e) {
-    debugPrint('⚠️ Firebase başlatılamadı (flutterfire configure gerekli): $e');
+    debugPrint('⚠️ Firebase başlatılamadı: $e');
   }
-
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -196,39 +200,6 @@ Future<void> _showAccessibilityOnboarding() async {
   Future<void> _loadSavedUser() async {
     final u = await _userSvc.getSavedUser();
     if (mounted) setState(() => _currentUser = u);
-  }
-
-  Future<void> _showFcmTokenDialog() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('fcm_token') ?? 'Token henüz alınamadı.\nUygulamayı yeniden başlatın.';
-    if (!mounted) return;
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('🔑 FCM Token', style: TextStyle(fontWeight: FontWeight.bold)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Bildirim testleri için bu token\'ı Firebase Console\'a yapıştır:', style: TextStyle(fontSize: 13)),
-            const SizedBox(height: 12),
-            SelectableText(token, style: const TextStyle(fontSize: 11, color: Colors.blueGrey)),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: token));
-              Navigator.pop(ctx);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('✅ FCM Token panoya kopyalandı!'), backgroundColor: Colors.green),
-              );
-            },
-            child: const Text('Kopyala'),
-          ),
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Kapat')),
-        ],
-      ),
-    );
   }
 
   Future<void> _openProfile() async {
