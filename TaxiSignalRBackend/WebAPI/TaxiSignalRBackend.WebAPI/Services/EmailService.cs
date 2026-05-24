@@ -1,33 +1,73 @@
-﻿using System.Net.Mail;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace TaxiSignalRBackend.WebAPI.Services
 {
     public class EmailService
     {
-        private const string GmailUser = "erzurumbbappetu@gmail.com";
-        private const string GmailAppPassword = "xtav lvcq srlj bfik"; // Google Uygulama Şifresi
+        // Credentials Railway dashboard'daki env var'lardan okunur
+        private static string ClientId     => Environment.GetEnvironmentVariable("GMAIL_CLIENT_ID")     ?? "";
+        private static string ClientSecret => Environment.GetEnvironmentVariable("GMAIL_CLIENT_SECRET") ?? "";
+        private static string RefreshToken => Environment.GetEnvironmentVariable("GMAIL_REFRESH_TOKEN") ?? "";
+        private const  string GmailUser    = "erzurumbbappetu@gmail.com";
 
         public async Task SendVerificationEmail(string toEmail, string code)
         {
-            using var client = new SmtpClient("smtp.gmail.com", 587)
-            {
-                Credentials = new System.Net.NetworkCredential(GmailUser, GmailAppPassword),
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Timeout = 15000
-            };
+            // 1) Refresh token → access token
+            var accessToken = await GetAccessTokenAsync();
 
-            var mail = new MailMessage
-            {
-                From = new MailAddress(GmailUser, "Erzurum BB App"),
-                Subject = "Doğrulama Kodunuz",
-                Body = BuildHtml(code),
-                IsBodyHtml = true
-            };
-            mail.To.Add(toEmail);
+            // 2) RFC 2822 formatında email oluştur
+            var raw = $"From: Erzurum BB App <{GmailUser}>\r\n" +
+                      $"To: {toEmail}\r\n" +
+                      $"Subject: Doğrulama Kodunuz\r\n" +
+                      $"MIME-Version: 1.0\r\n" +
+                      $"Content-Type: text/html; charset=utf-8\r\n\r\n" +
+                      BuildHtml(code);
 
-            await client.SendMailAsync(mail);
-            Console.WriteLine($"✅ Gmail SMTP ile email gönderildi: {toEmail}");
+            var base64Url = Convert.ToBase64String(Encoding.UTF8.GetBytes(raw))
+                .Replace('+', '-').Replace('/', '_').TrimEnd('=');
+
+            // 3) Gmail API ile gönder
+            using var http = new HttpClient();
+            http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var payload = JsonSerializer.Serialize(new { raw = base64Url });
+            var content = new StringContent(payload, Encoding.UTF8, "application/json");
+
+            var response = await http.PostAsync(
+                $"https://gmail.googleapis.com/gmail/v1/users/{GmailUser}/messages/send",
+                content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var err = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Gmail API hatası: {response.StatusCode} — {err}");
+            }
+
+            Console.WriteLine($"✅ Gmail API ile email gönderildi: {toEmail}");
+        }
+
+        private static async Task<string> GetAccessTokenAsync()
+        {
+            using var http = new HttpClient();
+            var form = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string,string>("client_id",     ClientId),
+                new KeyValuePair<string,string>("client_secret", ClientSecret),
+                new KeyValuePair<string,string>("refresh_token", RefreshToken),
+                new KeyValuePair<string,string>("grant_type",    "refresh_token"),
+            });
+
+            var res  = await http.PostAsync("https://oauth2.googleapis.com/token", form);
+            var json = await res.Content.ReadAsStringAsync();
+            if (!res.IsSuccessStatusCode)
+                throw new Exception($"Access token alınamadı: {json}");
+
+            using var doc = JsonDocument.Parse(json);
+            return doc.RootElement.GetProperty("access_token").GetString()
+                   ?? throw new Exception("access_token bulunamadı");
         }
 
         private static string BuildHtml(string code) => $@"
